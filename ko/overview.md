@@ -1,11 +1,11 @@
-## Database > RDS for MySQL > 개요
+## Database > RDS for MariaDB > 개요
 
 NHN Cloud Cloud Relational Database Service (RDS) 는 Relational Database 를 클라우드 환경에서 제공하는 상품입니다.
 복잡한 설정 없이 고가용성의 Relational Database 사용할 수 있습니다.
 
 ## 특징 및 기능 
 
-* RDS for MySQL은 사용자의 Compute & Network 상품을 활성화해야만 사용할 수 있습니다.
+* RDS for MariaDB는 사용자의 Compute & Network 상품을 활성화해야만 사용할 수 있습니다.
 
 ### DB 인스턴스
 
@@ -52,8 +52,3 @@ NHN Cloud Cloud Relational Database Service (RDS) 는 Relational Database 를 �
 
 * 고가용성 기능을 사용하면 현재 사용 중인 인스턴스나 해당 인스턴스가 있는 Availability Zone에 문제가 발생했을 때, 다른 Availability Zone에 만들어 놓은 Candidate Master 인스턴스에서 자동으로 장애 조치를 수행합니다. 따라서 데이터베이스의 장애 시간을 최대한 단축할 수 있습니다.
 * Master 인스턴스에 대한 고가용성을 보장합니다.
-
-### DB 파일 암호화
-
-* DB 파일 암호화 기능을 사용하면 사용자 데이터가 저장되는 데이터베이스의 파일 및 백업 파일을 암호화할 수 있습니다. 
-* 악의의 사용자가 DB 인스턴스를 탈취해도 사용자 데이터가 유출될 일 없이 안전하게 사용할 수 있습니다.

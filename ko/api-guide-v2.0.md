@@ -1,10 +1,8 @@
-## Database > RDS for MySQL > API 가이드
+## Database > RDS for MariaDB > API 가이드
 
 | 리전 | 엔드포인트 |
 |---|---|
-| 한국(판교) 리전 | https://kr1-mysql.api.nhncloudservice.com |
-| 한국(평촌) 리전 | https://kr2-mysql.api.nhncloudservice.com |
-| 일본 리전 | https://jp1-mysql.api.nhncloudservice.com |
+| 한국(판교) 리전 | https://kr1-mariadb.api.nhncloudservice.com |
 
 ## Monitoring
 

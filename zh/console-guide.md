@@ -1,10 +1,10 @@
-## Database > RDS for MySQL > 控制台使用指南
+## Database > RDS for MariaDB > 控制台使用指南
 
 ## 开始
 
-若欲使用RDS for MysQL，应先创建DB实例。可利用如下方法创建DB实例。
+若欲使用RDS for MariaDB，应先创建DB实例。可利用如下方法创建DB实例。
 
-* 在**Console > Database > RDS for MySQL**的**DB Instance **标签中单击左上端的**+创建**按钮，如下图所示，在页面下端出现输入界面。
+* 在**Console > Database > RDS for MariaDB**的**DB Instance **标签中单击左上端的**+创建**按钮，如下图所示，在页面下端出现输入界面。
 
 ![rds_01_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_01_20210112_zh.png)
 
@@ -26,7 +26,6 @@
     * 高可用性：创建DB实例时，在与Master不同的Availability Zone创建Candidate Master。
     * Ping Interval: 고가용성 사용 시, Master 인스턴스 상태를 확인하는 시간 간격을 설정합니다. 4회 실패 시 장애로 식별합니다.
         * 1초~600초 사이로 설정할 수 있습니다.
-    * DB文件加密：加密用户数据文件及备份文件。
     * 默认警报：可登记DB实例事件中与提前定义事件相关的警报。
         * 使用默认警报时，应选择接收组。
 
@@ -34,7 +33,6 @@
 > [参考] VPC子网一经选择无法更改。
 > [参考] Candidate Master实例必须创建于与Master不同的Availability Zone，不显示在列表中。
 > [参考] 实例列表按照各实例的创建顺序排列，Candidate Master在Master的高可用性选项使用时创建，因此进行故障处理后实例的顺序可能发生更改。
-> [参考] 若使用DB文件加密功能，性能会有所减少。
 > [参考] 使用默认警报时，自动登记相应实例的警报，名称设置为”{实例名}-default”。登记的警报可更改及删除，应用的实例也可更改。
 
 
@@ -149,7 +147,7 @@ Floating IP未设置为“使用”的DB实例无法从外部访问。
 
 ### 复制
 
-* 若欲提高读取性能，可以创建支持MySQL的Read Only Slave。
+* 若欲提高读取性能，可以创建支持MariaDB的Read Only Slave。
 * 若欲创建Read Only Slave，选择原始DB实例后单击**附加功能>创建副本**。
 
 ![additional_function_0_zh](https://static.toastoven.net/prod_rds/21.09.14/additional_function_0_zh.png)
@@ -293,8 +291,6 @@ Floating IP未设置为“使用”的DB实例无法从外部访问。
 * Generated audit log file can be checked or downloaded from the Event & Log tab.
 * For detailed settings, please check the website below.
     * https://mariadb.com/kb/en/mariadb-audit-plugin-options-and-system-variables
-
-> [Caution] MySQL 5.7.15, 8.0.18, 8.0.23 version is not supported.
 
 ## Event
 
@@ -481,9 +477,9 @@ Notifications can be received by adding the monitoring settings to the performan
 
 ## Separating user permission
 
-* Project members can be granted separate permissions either as RDS for MySQL ADMIN / RDS for MySQL MEMBER.
-* RDS for MySQL ADMIN permission holders can use all available features as before.
-* RDS for MySQL MEMBER permission holders can use read-only feature.
+* Project members can be granted separate permissions either as RDS for MariaDB ADMIN / RDS for MariaDB MEMBER.
+* RDS for MariaDB ADMIN permission holders can use all available features as before.
+* RDS for MariaDB MEMBER permission holders can use read-only feature.
     * Cannot use any features aimed at instances or create, modify, or delete any instance.
     * Can use alarm-related features on the Notification tab.
 
