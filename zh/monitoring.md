@@ -1,4 +1,4 @@
-## Database > RDS for MySQL > Monitoring
+## Database > RDS for MariaDB > Monitoring
 
 Various events that occur during various tasks related to DB instance and various performance indicators of DB instance can be monitored.
 Various performance indicators can be checked in charts using the server dashboard.
@@ -6,7 +6,7 @@ When configuring the monitoring settings of the notification group, notification
 
 ## Event
 
-An event refers to important incident incurred by RDS for MySQL or the user. An event is comprised of a type, date of occurrence, event source, and message. It can be checked on the web console, and notification can be received via email and SMS through subscription. The event types and event occurrences are as follows.
+An event refers to important incident incurred by RDS for MariaDB or the user. An event is comprised of a type, date of occurrence, event source, and message. It can be checked on the web console, and notification can be received via email and SMS through subscription. The event types and event occurrences are as follows.
 
 | Event Type | Event Code | Event Message |
 | --- | --- | --- |
@@ -105,12 +105,12 @@ The performance indicators can be visualized in charts in the server dashboard. 
 ### Layout
 
 The layout must be first configured to view the chart. The layout consists of various charts and each chart location and size is saved. 
-RDS for MySQL provides two default layouts: **default system index** and **default MySQL index**. The user cannot modify nor delete the default layout.
+RDS for MariaDB provides two default layouts: **default system index** and **default MySQL index**. The user cannot modify nor delete the default layout.
 
 ### Chart
 
 Various performance indicators of DB instances can be viewed as charts. Each performance indicators consists of different chart forms.
-Below are the charts supported by RDS for MySQL.
+Below are the charts supported by RDS for MariaDB.
 
 | Chart | Indicators (unit) |
 | --- | --- |

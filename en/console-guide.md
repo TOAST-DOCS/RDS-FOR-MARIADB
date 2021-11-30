@@ -1,9 +1,9 @@
-## Database > RDS for MySQL > Console Guide 
+## Database > RDS for MariaDB > Console Guide 
 
 ## Getting Started 
 
-* To use RDS for MySQL, a DB instance must be created first, in the following method.
-* Go to **Console > Database > RDS for MySQL** and **DB Instance**, and click **+ Create** on top left, and the screen shows at the bottom of the page.   
+* To use RDS for MariaDB, a DB instance must be created first, in the following method.
+* Go to **Console > Database > RDS for MariaDB** and **DB Instance**, and click **+ Create** on top left, and the screen shows at the bottom of the page.   
 
 ![rds_01_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_01_20210112_en.png)
 
@@ -26,7 +26,6 @@
     * High Availability: To create database instances, the candidate master is created at a different availability zone from the master.
     * Ping Interval: Sets the interval for checking the status of the master instance when using the high availability feature. An error occurs after 4 failed attempts.
         * It can be anywhere between 1 and 600 seconds.
-    * Database File Encryption: User data files and backup files are encrypted.
     * Default Alarm: Register alarms for pre-defined events of a database instance.
         * To enable default alarm, a recipient group must be selected.
 
@@ -34,7 +33,6 @@
 > [Note] VPC subnet, once selected, cannot be changed.
 > [Note] The candidate master instance is created at a different availability zone from the master, and it does not show on the list.
 > [Note] Instances on the list are arranged in the order of creation, but the order may change after measures are taken against failure, since the candidate master is created when the high availability option is enabled for the master.
-> [Note] By enabling database file encryption, performance may be degraded more or less.
 > [Note] With default alarm setting, alarms for the instance are automatically registered, in the name of "{instance name}-default". Registered alarms can be changed or deleted, and applied instances can also be changed.
 
 ![backup_and_access_0_ko](https://static.toastoven.net/prod_rds/21.09.14/backup_and_access_0_ko.png)
@@ -98,7 +96,7 @@
 * For those instances using high availability, access information does not change with partial changes in option, but the master and the candidate master instances may be interchanged.
 * With a failover for high availability instance, the new master instance does not inherit the backup of the existing master instance.
 
-> [Note] For high availability instances, use MySQL query statement to force replication of other instances or master of external MySQL, and then high availability and some features do not operate.    
+> [Note] For high availability instances, use MariaDB query statement to force replication of other instances or master of external MariaDB, and then high availability and some features do not operate.    
 > [Note] When the storage usage of the DB instance becomes full, the high availability monitoring process detects it as a failure and performs a failover, so caution is required.
 
 #### High Availability Pause and Resume
@@ -147,8 +145,6 @@
 * Auto backups are deleted along with the original instances.
 * When backup fails, if Backup Retry Count is set to a value of 1 or higher, attempts are made as many times as the specified value.
 
-> [Note] For MySQL 5.7 or higher, creating or building an index again during backup causes failure in the backup.   
-
 #### Manual Backups 
 
 * Manual backups are always available, except auto backups. 
@@ -166,7 +162,7 @@
 
 ### Replication 
 
-* For better read performances, create Read Only Slave supported by MySQL. 
+* For better read performances, create Read Only Slave supported by MariaDB. 
 * To create Read Only Slave, select an original DB instance and click **Additional Functions > Create Replica**. 
 
 ![additional_function_0_en](https://static.toastoven.net/prod_rds/21.09.14/additional_function_0_en.png)
@@ -215,17 +211,6 @@
     * When you scale up storage using failover, the master is replaced. This reduces downtime, but overall operations can take longer.
     * If the master is replaced, all binary log files are deleted and it becomes impossible to perform point-in-time restoration to a time before replacement.
     * If there is a lock on the master or replication latency is long, failover does not work properly or takes a lot of time, so make sure that all transactions are finished and there is no replication latency.
-
-### Database File Encryption 
-
-* Files for database where user data is saved, as well as backup files, are encrypted.
-
-> [For Reference] Since encryption is performed in real time, performance may be degraded for database instances.
-
-#### Constraints 
-
-* Database file encryption cannot be enabled for the restoration or replication of instances, for which database file encryption is not enabled.
-* Database file encryption cannot be disabled for the restoration or replication of instances, for which database file encryption is enabled.
 
 ### DB Schema & DB User Management
 
@@ -288,8 +273,6 @@
 * Generated audit log file can be checked or downloaded from the Event & Log tab.
 * For detailed settings, please check the website below.
     * https://mariadb.com/kb/en/mariadb-audit-plugin-options-and-system-variables
-
-> [Caution] MySQL 5.7.15, 8.0.18, 8.0.23 version is not supported.
 
 ## Event
 
@@ -476,9 +459,9 @@ Notifications can be received by adding the monitoring settings to the performan
 
 ## Separating user permission
 
-* Project members can be granted separate permissions either as RDS for MySQL ADMIN / RDS for MySQL MEMBER.
-* RDS for MySQL ADMIN permission holders can use all available features as before.
-* RDS for MySQL MEMBER permission holders can use read-only feature.
+* Project members can be granted separate permissions either as RDS for MariaDB ADMIN / RDS for MariaDB MEMBER.
+* RDS for MariaDB ADMIN permission holders can use all available features as before.
+* RDS for MariaDB MEMBER permission holders can use read-only feature.
     * Cannot use any features aimed at instances or create, modify, or delete any instance.
     * Can use alarm-related features on the Notification tab.
 
