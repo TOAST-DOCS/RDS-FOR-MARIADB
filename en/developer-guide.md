@@ -1,9 +1,9 @@
-## Database > RDS for MySQL > Developer's Guide
+## Database > RDS for MariaDB > Developer's Guide
 
 ## Migration 
 
 * Data can be exported or imported to or from out of NHN Cloud RDS, by using mysqldump.
-* The mysqldump utility is provided by default along with mysql installation. 
+* The mysqldump utility is provided by default along with MariaDB installation. 
 
 ### Export by using mysqldump 
 
@@ -17,7 +17,7 @@
 mysqldump -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} > {local_path_and_file_name}
 ```
 
-#### Exporting in mysql db out of NHN Cloud RDS
+#### Exporting in MariaDB db out of NHN Cloud RDS
 ```
 mysqldump -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} | mysql -h{external_db_host} -u{external_db_id} -p{external_db_password} --port={external_db_port}
 ```
@@ -96,15 +96,15 @@ START SLAVE;
 
 * External database can be imported to NHN Cloud RDS by using replication. 
 * NHN Cloud RDS must have the same or later version than that of the external database.  
-* Connect to an external MySQL instance to import data. 
-* Use the command as below to back up data from the external MySQL instance. 
-* To import data from external MySQL instance (master)
+* Connect to an external MariaDB instance to import data. 
+* Use the command as below to back up data from the external MariaDB instance. 
+* To import data from external MariaDB instance (master)
 
 ```
 mysqldump -h{master_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --master-data=2 --routines --events --triggers --databases {database_name1, database_name2, ...} > {local_path_and_file_name}
 ```
 
-* To import data from external MySQL instance (slave) 
+* To import data from external MariaDB instance (slave) 
 
 ```
 mysqldump -h{slave_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --dump-slave=2 --routines --events --triggers --databases {database_name1, database_name2, ...} > {local_path_and_file_name}
@@ -134,122 +134,91 @@ replicate-ignore-db=rds_maintenance
 mysql -h{rds_master_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} < {local_path_and_file_name}
 ```
 
-* Create an account for replication from internal MySQL instance.  
+* Create an account for replication from internal MariaDB instance.  
 
 ```
-mysql> CREATE USER 'user_id_for_replication'@'{external_db_host}' IDENTIFIED BY '<password_forreplication_user>';
-mysql> GRANT REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'user_id_for_replication'@'{external_db_host}';
+MariaDB> CREATE USER 'user_id_for_replication'@'{external_db_host}' IDENTIFIED BY '<password_forreplication_user>';
+MariaDB> GRANT REPLICATION CLIENT, REPLICATION SLAVE ON *.* TO 'user_id_for_replication'@'{external_db_host}';
 ```
 
 * By using the account information for replication, and MASTER_LOG_FILE and MASTER_LOG_POS that were previously recorded, execute the query to NHN Cloud RDS like follows. 
 
 ```
-mysql> call mysql.tcrds_repl_changemaster ('rds_master_instance_floating_ip',rds_master_instance_port,'user_id_for_replication','password_forreplication_user','MASTER_LOG_FILE',MASTER_LOG_POS );
+MariaDB> call mysql.tcrds_repl_changemaster ('rds_master_instance_floating_ip',rds_master_instance_port,'user_id_for_replication','password_forreplication_user','MASTER_LOG_FILE',MASTER_LOG_POS );
 ```
 
 * To start replication, execute the following procedure. 
 
 ```
-mysql> call mysql.tcrds_repl_slave_start;
+MariaDB> call mysql.tcrds_repl_slave_start;
 ```
 
 * When original data of NHN Cloud RDS instance become same as the external database, close replication by using the command as below. 
 
 ```
-mysql> call mysql.tcrds_repl_init();
+MariaDB> call mysql.tcrds_repl_init();
 ```
 
 ## Backup and restoration using object storage
 
-* RDS for MySQL backup files can be exported to object storage, and DB instances can be restored using backup files in object storage.
-* RDS for MySQL uses Percona XtraBackup for backup and restoration, so the recommended XtraBackup version for each MySQL version must be used to use the backup files in object storage.
+* RDS for MariaDB backup files can be exported to object storage, and DB instances can be restored using backup files in object storage.
 
-| MySQL version | XtraBackup version |
-| --- | --- |
-| 5.6.33 | 2.4.20 |
-| 5.7.15 | 2.4.20 |
-| 5.7.19 | 2.4.20 |
-| 5.7.26 | 2.4.20 |
-| 8.0.18 | 8.0.12 |
-| 8.0.22 | 8.0.12 |
-
-* Refer to the Percona's website for detailed descriptions on installing XtraBackup
-    * https://www.percona.com/doc/percona-xtrabackup/2.4/index.html
-    * https://www.percona.com/doc/percona-xtrabackup/8.0/index.html
-
-> [Caution] In MySQL 5.7.33, restoring DB instances using the backup file of object storage is limited.
-> [Caution] It might not work properly if you use an XtraBackup version other than the ones recommended.
-> [Caution] When using DB file encryption feature, backup cannot be exported to object storage.
-> [Caution] The backup file of the object storage and the MySQL to restore must have the same version.
+> [Caution] The backup file of the object storage and the MariaDB to restore must have the same version.
 
 ### Export backup to object storage
 
-* You may export an RDS for MySQL backup to the NHN Cloud object storage
+* You may export an RDS for MariaDB backup to the NHN Cloud object storage
 * After choosing DB Instance on **Instance** tab of the web console, go to the **Additional Functions** menu and click the **Export Backup to Object Storage** for a manual backup. The backup file can be uploaded to the object storage designated by the user right away.
 * Moreover, choose the existing backup file on **Control Backup and Access** tab of the DB instance detail screen and click on the **Export Backup to Object Storage** to upload to the object storage designated by the user.
 * Backup files are uploaded onto the object storage designated by the user in the form of a multi-part object.
 
 ### Restore manually using backup files in object storage
 
-* You can restore MySQL manually using backup files in object storage.
-* Let's suppose that the MySQL for restoration and XtraBackup are installed.
+* You can restore MariaDB manually using backup files in object storage.
+* Let's suppose that the MariaDB for restoration and XtraBackup are installed.
 * Download the object storage file onto the server you wish to restore.
-* Stop the MySQL service.
-* Delete all files in the MySQL data storage path.
+* Stop the MariaDB service.
+* Delete all files in the MariaDB data storage path.
 
 ```
-rm -rf {MySQL data storage path}/*
+rm -rf {MariaDB data storage path}/*
 ```  
 
 * Decompress and restore the downloaded backup file.
-* XtraBackup 2.4.20 example
 
 ```
-cat {backup file storage path} | xbstream -x -C {MySQL data storage path}
-innobackupex --decompress {MySQL data storage path}
-innobackupex --defaults-file={my.cnf path} --apply-log {MySQL data storage path}
-```
-* XtraBackup 8.0.12 example
-
-```
-cat {backup file storage path} | xbstream -x -C {MySQL data storage path}
-xtrabackup --decompress --target-dir={MySQL data storage path}
-xtrabackup --prepare --target-dir={MySQL data storage path}
-xtrabackup --defaults-file={my.cnf path} --copy-back --target-dir={MySQL data storage path}
+cat {backup file storage path} | xbstream -x -C {MariaDB data storage path}
+mariabackup --decompress {MariaDB data storage path}
+mariabackup --defaults-file={my.cnf 경로} --apply-log {MariaDB data storage path}
 ```
 
 * Delete unnecessary files after decompression.
 
 ```
-find {MySQL data storage path} -name "*.qp" -print0 | xargs -0 rm
+find {MariaDB data storage path} -name "*.qp" -print0 | xargs -0 rm
 ```
 
-* Start MySQL service.
+* Start MariaDB service.
 
-### Use RDS for MySQL backup file of object storage to create DB instance
+### Use RDS for MariaDB backup file of object storage to create DB instance
 
-* You can use RDS for MySQL backup file of object storage in order to restore to RDS for MySQL of the same region and different project.
+* You can use RDS for MariaDB backup file of object storage in order to restore to RDS for MariaDB of the same region and different project.
 * Export the backup file to object storage by referring to [Export backup to object storage](./developer-guide/#_5 ). 
 * Access the web console of the project to restore, and click the Restore from Backup in Object Storage button in the Instance tab.
 * Enter the information of the object storage where the backup file is stored and the DB instance, and click the **Create** button.
 
-### Create a DB instance using external MySQL backup file of object storage
+### Create a DB instance using external MariaDB backup file of object storage
 
-* You can use a normal MySQL backup file to restore to the DB instance of RDS for MySQL.
+* You can use a normal MariaDB backup file to restore to the DB instance of RDS for MariaDB.
 
-> [Caution] If the setting value of innodb_data_file_path is not ibdata1:12M:autoextend, you cannot restore to the DB instance of RDS for MySQL.
+> [Caution] If the setting value of innodb_data_file_path is not ibdata1:12M:autoextend, you cannot restore to the DB instance of RDS for MariaDB.
 
-* In a server with MySQL installed, perform backup using the following command.
-* XtraBackup 2.4.20 example
-
-```
-innobackupex --defaults-file={my.cnf path} --user {username} --password '{password}' --socket {MySQL socket file path} --compress --compress-threads=1 --stream=xbstream {directory to create a backup file} 2>>{backup log file path} > {backup file path}
-```
-* XtraBackup 8.0.12 example
+* In a server with MariaDB installed, perform backup using the following command.
 
 ```
-xtrabackup --defaults-file={my.cnf path} --user={username} --password='{password}' --socket={MySQL socket file path} --compress --compress-threads=1 --stream=xbstream --backup {directory to create a backup file} 2>>{backup log file path} > {backup file path}
+mariabackup --defaults-file={my.cnf path} --user {username} --password '{password}' --socket {MariaDB socket file path} --compress --compress-threads=1 --stream=xbstream {directory to create a backup file} 2>>{backup log file path} > {backup file path}
 ```
+
 * Make sure that `completed OK!` exists at the last line of the backup log file.
     * If completed OK! does not exist, it indicates that backup was not properly finished, so proceed with backup again by referring to the error message in the log file.
 * Update completed backup file to object storage.
@@ -261,7 +230,7 @@ xtrabackup --defaults-file={my.cnf path} --user={username} --password='{password
 
 ## Procedure
 
-* RDS for MySQL provides its own procedures for user convenience that perform several features that are otherwise limited on user accounts.
+* RDS for MariaDB provides its own procedures for user convenience that perform several features that are otherwise limited on user accounts.
 
 ### tcrds_active_process
 
@@ -269,7 +238,7 @@ xtrabackup --defaults-file={my.cnf path} --user={username} --password='{password
 * Data output is displayed in order of longest performance time to shortest, and the query value (SQL) is displayed up to hundred digits.
 
 ```
-mysql> CALL mysql.tcrds_active_process();
+MariaDB> CALL mysql.tcrds_active_process();
 ```
 
 ### tcrds_process_kill
@@ -278,7 +247,7 @@ mysql> CALL mysql.tcrds_active_process();
 * Process ID to end can be checked in information_schema.processlist, and the process information can be checked using the tcrds_active_process and tcrds_current_lock procedures.
 
 ```
-mysql> CALL mysql.tcrds_process_kill(processlist_id );
+MariaDB> CALL mysql.tcrds_process_kill(processlist_id );
 ```
 
 ### tcrds_current_lock
@@ -289,22 +258,22 @@ mysql> CALL mysql.tcrds_process_kill(processlist_id );
 * To force shutdown a process that occupies a lock, check the (B)PROCESS column and perform call tcrds_process_kill(process_id).
 
 ```
-mysql> CALL mysql.tcrds_current_lock();
+MariaDB> CALL mysql.tcrds_current_lock();
 ```
 
 ### tcrds_repl_changemaster
 
-* Used to bring external MySQL DB to NHN Cloud RDS through replication.
+* Used to bring external MariaDB DB to NHN Cloud RDS through replication.
 * Replication configuration of NHN Cloud RDS is done with **Create replication** of the console.
 
 ```
-mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_port, user_id_for_replication, password_for_replication_user, MASTER_LOG_FILE, MASTER_LOG_POS);
+MariaDB> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_port, user_id_for_replication, password_for_replication_user, MASTER_LOG_FILE, MASTER_LOG_POS);
 ```
 
 * Explaining parameter
     * master_instance_ip : IP of replication target (Master) server
-    * master_instance_port : MySQL Port of replication target (Master) server
-    * user_id_for_replication : Account for replication to access the MySQL of replication target (Master) server
+    * master_instance_port : MariaDB Port of replication target (Master) server
+    * user_id_for_replication : Account for replication to access the MariaDB of replication target (Master) server
     * password_for_replication_user : Password of account for replication
     * MASTER_LOG_FILE : Binary log file name of replication target (Master)
     * MASTER_LOG_POS : Binary log file position of replication target (Master)
@@ -313,30 +282,30 @@ mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4);
 ```
 
-> [Caution] The account for replication must be created in MySQL of the replication target (Master).
+> [Caution] The account for replication must be created in MariaDB of the replication target (Master).
 
 ### tcrds_repl_init
 
-* Reset MySQL replication information.
+* Reset MariaDB replication information.
 
 ```
-mysql> CALL mysql.tcrds_repl_init();
+MariaDB> CALL mysql.tcrds_repl_init();
 ```
 
 ### tcrds_repl_slave_stop
 
-* Stop MySQL replication.
+* Stop MariaDB replication.
 
 ```
-mysql> CALL mysql.tcrds_repl_slave_stop();
+MariaDB> CALL mysql.tcrds_repl_slave_stop();
 ```
 
 ### tcrds_repl_slave_start
 
-* Start MySQL replication.
+* Start MariaDB replication.
 
 ```
-mysql> CALL mysql.tcrds_repl_slave_start();
+MariaDB> CALL mysql.tcrds_repl_slave_start();
 ```
 
 ### tcrds_repl_skip_repl_error
@@ -345,15 +314,5 @@ mysql> CALL mysql.tcrds_repl_slave_start();
 * MySQL error code 1062: 'Duplicate entry ? for key ?'
 
 ```
-mysql> CALL mysql. tcrds_repl_skip_repl_error();
-```
-
-### tcrds_repl_next_changemaster
-
-* Changes replication information to read the next binary log of master.
-* Resolve replication error by performing tcrds_repl_next_changemaster procedure when replication error occurs as shown below.
-    * e.g. MySQL error code 1236 (ER_MASTER_FATAL_ERROR_READING_BINLOG): Got fatal error from master when reading data from binary log
-
-```
-mysql> CALL mysql.tcrds_repl_next_changemaster();
+MariaDB> CALL mysql. tcrds_repl_skip_repl_error();
 ```
