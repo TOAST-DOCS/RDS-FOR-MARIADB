@@ -1,1 +1,2 @@
-# RDS-FOR-MARIADB
+# RDS for MariaDB
+RDS for MariaDB
