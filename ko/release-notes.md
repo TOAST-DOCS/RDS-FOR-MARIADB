@@ -4,7 +4,7 @@
 
 #### 기능 추가
 
-* DB Configuration에 변수 사용 기능 도입
+* **DB Configuration**에 변수 사용 기능 도입
 
 #### 버그 수정
 
