@@ -1,5 +1,17 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### April 12, 2022
+
+#### Feature Updates
+
+* Improved so that, when changing a read replica or normal instance to a high availability instance, replication is configured without additional backup if there is an existing backup available
+
+#### Bug Fixes
+
+* Fixed an issue where, if instance stop and instance volume scaling are performed at the same time, the instance volume scaling operation does not end indefinitely
+* Fixed an issue where an error occurs while restarting when the remaining space of the data volume is less than 1%
+* Fixed an issue where an event of backup failure is logged intermittently even after successful backup
+
 ### March 15, 2022
 
 #### Added Features
