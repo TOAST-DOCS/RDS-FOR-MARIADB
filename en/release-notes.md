@@ -1,10 +1,30 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### May 10, 2022
+
+#### Feature Updates
+
+* Changed the error log storage location to the data volume
+* Made changes so that error logs are rotated up to 10 logs with a size of 100 MB
+* Made modifications so that, when a forced restart is executed, the web console cannot be operated until it can be used again
+* Made modifications so that, after failover starts, the target instance cannot be manipulated in the web console
+* Improved usability so that you can view the innodb status in the processlist
+* Made improvements so that you can move to other pages by numbers in the processlist
+* Made improvements so that you can zoom in the chart in the processlist to view only the corresponding section
+* Made improvements so that you can search by keywords in the processlist
+* Made improvements so that you can download the results searched in the processlist in CSV format
+
+#### Bug Fixes
+
+* Fixed an issue where, when performing point-in-time restoration with a backup of a read replica, a wrong restoration available time could be selected
+* Fixed an issue where the monitoring graph was not visible in Safari
+* Fixed an issue where, after changing the parameters of the master instance, changing the parameters of a read replica failed
+
 ### April 12, 2022
 
 #### Feature Updates
 
-* Improved so that, when changing a read replica or normal instance to a high availability instance, replication is configured without additional backup if there is an existing backup available
+* Made improvements so that, when changing a read replica or normal instance to a high availability instance, replication is configured without additional backup if there is an existing backup available
 
 #### Bug Fixes
 
