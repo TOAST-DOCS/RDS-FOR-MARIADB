@@ -1,6 +1,6 @@
 ## Database > RDS for MariaDB > Developer's Guide
 
-## Migration 
+## Migration
 
 * Data can be exported or imported to or from out of NHN Cloud RDS, by using mysqldump.
 * The mysqldump utility is provided by default along with MariaDB installation. 
@@ -32,6 +32,17 @@ mysqldump -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port
 ```
 mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --port={external_db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} | mysql -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} 
 ```
+
+#### If an error `ERROR 1227` occurs while importing data
+
+* The `ERROR 1227` error occurs when a stored object (trigger, view, function, or event) in the mysqldump file has a DEFINER definition.
+* To solve this issue, delete the `DEFINER` part from the mysqldump file before proceeding.
+
+#### If an error `ERROR 1418` occurs while importing data
+
+* The `ERROR 1418` error occurs when the function declaration in the mysqldump file does not include NO SQL, READS SQL DATA, and DETERMINISTIC, and binary logging is enabled.
+    * For detailed explanation, refer to the [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MySQL document.
+* To solve this issue, the value of the `log_bin_trust_function_creators` parameter of the DB instance to apply the mysqldump file must be changed to `1`.
 
 ### Export by Replication 
 
