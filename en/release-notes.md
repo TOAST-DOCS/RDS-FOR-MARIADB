@@ -1,5 +1,17 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### June 14, 2022
+
+#### Feature Updates
+
+* Made improvements so that an event is logged when restart fails due to replication delay
+* Changed the access information domain from cloud.toast.com to nhncloudservice.com
+
+#### Bug Fixes
+
+* Fixed an issue where high availability configuration was not possible when the validate password plugin is used
+* Fixed an issue where, even though the type change of the high availability instance has failed, the type of the candidate master is displayed as the type after the change
+
 ### May 10, 2022
 
 #### Feature Updates
