@@ -21,29 +21,29 @@
     * Storage Type: Specify volume type of DB instance.
         * Either HDD or SSD can be selected.
     * Storage: Enter volume size of DB instance.
-        * It can be anywhere between 20 GB and 2 TB.
+        * It can be set to a value between 20 GB and 2 TB.
     * Availability Zone: Select an area where DB instance is to be created.
-    * High Availability: To create database instances, the candidate master is created at a different availability zone from the master.
+    * High Availability: When creating a DB instance, create a candidate master in a different availability zone from the master.
     * Ping Interval: Sets the interval for checking the status of the master instance when using the high availability feature. An error occurs after 4 failed attempts.
-        * It can be anywhere between 1 and 600 seconds.
-    * Default Alarm: Register alarms for pre-defined events of a database instance.
+        * It can be set to a value between 1 and 600 seconds.
+    * Default Alarm: Register alarms for pre-defined events of a DB instance.
         * To enable default alarm, a recipient group must be selected.
 
-> [Note] Unless a selected VPC subnet of Compute & Network is connected with internet gateway, floating IP is not available.  
+> [Note] Unless a selected VPC subnet of Compute & Network is connected with internet gateway, floating IP is not available.
 > [Note] VPC subnet, once selected, cannot be changed.
 > [Note] The candidate master instance is created at a different availability zone from the master, and it does not show on the list.
-> [Note] Instances on the list are arranged in the order of creation, but the order may change after measures are taken against failure, since the candidate master is created when the high availability option is enabled for the master.
+> [Note] The instance list is sorted in the order of creation. The order may change after failover, since the candidate master is created when the high availability option is enabled for the master.
 > [Note] With default alarm setting, alarms for the instance are automatically registered, in the name of "{instance name}-default". Registered alarms can be changed or deleted, and applied instances can also be changed.
 
 ![backup_and_access_0_en](https://static.toastoven.net/prod_rds/22.03.15/backup_and_access_en.png)
 
 * Set auto backup and access control, and click **Next**.
 * Query Latency: FLUSH TABLES WITH READ LOCK latency can be set when performing a backup.
-    * It can be anywhere between 0 and 21,600.
+    * It can be set to a value between 0 and 21,600.
 * Backup Retention Period: Select more than a day, to allow auto backups.
     * Select **N/A**, and auto backup is not enabled.
-* Backup Start Time: Auto backup starts at some point between start time and duration.
-    * Duration refers to time when backup starts.
+* Backup Start Time: Auto backup starts at some point between the backup start time and duration.
+    * Duration refers to the time when backup starts.
     * It does not mean that backup ends within the duration.
 * Use Table Locking: Set whether to lock the table with the FLUSH TABLES WITH READ LOCK statement when performing backup.
 * Backup Retry Count: Set the number of retries to make when backup fails.
@@ -78,7 +78,7 @@
 
 * Select a DB instance which is created, to find its detail setting. Instances that are not associated with floating IP are not allowed for external access.
 * Go to [Detail Settings] and [Access Information] of an instance to check accessible domain information.
-* Database instances of which floating IP is not ‘Enabled’ cannot be accessed from outside.
+* DB instances of which floating IP is not ‘Enabled’ cannot be accessed from outside.
 
 ![instance_detail_0_en](https://static.toastoven.net/prod_rds/21.09.14/instance_detail_0_en.png)
 
@@ -92,7 +92,7 @@
 
 ![rds_06_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_06_20210112_en.png)
 
-* Below is an example of access to MySQL Workbench.
+* Below is an example of connecting to MySQL Workbench.
 
 #### Constraints
 
@@ -103,15 +103,12 @@
 
 ### High Availability
 
-* Measures can be taken against failure which occurs when a candidate master is created at a different availability zone.
-* To restart a high availability instance, select [Restart by Taking Measures against Failure] to replace the master with the candidate master.
-    * If the master is replaced, all binary log files are deleted and it becomes impossible to perform point-in-time restoration to a time before replacement.
-    * If there is a lock on the master or replication latency is long, failover does not work properly or takes a lot of time, so make sure that all transactions are finished and there is no replication latency.
-* For those instances using high availability, access information does not change with partial changes in option, but the master and the candidate master instances may be interchanged.
-* With a failover for high availability instance, the new master instance does not inherit the backup of the existing master instance.
+* By creating a candidate master in a different availability zone, failover can be performed in the event of failure.
+* For instances using high availability, access information does not change when some options are changed, but the master and the candidate master instance may be switched.
+* When a failure occurs and failover is performed on a high availability instance, the newly changed master instance does not inherit the backup of the existing master instance.
 
-> [Note] For high availability instances, use MariaDB query statement to force replication of other instances or master of external MariaDB, and then high availability and some features do not operate.    
-> [Note] When the storage usage of the DB instance becomes full, the high availability monitoring process detects it as a failure and performs a failover, so caution is required.
+> [Note] When using high availability instances, if you use MariaDB query statement to perform force replication from other instances or master of external MariaDB, high availability and some features do not work properly.
+> [Note] When the storage usage of the DB instance becomes full, the high availability monitoring process detects it as a failure and performs failover, so caution is required.
 
 #### High Availability Pause and Resume
 
@@ -122,18 +119,61 @@
 
 #### Constraints
 
-* High availability instances are ensured for the initial one-time measure against failure. If a measure is taken against failure, the candidate master instance is changed into a general master for which high availability is not enabled.
+* For high availability instances, initial one-time failover is guaranteed. If failover occurs in the event of a failure, the candidate master instance is changed to a general master for which high availability is not enabled.
 * The newly changed master instance inherits a domain allowed to access the existing master instance.
 * The high availability option can also be newly specified for service.
-* For the existing master instance in which failure measure was taken, access information is changed and the status is converted to ‘Suspended’.
-* For the existing master instance in which failure measure was taken, restarting may be attempted by using Restart Instances. However, restarting may not work or properly operate due to reasons, including data loss out of failure.
+* For the existing master instance on which failover was performed, access information is changed and the status is converted to ‘Suspended’.
+* For the existing master instance on which failover was performed, restarting may be attempted by using Restart Instances. However, restarting may not work or properly operate due to reasons, including data loss out of failure.
 * The Read Only Slave instance is not provided with the high availability feature.
 * While restarting or changing options are underway for instances with high availability, the Read Only Slave is not operational.
-* The high availability feature is based on each domain. Therefore, if a user instance for Compute cannot access a dns serer, the instance cannot access RDS instances via domain, which may cause trouble in accessing for a failover.
+* The high availability feature is based on each domain. Therefore, if a user instance for Compute cannot access a dns serer, the instance cannot access RDS instances via domain, which may cause trouble in accessing for failover.
 
 ### Flavors
 
 * DB instances can be created in some of specifications provided by NHN Cloud Compute & Network.
+
+### Restart
+
+* When you perform DB instance restart, MariaDB installed on the DB instance is restarted.
+* Restarting MariaDB may take a long time depending on the status of the MariaDB engine, and RDS for MariaDB waits until MariaDB is normally stopped and started without a specific time limit.
+* When MariaDB is restarted, `Stop Instance` and `Start Instance` events are generated.
+* For read replicas, replication is suspended during restart, and replication resumes automatically when restart is complete.
+
+#### Restart of High Availability DB Instances
+
+* For high availability DB instances, two options that are not provided for normal instances are provided.
+
+![restart_ha_instance_en](https://static.toastoven.net/prod_rds/21.11.09/restart_ha_instance_en.png)
+
+* ❶ If you select the [Restart Using Failover] option, you can proceed with the restart with the minimal downtime.
+    * Since the master instance is replaced and all binary logs are deleted, it is impossible to perform point-in-time restoration to the time before the restart.
+    * If the master instance has a lock or the replication latency is long, failover does not occur or takes a lot of time, so make sure that all transactions are terminated and there is no replication latency.
+* ❶ If you do not select the [Restart Using Failover] option, the high availability feature is paused, and restart is performed sequentially in the following order: master instance -> candidate master instance.
+    * After the restart is complete, the high availability feature will work again.
+* ❷ If you select the [Proceed with Current Point-In-Time Backup] option, the backup starts immediately after the restart is completed.
+    * If you select the [Restart Using Failover] option, it is not possible to restore to the time before the restart, so it is recommended to select this option together if possible.
+
+### Force Restart
+
+* If you perform a force restart of DB instance, the DB instance itself is restarted.
+* High availability instances do not support the force restart feature.
+* First, issue the SIGTERM command to MariaDB and wait for 10 minutes for normal shutdown.
+* If a normal shutdown occurs within 10 minutes, the instance's OS is restarted afterwards.
+* If a normal shutdown does not occur within 10 minutes, the OS is forcibly restarted.
+    * If the OS is forcibly restarted, some transactions in operation may be lost, and the data volume may become corrupted and unrecoverable.
+* The state of the instance may not return to normal after a forced restart. If this situation occurs, please contact the Customer Center.
+
+> [Caution] Because there is a possibility of data loss or data volume corruption, this feature should not be used except in urgent and unavoidable circumstances.
+
+### Stop
+
+* For a DB instance that is not used for a while but needs to be used again in the near future, you can stop the function of the DB instance.
+* When you request a stop, the DB instance is immediately terminated. When the stop is completed, the DB instance status is changed to `Terminated`.
+    * In addition, for high availability instances, the old master is stopped when failover occurs.
+* Instances in a stopped state will be charged at a discounted rate for 90 days from the moment they are stopped, and will be charged at the normal rate after 90 days have passed.
+* Be sure to delete unused instances to avoid unnecessary charges.
+
+> [Note] High availability instances, master instances with read replicas, and read replicas cannot be stopped.
 
 ### Backups
 
@@ -159,6 +199,8 @@
 * Auto backups are deleted along with the original instances.
 * When backup fails, if Backup Retry Count is set to a value of 1 or higher, attempts are made as many times as the specified value.
 
+> [Note] If a DDL query is executed during a backup, the backup will fail.
+
 #### Manual Backups
 
 * Manual backups are always available, except auto backups.
@@ -167,12 +209,45 @@
 ### Restoration
 
 * DB instances can be restored at a specific point of time, by using retained backups.
-* For a restoration, a new DB instance is created, without changing original DB instances.
-* It takes more time if the location to save backups is object storage.
-* Cannot restore by using DB instances that are currently under backup.
+* For a restoration, a new DB instance is created, without changing the original DB instance.
+* If the storage size of the DB instance to restore is set tp a value smaller than the storage size of the original DB instance, the restoration may fail.
 
 > [Note] While restoration is underway, object storage volume may be incurred as much as the size of a binary log file.
 > [Note] Restoring to a point in time is not available when there is no binary log file.
+
+#### Restore Snapshot
+
+* You can restore to the point of backup using a manual backup or auto backup.
+* After selecting the DB instance where the backup to restore was performed, click **Additional Features > Restore**.
+
+![restore_menu_en](https://static.toastoven.net/prod_rds/22.03.15/restore_menu_en.png)
+
+* Enter the information of the DB instance to restore.
+
+![restore_by_snapshot_en](https://static.toastoven.net/prod_rds/22.03.15/restore_by_snapshot_en.png)
+
+* Select ❶ [Restore Snapshot].
+* ❷ Select manual backup or auto backup to restore.
+
+#### Restore Point-In-Time
+
+* You can restore to a specific point in time using a manual or auto backup and a binary log file.
+* The point of time to restore can be specified using the timestamp to restore or the position of the binary log file.
+
+![restore_by_time_en](https://static.toastoven.net/prod_rds/22.03.15/restore_by_time_en.png)
+
+* Select ❶ [Restore Point-In-Time (by timestamp)].
+* ❷ Select the timestamp to restore.
+
+![restore_by_position_en](https://static.toastoven.net/prod_rds/22.03.15/restore_by_position_en.png)
+
+* Select ❶ [Restore Point-In-Time (by binlog)].
+* ❷ Select a backup file to use for restoration.
+* ❸ Select the last binary log file to be restored.
+* ❹ Enter the position information of the last binary log file to be restored.
+    * Changes up to immediately before the entered position are restored. (The entered position is not restored.)
+    * You can view the position information of the binary log file using the mysqlbinlog utility.
+    * For more information on how to use the utility, see [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html).
 
 ### Replication
 
@@ -182,8 +257,8 @@
 ![additional_function_0_en](https://static.toastoven.net/prod_rds/21.09.14/additional_function_0_en.png)
 
 * Fill out settings to create a replica, and click **Replicate**, and the replica is created.
-* It is recommended to create a replica whose specification is the same as or higher than that of the original database instance, because using a lower specification may result in replication latency.
-* When a replica is created, the I/O performance of the original database instance may be lower than usual.
+* It is recommended to create a replica whose specification is the same as or higher than that of the original DB instance, because using a lower specification may result in replication latency.
+* When a replica is created, the I/O performance of the original DB instance may be lower than usual.
 * Replica creation time may increase in proportion to the size of the original DB instance.
 > [Note] While replication is underway, object storage volume may be incurred as much as the size of a binary log file.
 > [Note] When replication is completed, the Read Only Slave rule is added to the access rule of the master instance.
@@ -202,7 +277,7 @@
 
 ### Secure Capacity
 
-*  Disk capacity can be secured by removing resources of DB instance.
+* Disk capacity can be secured by removing resources of DB instance.
 
 #### Deleting Binary Logs
 
@@ -537,17 +612,17 @@ The chart shows the count of items collected over time, and you can check the de
 * ❷ When searching with chart data selected, the search is performed only in the selected point in time.
 * ❸ Click **Save CSV** to save all data in the selected point in time.
 
-## Appendix 1. Guide for Database Instance Migration for Hypervisor Maintenance
+## Appendix 1. Guide for DB instance Migration for Hypervisor Maintenance
 
 NHN Cloud updates hypervisor software on a regular basis to enhance security and stability of its infrastructure services.
 Instances that are running on a target hypervisor for maintenance must be migrated to a hypervisor which is completed with maintenance.
 
-Migration of database instance can start on a NHN Cloud console.
-Depending on database configuration, select a particular instance to migrate it as well, if its relevant database instance (e.g. slave instance) is also the target of maintenance.
+Migration of DB instance can start on a NHN Cloud console.
+Depending on database configuration, select a particular instance to migrate it as well, if its relevant DB instance (e.g. slave instance) is also the target of maintenance.
 Follow the guide as below, to use the migration service on console.
-Go to the project in which a database instance for maintenance is located.
+Go to the project in which a DB instance for maintenance is located.
 
-### 1. Check database instances which are the maintenance targets.
+### 1. Check DB instances which are the maintenance targets.
 
 Those with the migration button next to name are the maintenance targets.
 
@@ -557,20 +632,20 @@ Put a cursor on the migration button, and you can find its maintenance schedule.
 
 ![rds_planed_migration_1](https://static.toastoven.net/prod_rds/planned_migration_alarm/image1_en.png)
 
-### 2. Make sure to close any application programs that are running on the database instance.
+### 2. Make sure you close any application programs that are running on the DB instance.
 
 It is recommended to take appropriate measures so as impact on relevant services can be limited.
 Nevertheless, if impact on service is inevitable, contact NHN Cloud Customer Center to be guided further.
 
-### 3. Select a database instance for maintenance, click migration, and click OK on window asking of migration.
+### 3. Select a DB instance for maintenance, click migration, and click OK on window asking of migration.
 
 ![rds_planed_migration_2](https://static.toastoven.net/prod_rds/planned_migration_alarm/image2_en.png)
 
 ### 4. Wait until database migration is over.
 
-If instance status remains the same, try ‘Refresh’.
+If instance status remains the same, try 'Refresh'.
 
 ![rds_planed_migration_3](https://static.toastoven.net/prod_rds/planned_migration_alarm/image3_en.png)
 
 While migration is underway, operation is not permitted.
-An abnormal closure of database instance migration shall be automatically reported to administrator, and it such case, you’ll be contacted by NHN Cloud.
+An abnormal closure of DB instance migration shall be automatically reported to administrator, and it such case, you'll be contacted by NHN Cloud.
