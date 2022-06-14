@@ -90,11 +90,11 @@ DB Configuration画面で設定値を変更できます。
 2. Floating IP項目を **使用する**に修正します。
 3. **確認** ボタンをクリックすると、修正事項が反映されます。
 
-![instance_detail_0_jp](https://static.toastoven.net/prod_rds/21.09.14/instance_detail_0_jp.png)
+![instance_detail_0_jp](https://static.toastoven.net/prod_rds/22.06.14/instance_detail_0_jp.png)
 
 * 設定後、Floating IPが作成され、外部からアクセスできることを確認できます。
 
-![instance_detail_1_jp](https://static.toastoven.net/prod_rds/21.09.14/instance_detail_1_jp.png)
+![instance_detail_1_jp](https://static.toastoven.net/prod_rds/22.06.14/instance_detail_1_jp.png)
 
 * 次はMySQL Workbenchの接続例です。
 
@@ -211,7 +211,7 @@ Masterにlockがかかっていたり複製ディレイが長い場合、フェ�
 
 #### バイナリログ削除
 
-![rds_08_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_08_20210112_jp.png)
+![rds_08_20220614](https://static.toastoven.net/prod_rds/22.06.14/rds_08_20220614_jp.png)
 
 * バイナリログファイルを削除してディスクスペースを確保します。
 
@@ -222,7 +222,7 @@ Masterにlockがかかっていたり複製ディレイが長い場合、フェ�
 
 ### ストレージ拡張
 
-![rds_09_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_09_20210112_jp.png)
+![rds_09_20220614](https://static.toastoven.net/prod_rds/22.06.14/rds_09_20220614_jp.png)
 
 * DBインスタンスのストレージサイズを拡張します。
 * Read Only Slaveが存在する場合、Masterと同じストレージサイズに拡張されます。
