@@ -15,6 +15,7 @@
 * Fixed an issue where DB instances in a `connection failed1` status are displayed as `normal` intermittently
 * Fixed an issue where, when creating a read replica, backup execution is left in event logs even if the execution is not performed
 * Fixed an issue where volume scaling fails intermittently
+
 ### June 14, 2022
 
 #### Feature Updates
