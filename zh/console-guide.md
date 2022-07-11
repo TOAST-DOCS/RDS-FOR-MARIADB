@@ -340,62 +340,108 @@ The event subscription status can be checked..
 
 ## Server Dashboard
 
-![server_dashboard_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_0_zh.png)
+![server_dashboard_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_1_en.png)
 
 Various performance indicators can be checked in charts.
 
-* ❶ * Search by instance name or IP address.
-* ❷ Servers that meet the criteria are displayed. The color of the icon in the upper right corner changes depending on the server status.
+* ❶ Search by the instance name or IP address.
+* ❷ Servers that meet the criteria are displayed. The color of the icon on the right changes depending on the server status.
     * Green: Normal
     * Red: Error
-    * Gray: Server deleted
+    * Gray: Deleted server
 * ❸ Select the layout.
 * ❹ Modify or delete the layout.
-* ❺ Popup that **generates the layout** is displayed.
-* ❻ Add chart in layout.
-* ❼ Chart is updated after setting the search period to the current time.
-* ❽ The search period can be modified.
-* ❾ The chart is displayed.
-
-### Add Chart
-
-![server_dashboard_chart_add_1_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_1_zh.png)
-
-* ❶ First, select the desired layout to add a chart.
-* ❷ Click the **Add Chart** button and a popup is displayed to **add the chart** as shown below.
-
-![server_dashboard_chart_add_2_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_2_zh.png)
-
-* ❶ The chart to be added is displayed.
-* ❷ Select the desired chart to add.
-
-### Modify Chart
-
-![server_dashboard_1_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_1_zh.png)
-
-* ❶ *Move the chart by dragging the top area of the chart with the mouse.
-* ❷ The chart can be deleted.
-* ❸ Change the chart size by dragging the lower right corner of the chart with the mouse.
+* ❺ The **Create Layout** window is displayed.
+* ❻ Add a chart to the layout.
+* ❼ Add a group to compare multiple servers to the layout.
+    * Group charts are unified as line charts for data comparison between servers.
+    * Make sure you add group charts separately because they do not share the existing chart information previously saved.
+* ❽ The chart is updated after setting the search period to the current time.
+* ❾ The search period can be modified.
+* ➓ The chart is displayed.
 
 ### Add Layout
 
-![server_dashboard_layout_create_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_create_0_zh.png)
+![server_dashboard_layout_create_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_create_1_en.png)
 
 * ❶ Click the **Create Layout** button.
 * ❷ Enter the layout name.
 
 ### Modify and Delete Layout
 
-![server_dashboard_layout_modify_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_0_zh.png)
+![server_dashboard_layout_modify_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_1_en.png)
 
 * ❶ Click the **Manage** button.
 * ❷ Changes to the edit screen where the layout can be modified.
-* ❸ The layout can be deleted
+* ❸ The layout can be deleted.
 
-![server_dashboard_layout_modify_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_1_zh.png)
+![server_dashboard_layout_modify_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_2_en.png)
 
 * ❶ Click the **OK** button to save the modifications.
 * ❷ Click the **Cancel** button to cancel the modifications.
+
+### Add Chart
+
+![server_dashboard_chart_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_1_en.png)
+
+* ❶ First, select the desired layout to add a chart.
+* ❷ Click the **Add Chart** button and a popup is displayed to **add the chart** as shown below.
+
+![server_dashboard_chart_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_2_en.png)
+
+* ❶ The chart to be added is displayed.
+* ❷ Select the desired chart to add.
+
+### Modify Chart
+
+![server_dashboard_1_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_1_en.png)
+
+* ❶ Move the chart by dragging the top area of the chart with the mouse.
+* ❷ The chart can be deleted.
+* ❸ Change the chart size by dragging the lower right corner of the chart with the mouse.
+
+### Add Group
+
+![server_dashboard_chart_group_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_1_en.png)
+
+* ❶ First, select the desired layout to add a group.
+* ❷ Click the **Add Group** button and a popup is displayed to **add the group** as shown below.
+
+![server_dashboard_chart_group_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_2_en.png)
+
+* ❶ Enter the group name.
+* ❷ Select the instance to be viewed on the chart.
+
+### Modify and Delete Group
+
+![server_dashboard_chart_group_modify_delete_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_1_en.png)
+
+* ❶ Click **View More** of the group to modify or delete, a drop-down menu is displayed.
+* ❷ Click **Edit**, the**Modify Group** window is displayed.
+* ❸ Click **Delete** to delete a group.
+
+![server_dashboard_chart_group_modify_delete_2_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_2_en.png)
+
+* ❶ After modifications, click the OK button.
+
+### Add Group Chart
+
+![server_dashboard_chart_group_add_chart_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_chart_1_en.png)
+
+* ❶ Add multiple charts by selecting them with the checkbox.
+* ❷ Preview the chart you want to add by clicking the text area.
+
+### Change Group Chart Line Color
+
+![server_dashboard_chart_group_modify_series_color_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_series_color_1_en.png)
+
+* ❶ Click the server whose color you want to change from the list, the color change window is displayed.
+* ❷ Change the color by clicking the color you want in the color palette at the top.
+    * Default colors are specified in the order of the color palette.
+* ❸ Change the color by manually entering the color code.
+    * 3-digit or 6-digit color codes are supported for manual input.
+    * Example) #000 or #000000
+* ❹ Change the color by selecting the color you want from the color picker.
 
 ## User Group
 
@@ -555,7 +601,8 @@ DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형�
 * ❷ 차트 데이터가 선택된 상태에서 검색시 선택된 시점 내에서만 검색합니다.
 * ❸ **CSV 저장** 버튼을 클릭하면 선택된 시점 내 전체 데이터를 저장합니다.
 
-## Appendix 1. Guide for Database Instance Migration for Hypervisor Maintenance
+## Appendix
+### Appendix 1. Guide for Database Instance Migration for Hypervisor Maintenance
 
 NHN Cloud updates hypervisor software on a regualr basis to enhance security and stability of its infrastructure services. Instances that are running on a target hypervisor for maintenance must be migrated to a hypervisor which is completed with maintenance.
 
@@ -564,7 +611,7 @@ Depending on database configuration, select a particular instance to migrate it 
 Follow the guide as below, to use the migration service on console.
 Go to the project in which a database instance for maintenance is located.
 
-### 1. Check database instances which are the maintenance targets.
+#### 1. Check database instances which are the maintenance targets.
 
 Those with the migration button next to name are the maintenance targets.
 
@@ -574,16 +621,16 @@ Put a cursor on the migration button, and you can find its maintenance schedule.
 
 ![rds_planed_migration_1](https://static.toastoven.net/prod_rds/planned_migration_alarm/image1_zh.png)
 
-### 2. Make sure to close any application programs that are running on the database instance.
+#### 2. Make sure to close any application programs that are running on the database instance.
 
 It is recommended to take appropriate measures so as impact on relevant services can be limited.
 Nevertheless, if impact on service is inevitable, contact NHN Cloud Customer Center to be guided further.
 
-### 3. Select a database instance for maintenance, click migration, and click OK on window asking of migration.
+#### 3. Select a database instance for maintenance, click migration, and click OK on window asking of migration.
 
 ![rds_planed_migration_2](https://static.toastoven.net/prod_rds/planned_migration_alarm/image2_zh.png)
 
-### 4. Wait until database migration is over.
+#### 4. Wait until database migration is over.
 
 If instance status remains the same, try ‘Refresh’.
 
@@ -591,3 +638,24 @@ If instance status remains the same, try ‘Refresh’.
 
 While migration is underway, operation is not permitted.
 An abnormal closure of database instance migration shall be automatically reported to administrator, and it such case, you’ll be contacted by NHN Cloud.
+
+### 부록2. RDS를 이용하여 Federated Storage Engine 사용 시 구성 가이드
+
+Federated Storage Engine을 사용하는 경우 다음을 고려해야 합니다.
+
+#### 로컬 노드로써 RDS를 이용하는 구성의 경우
+
+* 리모트 노드로의 송신을 허용하는 설정이 필요합니다.
+  * 인스턴스 상세 설정의 **백업 & Access 제어** 탭에서 설정이 가능합니다.
+  * '#간단히 시작하기'의 '사용자 접근 제어'를 참고 바랍니다.
+* 만약 로컬 노드 역할의 RDS에 Read Only Slave를 추가한 구성으로 사용할 경우, DB Configuration의 replicate-ignore-table에 federated 설정된 테이블을 명시해야 합니다.
+  * Read Only Slave를 구성하게 될 경우, federated 테이블 또한 복제되어 Master와 Read Only Slave가 리모트 노드를 함께 바라보게 됩니다.
+  * 이 경우 Master에 수행한 데이터 입력이 federated 설정에 따라 리모트 노드에도 수행되고, Read Only Slave에서도 마찬가지로 동일한 입력이 수행되어 중복 키 에러 등으로 인한 복제 중단이 발생할 수 있습니다.
+  * Read Only Slave가 federated 테이블은 복제하지 않도록 replicate-ignore-table 에 설정이 필요합니다.
+  * 인스턴스 상세 설정의 DB Configuration 탭에서 설정이 가능합니다.
+
+#### 리모트 노드로써 RDS를 이용하는 구성의 경우
+
+* 로컬 노드에서의 수신을 허용하는 설정이 필요합니다.
+  * 인스턴스 상세 설정의 **백업 & Access 제어** 탭에서 설정이 가능합니다.
+  * '#간단히 시작하기'의 '사용자 접근 제어'를 참고 바랍니다.
