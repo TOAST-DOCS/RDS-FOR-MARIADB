@@ -340,62 +340,108 @@ The event subscription status can be checked..
 
 ## Server Dashboard
 
-![server_dashboard_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_0_zh.png)
+![server_dashboard_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_1_en.png)
 
 Various performance indicators can be checked in charts.
 
-* ❶ * Search by instance name or IP address.
-* ❷ Servers that meet the criteria are displayed. The color of the icon in the upper right corner changes depending on the server status.
+* ❶ Search by the instance name or IP address.
+* ❷ Servers that meet the criteria are displayed. The color of the icon on the right changes depending on the server status.
     * Green: Normal
     * Red: Error
-    * Gray: Server deleted
+    * Gray: Deleted server
 * ❸ Select the layout.
 * ❹ Modify or delete the layout.
-* ❺ Popup that **generates the layout** is displayed.
-* ❻ Add chart in layout.
-* ❼ Chart is updated after setting the search period to the current time.
-* ❽ The search period can be modified.
-* ❾ The chart is displayed.
-
-### Add Chart
-
-![server_dashboard_chart_add_1_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_1_zh.png)
-
-* ❶ First, select the desired layout to add a chart.
-* ❷ Click the **Add Chart** button and a popup is displayed to **add the chart** as shown below.
-
-![server_dashboard_chart_add_2_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_2_zh.png)
-
-* ❶ The chart to be added is displayed.
-* ❷ Select the desired chart to add.
-
-### Modify Chart
-
-![server_dashboard_1_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_1_zh.png)
-
-* ❶ *Move the chart by dragging the top area of the chart with the mouse.
-* ❷ The chart can be deleted.
-* ❸ Change the chart size by dragging the lower right corner of the chart with the mouse.
+* ❺ The **Create Layout** window is displayed.
+* ❻ Add a chart to the layout.
+* ❼ Add a group to compare multiple servers to the layout.
+    * Group charts are unified as line charts for data comparison between servers.
+    * Make sure you add group charts separately because they do not share the existing chart information previously saved.
+* ❽ The chart is updated after setting the search period to the current time.
+* ❾ The search period can be modified.
+* ➓ The chart is displayed.
 
 ### Add Layout
 
-![server_dashboard_layout_create_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_create_0_zh.png)
+![server_dashboard_layout_create_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_create_1_en.png)
 
 * ❶ Click the **Create Layout** button.
 * ❷ Enter the layout name.
 
 ### Modify and Delete Layout
 
-![server_dashboard_layout_modify_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_0_zh.png)
+![server_dashboard_layout_modify_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_1_en.png)
 
 * ❶ Click the **Manage** button.
 * ❷ Changes to the edit screen where the layout can be modified.
-* ❸ The layout can be deleted
+* ❸ The layout can be deleted.
 
-![server_dashboard_layout_modify_0_zh](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_1_zh.png)
+![server_dashboard_layout_modify_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_2_en.png)
 
 * ❶ Click the **OK** button to save the modifications.
 * ❷ Click the **Cancel** button to cancel the modifications.
+
+### Add Chart
+
+![server_dashboard_chart_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_1_en.png)
+
+* ❶ First, select the desired layout to add a chart.
+* ❷ Click the **Add Chart** button and a popup is displayed to **add the chart** as shown below.
+
+![server_dashboard_chart_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_2_en.png)
+
+* ❶ The chart to be added is displayed.
+* ❷ Select the desired chart to add.
+
+### Modify Chart
+
+![server_dashboard_1_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_1_en.png)
+
+* ❶ Move the chart by dragging the top area of the chart with the mouse.
+* ❷ The chart can be deleted.
+* ❸ Change the chart size by dragging the lower right corner of the chart with the mouse.
+
+### Add Group
+
+![server_dashboard_chart_group_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_1_en.png)
+
+* ❶ First, select the desired layout to add a group.
+* ❷ Click the **Add Group** button and a popup is displayed to **add the group** as shown below.
+
+![server_dashboard_chart_group_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_2_en.png)
+
+* ❶ Enter the group name.
+* ❷ Select the instance to be viewed on the chart.
+
+### Modify and Delete Group
+
+![server_dashboard_chart_group_modify_delete_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_1_en.png)
+
+* ❶ Click **View More** of the group to modify or delete, a drop-down menu is displayed.
+* ❷ Click **Edit**, the**Modify Group** window is displayed.
+* ❸ Click **Delete** to delete a group.
+
+![server_dashboard_chart_group_modify_delete_2_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_2_en.png)
+
+* ❶ After modifications, click the OK button.
+
+### Add Group Chart
+
+![server_dashboard_chart_group_add_chart_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_chart_1_en.png)
+
+* ❶ Add multiple charts by selecting them with the checkbox.
+* ❷ Preview the chart you want to add by clicking the text area.
+
+### Change Group Chart Line Color
+
+![server_dashboard_chart_group_modify_series_color_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_series_color_1_en.png)
+
+* ❶ Click the server whose color you want to change from the list, the color change window is displayed.
+* ❷ Change the color by clicking the color you want in the color palette at the top.
+    * Default colors are specified in the order of the color palette.
+* ❸ Change the color by manually entering the color code.
+    * 3-digit or 6-digit color codes are supported for manual input.
+    * Example) #000 or #000000
+* ❹ Change the color by selecting the color you want from the color picker.
 
 ## User Group
 

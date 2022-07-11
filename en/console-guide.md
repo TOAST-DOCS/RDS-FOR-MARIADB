@@ -260,6 +260,7 @@
 * It is recommended to create a replica whose specification is the same as or higher than that of the original DB instance, because using a lower specification may result in replication latency.
 * When a replica is created, the I/O performance of the original DB instance may be lower than usual.
 * Replica creation time may increase in proportion to the size of the original DB instance.
+
 > [Note] While replication is underway, object storage volume may be incurred as much as the size of a binary log file.
 > [Note] When replication is completed, the Read Only Slave rule is added to the access rule of the master instance.
 
@@ -354,6 +355,7 @@
 * Click **Download** and a pop-up will show up.
 * Click **Import** and wait, then the **Download** button is enabled.
 * Log files are uploaded to temporary object storage, and remain to be downloaded for the maximum 5 minutes.
+
 > [Note] For the 5 minutes while it is uploaded to object storage and deleted, object storage may be charged.
 
 ### Audit Log
@@ -397,7 +399,7 @@ The event subscription status can be checked.
 
 ## Server Dashboard
 
-![server_dashboard_0_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_0_en.png)
+![server_dashboard_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_1_en.png)
 
 Various performance indicators can be checked in charts.
 
@@ -410,18 +412,41 @@ Various performance indicators can be checked in charts.
 * ❹ Modify or delete the layout.
 * ❺ The **Create Layout** window is displayed.
 * ❻ Add a chart to the layout.
-* ❼ The chart is updated after setting the search period to the current time.
-* ❽ The search period can be modified.
-* ❾ The chart is displayed.
+* ❼ Add a group to compare multiple servers to the layout.
+    * Group charts are unified as line charts for data comparison between servers.
+    * Make sure you add group charts separately because they do not share the existing chart information previously saved.
+* ❽ The chart is updated after setting the search period to the current time.
+* ❾ The search period can be modified.
+* ➓ The chart is displayed.
+
+### Add Layout
+
+![server_dashboard_layout_create_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_create_1_en.png)
+
+* ❶ Click the **Create Layout** button.
+* ❷ Enter the layout name.
+
+### Modify and Delete Layout
+
+![server_dashboard_layout_modify_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_1_en.png)
+
+* ❶ Click the **Manage** button.
+* ❷ Changes to the edit screen where the layout can be modified.
+* ❸ The layout can be deleted.
+
+![server_dashboard_layout_modify_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_layout_modify_2_en.png)
+
+* ❶ Click the **OK** button to save the modifications.
+* ❷ Click the **Cancel** button to cancel the modifications.
 
 ### Add Chart
 
-![server_dashboard_chart_add_1_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_1_en.png)
+![server_dashboard_chart_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_1_en.png)
 
 * ❶ First, select the desired layout to add a chart.
 * ❷ Click the **Add Chart** button and a popup is displayed to **add the chart** as shown below.
 
-![server_dashboard_chart_add_2_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_chart_add_2_en.png)
+![server_dashboard_chart_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_add_2_en.png)
 
 * ❶ The chart to be added is displayed.
 * ❷ Select the desired chart to add.
@@ -434,25 +459,48 @@ Various performance indicators can be checked in charts.
 * ❷ The chart can be deleted.
 * ❸ Change the chart size by dragging the lower right corner of the chart with the mouse.
 
-### Add Layout
+### Add Group
 
-![server_dashboard_layout_create_0_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_create_0_en.png)
+![server_dashboard_chart_group_add_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_1_en.png)
 
-* ❶ Click the **Create Layout** button.
-* ❷ Enter the layout name.
+* ❶ First, select the desired layout to add a group.
+* ❷ Click the **Add Group** button and a popup is displayed to **add the group** as shown below.
 
-### Modify and Delete Layout
+![server_dashboard_chart_group_add_2_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_2_en.png)
 
-![server_dashboard_layout_modify_0_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_0_en.png)
+* ❶ Enter the group name.
+* ❷ Select the instance to be viewed on the chart.
 
-* ❶ Click the **Manage** button.
-* ❷ Changes to the edit screen where the layout can be modified.
-* ❸ The layout can be deleted
+### Modify and Delete Group
 
-![server_dashboard_layout_modify_1_en](https://static.toastoven.net/prod_rds/22.03.15/server_dashboard_layout_modify_1_en.png)
+![server_dashboard_chart_group_modify_delete_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_1_en.png)
 
-* ❶ Click the **OK** button to save the modifications.
-* ❷ Click the **Cancel** button to cancel the modifications.
+* ❶ Click **View More** of the group to modify or delete, a drop-down menu is displayed.
+* ❷ Click **Edit**, the**Modify Group** window is displayed.
+* ❸ Click **Delete** to delete a group.
+
+![server_dashboard_chart_group_modify_delete_2_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_delete_2_en.png)
+
+* ❶ After modifications, click the OK button.
+
+### Add Group Chart
+
+![server_dashboard_chart_group_add_chart_1_en](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_add_chart_1_en.png)
+
+* ❶ Add multiple charts by selecting them with the checkbox.
+* ❷ Preview the chart you want to add by clicking the text area.
+
+### Change Group Chart Line Color
+
+![server_dashboard_chart_group_modify_series_color_1_en.png](https://static.toastoven.net/prod_rds/22.07.12/server_dashboard_chart_group_modify_series_color_1_en.png)
+
+* ❶ Click the server whose color you want to change from the list, the color change window is displayed.
+* ❷ Change the color by clicking the color you want in the color palette at the top.
+    * Default colors are specified in the order of the color palette.
+* ❸ Change the color by manually entering the color code.
+    * 3-digit or 6-digit color codes are supported for manual input.
+    * Example) #000 or #000000
+* ❹ Change the color by selecting the color you want from the color picker.
 
 ## User Group
 
@@ -513,7 +561,7 @@ Notifications can be received by adding the monitoring settings to the performan
 
 ![notification_group_modify_1_en](https://static.toastoven.net/prod_rds/22.03.15/notification_group_modify_1_en.png)
 
-* ❷  After modifications, click the **OK** button.
+* ❷ After modifications, click the **OK** button.
 
 ### Delete Notification Group
 
@@ -613,6 +661,7 @@ The chart shows the count of items collected over time, and you can check the de
 * ❸ Click **Save CSV** to save all data in the selected point in time.
 
 ## Appendix
+
 ### Appendix 1. Guide for DB instance Migration for Hypervisor Maintenance
 
 NHN Cloud updates hypervisor software on a regular basis to enhance security and stability of its infrastructure services.
@@ -658,16 +707,16 @@ When using Federated Storage Engine, make sure you consider the following.
 #### For configuration using RDS as a local node
 
 * Make sure you need to allow the outbound direction to remote nodes.
-  * It can be set in the **Backup and Access Control** tab of the DB instance detailed configuration.
-  * Please refer to ‘User Access Control’ in ‘#Getting Started’.
+    * It can be set in the **Backup and Access Control** tab of the DB instance detailed configuration.
+    * Please refer to ‘User Access Control’ in ‘#Getting Started’.
 * When using a configuration that adds Read Only Slave to RDS that serves as a local node, you need to specify a federated table in replicate-ignore-table of DB Configuration.
-  * When configuring Read Only Slave, the federated table is also replicated so that Master and Read Only Slave look at the remote nodes together.
-  * In this case, the data input performed in Master is performed in the remote nodes according to the federated settings, and the same input is also performed in Read Only Slave, so replication may be suspended due to a duplicate key error, etc.
-  * Make sure you need to configure the settings of replicate-ignore-table so that Read Only Save does not replicate a federated table.
-  * It can be set in the DB Configuration tab of the DB instance detailed configuration.
+    * When configuring Read Only Slave, the federated table is also replicated so that Master and Read Only Slave look at the remote nodes together.
+    * In this case, the data input performed in Master is performed in the remote nodes according to the federated settings, and the same input is also performed in Read Only Slave, so replication may be suspended due to a duplicate key error, etc.
+    * Make sure you need to configure the settings of replicate-ignore-table so that Read Only Save does not replicate a federated table.
+    * It can be set in the DB Configuration tab of the DB instance detailed configuration.
 
 #### For configuration using RDS as a remote node
 
 * Make sure you need to allow the inbound direction to local nodes.
-  * It can be set in the **Backup and Access Control** tab of the DB instance detailed configuration.
-  * Please refer to 'User Access Control' in '#Getting Started'.
+    * It can be set in the **Backup and Access Control** tab of the DB instance detailed configuration.
+    * Please refer to 'User Access Control' in '#Getting Started'.
