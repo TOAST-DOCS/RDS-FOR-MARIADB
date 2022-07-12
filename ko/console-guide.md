@@ -605,7 +605,7 @@ DB 인스턴스와 관련된 여러 작업 중 발생하는 각종 이벤트 및
 
 ### 기본 데이터 조회
 
-![processlist_0_ko](https://static.toastoven.net/prod_rds/22.05.10/processlist_0_ko.png)
+![processlist_1_ko](https://static.toastoven.net/prod_rds/22.07.12/processlist_1_ko.png)
 
 DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형태로 확인할 수 있습니다.
 차트에서는 시간대별로 수집된 개수를 나타내며 표에서 상세정보를 확인할 수 있습니다.
@@ -613,10 +613,10 @@ DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형�
 * ❶ 인스턴스 이름 혹은 IP 주소로 검색할 수 있습니다.
 * ❷ 조건에 맞는 서버가 표시됩니다. 서버의 상태에 따라 우측의 아이콘 색상이 변경됩니다.
     * 초록색: 정상 상태
-    * 빨간색: 오류 상태
+    * 빨간색: 에러 상태
     * 회색: 삭제된 서버
 * ❸ Process List와 InnoDB Status 정보를 탭으로 선택해서 조회합니다.
-* ❹ 조회 기간을 현재 시각으로 설정한 후, 차트를 갱신합니다.
+* ❹ 조회 기간을 현재 시각으로 설정한 후, 차트를 갱신합니다
 * ❺ 조회 기간을 변경할 수 있습니다.
     * 조회 기간은 최대 1시간 이내로 설정해야 합니다.
 * ❻ 검색 키워드를 입력해 조회 기간 내의 데이터를 검색합니다.
@@ -624,11 +624,11 @@ DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형�
 * ❽ **CSV 저장** 버튼을 클릭하면 전체 조회 데이터를 CSV 파일 형식으로 저장합니다.
 * ❾ 수집된 프로세스 리스트 정보를 최신순으로 정렬하여 출력합니다.
 * ➓ **상세보기** 버튼을 클릭하면 해당하는 줄의 상세 정보를 확인할 수 있습니다.
-* ⓫ **보기** 버튼을 클릭하면 해당 시간의 InnoDB Status 정보를 확인할 수 있습니다.
+* ⓫ **보기** 버튼을 클릭하면 해당하는 시간의 InnoDB Status 정보를 확인할 수 있습니다.
 
 ### 키워드 검색
 
-![processlist_search_0_ko](https://static.toastoven.net/prod_rds/22.05.10/processlist_search_0_ko.png)
+![processlist_search_1_ko](https://static.toastoven.net/prod_rds/22.07.12/processlist_search_1_ko.png)
 
 * ❶ 검색 키워드를 입력해 데이터 필드 전체를 탐색합니다.
     * 검색 키워드는 대소문자를 구분하지 않으며 띄어쓰기로 여러 키워드를 구분해서 입력할 수 있습니다.
@@ -641,11 +641,11 @@ DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형�
 
 ### 차트 조회 범위 설정
 
-![processlist_zoom_0_ko](https://static.toastoven.net/prod_rds/22.05.10/processlist_zoom_0_ko.png)
+![processlist_zoom_1_ko](https://static.toastoven.net/prod_rds/22.07.12/processlist_zoom_1_ko.png)
 
 * ❶ 차트를 드래그해서 조회 범위를 설정할 수 있습니다.
 
-![processlist_zoom_1_ko](https://static.toastoven.net/prod_rds/22.05.10/processlist_zoom_1_ko.png)
+![processlist_zoom_2_ko](https://static.toastoven.net/prod_rds/22.07.12/processlist_zoom_2_ko.png)
 
 * ❶ 확대 상태를 초기화할 수 있습니다.
 * ❷ 확대된 상태에서 검색 시 확대 범위 내에서만 검색합니다.
@@ -653,7 +653,7 @@ DB에서 수집된 프로세스 리스트와 InnoDB 상태를 차트와 표 형�
 
 ### 차트 시점 조회
 
-![processlist_select_0_ko](https://static.toastoven.net/prod_rds/22.05.10/processlist_select_0_ko.png)
+![processlist_select_1_ko](https://static.toastoven.net/prod_rds/22.07.12/processlist_select_1_ko.png)
 
 * ❶ 차트 데이터를 선택하면 해당 시점의 데이터만 조회합니다.
 * ❷ 차트 데이터가 선택된 상태에서 검색 시 선택된 시점 내에서만 검색합니다.
