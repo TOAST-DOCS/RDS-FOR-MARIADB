@@ -411,6 +411,7 @@ Various performance indicators can be checked in charts.
 
 * ❶ Enter the group name.
 * ❷ Select the instance to be viewed on the chart.
+    * Up to 10 instances can be registered to be viewed.
 
 ### Modify and Delete Group
 
