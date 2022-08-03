@@ -1,5 +1,21 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### August 9, 2022
+
+#### Added Features
+
+* Added a feature to export event lists to Excel
+
+#### Feature Updates
+
+* Made modifications so that the DB Configuration of an instance where high availability is paused can be changed
+* Changed the maximum backup retention period from 30 days to 2 years
+* Made improvements so that, when backup fails due to DDL execution, the cause is left in the event message
+
+#### Bug Fixes
+
+* Fixed an issue where backup fails intermittently due to communication issues with internal agents
+
 ### July 12, 2022
 
 #### Added Features
