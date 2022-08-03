@@ -41,7 +41,7 @@
 
 #### Bug Fixes
 
-* Fixed an issue where high availability configuration was not possible when the validate password plugin is used
+* Fixed an issue where high availability configuration is not possible when the validate password plugin is used
 * Fixed an issue where, even though the type change of the high availability instance has failed, the type of the candidate master is displayed as the type after the change
 
 ### May 10, 2022
@@ -61,7 +61,7 @@
 #### Bug Fixes
 
 * Fixed an issue where, when performing point-in-time restoration with a backup of a read replica, a wrong restoration available time could be selected
-* Fixed an issue where the monitoring graph was not visible in Safari
+* Fixed an issue where the monitoring graph is not visible in Safari
 * Fixed an issue where, after changing the parameters of the master instance, changing the parameters of a read replica failed
 
 ### April 12, 2022
