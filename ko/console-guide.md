@@ -35,13 +35,14 @@
 > [참고] 인스턴스 목록은 각 인스턴스의 생성 순서대로 정렬되며, Candidate Master는 Master의 고가용성 옵션 사용 시점에 생성되기 때문에 장애 조치 이후 인스턴스의 순서가 바뀔 수 있습니다.
 > [참고] 기본 알람 사용 시 해당 인스턴스에 대한 알람이 자동 등록되며, 이름은 "{인스턴스 이름}-default"로 설정됩니다. 등록되는 알람은 변경 및 삭제할 수 있으며, 적용되는 인스턴스도 변경할 수 있습니다.
 
-![backup_and_access_0_ko](https://static.toastoven.net/prod_rds/21.09.14/backup_and_access_0_ko.png)
+![backup_and_access_0_ko](https://static.toastoven.net/prod_rds/22.08.09/backup_and_access_0_ko.png)
 
 * 자동 백업 및 접근 제어 설정을 한 후, **다음** 버튼을 누릅니다.
 * 쿼리 지연 대기 시간: 백업 수행 시에 FLUSH TABLES WITH READ LOCK 지연 대기 시간을 설정할 수 있습니다.
     * 0~21600 사이 값으로 설정할 수 있습니다.
 * 백업 보관 기간: 자동 백업을 하려면 1일 이상 선택합니다.
-    * 없음으로 선택 시, 자동으로 백업을 하지 않습니다.
+    * 0 ~ 730 사이 값으로 설정할 수 있습니다.
+    * 0 입력 시, 자동으로 백업을 하지 않습니다.
 * 백업 시작 시간: 자동 백업은 백업 시작 시각 부터 Duration 사이 중 임의의 시점에 시작됩니다.
     * Duration 은 백업이 시작되는 시각을 의미합니다.
     * Duration 안에 백업이 종료되는 것을 의미 하지 않습니다.
@@ -367,13 +368,14 @@
 
 ## 이벤트
 
-![event_list_0_ko](https://static.toastoven.net/prod_rds/210615/event_list_0_ko.png)
+![event_list_0_ko](https://static.toastoven.net/prod_rds/22.08.09/event_list_0_ko.png)
 
 DB 인스턴스와 관련된 여러 작업 중 발생하는 각종 이벤트 및 알림 그룹의 감시 설정 결과를 확인할 수 있습니다.
 
 * ❶ 이벤트 유형을 선택하여 조회 할 수 있습니다.
 * ❷ 이벤트 소스 혹은 메시지를 검색할 수 있습니다.
 * ❸ 이벤트 발생 기간을 선택할 수 있습니다.
+* ❹ 검색 조건에 맞는 이벤트를 CSV 파일로 저장할 수 있습니다.
 
 ### 이벤트 구독
 
