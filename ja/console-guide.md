@@ -38,13 +38,14 @@ RDS for MariaDBを使用するには、先にDBインスタンスを作成する
 
 **バックアップ&アクセス制御** 画面でバックアップ情報を指定します。
 
-![backup_and_access_0_ja](https://static.toastoven.net/prod_rds/22.03.15/backup_and_access_ja.png)
+![backup_and_access_0_ja](https://static.toastoven.net/prod_rds/22.08.09/backup_and_access_ja.png)
 
 * 自動バックアップおよびアクセス制御を設定した後、 **次へ** ボタンをクリックします。
 * クエリー遅延待機時間：バックアップ遂行時にFLUSH TABLES WITH READ LOCK遅延待機時間を設定できます。 
-  * 0～21600の間の値に設定できます。
+    * 0～21600の間の値に設定できます。
 * バックアップ保管期間：自動バックアップをするには、1日以上を選択します。
-    **なし**を選択すると、自動バックアップが行われません。
+    * 0 ~ 730 사이 값으로 설정할 수 있습니다.
+    * 0 입력 시, 자동으로 백업을 하지 않습니다.
 * バックアップ開始時刻：自動バックアップはバックアップ開始時刻からDurationの間の任意の時点に始まります。
     * Durationはバックアップが始まる時刻を意味します。 
     * Duration内にバックアップが終了することを意味するわけではありません。
@@ -295,13 +296,14 @@ Masterにlockがかかっていたり複製ディレイが長い場合、フェ�
 
 ## イベント
 
-![event_list_0_ja](https://static.toastoven.net/prod_rds/22.03.15/event_list_0_ja.png)
+![event_list_0_ja](https://static.toastoven.net/prod_rds/22.08.09/event_list_0_ja.png)
 
 DBインスタンスに関連するさまざまな作業中に発生する各種イベントおよび通知グループの監視設定結果を確認できます。
 
 * ❶イベントタイプを選択して照会できます。
 * ❷イベントソースまたはメッセージを検索できます。
 * ❸イベント発生期間を選択できます。
+* ❹ 검색 조건에 맞는 이벤트를 CSV 파일로 저장할 수 있습니다.
 
 ### イベント購読
 
