@@ -316,7 +316,7 @@ The results of monitoring settings can be checked for various events and notific
 * ❶ Retrieve by selecting the event type.
 * ❷ Search the event source or message.
 * ❸ Select the event period.
-* ❹ 검색 조건에 맞는 이벤트를 CSV 파일로 저장할 수 있습니다.
+* ❹ Save the filtered events to a CSV file.
 
 ### Event Subscription
 
