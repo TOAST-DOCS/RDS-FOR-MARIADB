@@ -35,13 +35,14 @@
 > [Note] The instance list is sorted in the order of creation. The order may change after failover, since the candidate master is created when the high availability option is enabled for the master.
 > [Note] With default alarm setting, alarms for the instance are automatically registered, in the name of "{instance name}-default". Registered alarms can be changed or deleted, and applied instances can also be changed.
 
-![backup_and_access_0_en](https://static.toastoven.net/prod_rds/22.03.15/backup_and_access_en.png)
+![backup_and_access_0_en](https://static.toastoven.net/prod_rds/22.08.09/backup_and_access_en.png)
 
 * Set auto backup and access control, and click **Next**.
 * Query Latency: FLUSH TABLES WITH READ LOCK latency can be set when performing a backup.
     * It can be set to a value between 0 and 21,600.
 * Backup Retention Period: Select more than a day, to allow auto backups.
-    * Select **N/A**, and auto backup is not enabled.
+    * It can be set to a value between 0 and 730.
+    * If you enter 0, auto backup is not executed.
 * Backup Start Time: Auto backup starts at some point between the backup start time and duration.
     * Duration refers to the time when backup starts.
     * It does not mean that backup ends within the duration.
@@ -114,7 +115,7 @@
 
 * High Availability can be temporarily stopped if disconnection or a massive volume of workload is expected due to temporary work in the Master instance.
 * If High Availability is paused, failure won't be detected; therefore, no failover will take place.
-* If the instance is changed or restarted while High Availability is paused, the paused High Availability function will resume.
+* Even if you perform a task that requires High Availability in the paused state to resume, it does not resume.
 * Even if High Availability is paused, data replication works fine. However, since no failure will be detected during the pause, it is not recommended to keep the paused state for a long time.
 
 #### Constraints
@@ -128,7 +129,7 @@
 * While restarting or changing options are underway for instances with high availability, the Read Only Slave is not operational.
 * The high availability feature is based on each domain. Therefore, if a user instance for Compute cannot access a dns serer, the instance cannot access RDS instances via domain, which may cause trouble in accessing for failover.
 
-### Flavors
+### Flavor
 
 * DB instances can be created in some of specifications provided by NHN Cloud Compute & Network.
 
@@ -367,13 +368,14 @@
 
 ## Event
 
-![event_list_0_en](https://static.toastoven.net/prod_rds/22.03.15/event_list_0_en.png)
+![event_list_0_en](https://static.toastoven.net/prod_rds/22.08.09/event_list_0_en.png)
 
 The results of monitoring settings can be checked for various events and notification groups that occur during various tasks related to DB instances.
 
 * ❶ Retrieve by selecting the event type.
 * ❷ Search the event source or message.
 * ❸ Select the event period.
+* ❹ Save the filtered events to a CSV file.
 
 ### Event Subscription
 
@@ -701,7 +703,7 @@ If instance status remains the same, try 'Refresh'.
 While migration is underway, operation is not permitted.
 An abnormal closure of DB instance migration shall be automatically reported to administrator, and it such case, you'll be contacted by NHN Cloud.
 
-#### Appendix 2. Configuration guide for using Federated Storage Engine with RDS
+### Appendix 2. Configuration guide for using Federated Storage Engine with RDS
 
 When using Federated Storage Engine, make sure you consider the following.
 
