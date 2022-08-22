@@ -703,7 +703,7 @@ If instance status remains the same, try 'Refresh'.
 While migration is underway, operation is not permitted.
 An abnormal closure of DB instance migration shall be automatically reported to administrator, and it such case, you'll be contacted by NHN Cloud.
 
-#### Appendix 2. Configuration guide for using Federated Storage Engine with RDS
+### Appendix 2. Configuration guide for using Federated Storage Engine with RDS
 
 When using Federated Storage Engine, make sure you consider the following.
 
