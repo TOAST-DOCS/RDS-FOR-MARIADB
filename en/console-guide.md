@@ -41,8 +41,8 @@
 * Query Latency: FLUSH TABLES WITH READ LOCK latency can be set when performing a backup.
     * It can be set to a value between 0 and 21,600.
 * Backup Retention Period: Select more than a day, to allow auto backups.
-    * 0 ~ 730 사이 값으로 설정할 수 있습니다.
-    * 0 입력 시, 자동으로 백업을 하지 않습니다.
+    * It can be set to a value between 0 and 730.
+    * If you enter 0, auto backup is not executed.
 * Backup Start Time: Auto backup starts at some point between the backup start time and duration.
     * Duration refers to the time when backup starts.
     * It does not mean that backup ends within the duration.
@@ -115,7 +115,7 @@
 
 * High Availability can be temporarily stopped if disconnection or a massive volume of workload is expected due to temporary work in the Master instance.
 * If High Availability is paused, failure won't be detected; therefore, no failover will take place.
-* 고가용성 기능이 일시 중지된 상태에서 재시작이 필요한 작업을 수행하여도 일시 중지된 고가용성 기능이 재개되지 않습니다.
+* Even if you perform a task that requires High Availability in the paused state to resume, it does not resume.
 * Even if High Availability is paused, data replication works fine. However, since no failure will be detected during the pause, it is not recommended to keep the paused state for a long time.
 
 #### Constraints
@@ -129,7 +129,7 @@
 * While restarting or changing options are underway for instances with high availability, the Read Only Slave is not operational.
 * The high availability feature is based on each domain. Therefore, if a user instance for Compute cannot access a dns serer, the instance cannot access RDS instances via domain, which may cause trouble in accessing for failover.
 
-### Flavors
+### Flavor
 
 * DB instances can be created in some of specifications provided by NHN Cloud Compute & Network.
 
@@ -375,7 +375,7 @@ The results of monitoring settings can be checked for various events and notific
 * ❶ Retrieve by selecting the event type.
 * ❷ Search the event source or message.
 * ❸ Select the event period.
-* ❹ 검색 조건에 맞는 이벤트를 CSV 파일로 저장할 수 있습니다.
+* ❹ Save the filtered events to a CSV file.
 
 ### Event Subscription
 
