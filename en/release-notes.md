@@ -5,7 +5,7 @@
 #### Bug Fixes
 
 * Fixed an issue where an error message is left on the browser’s developer console
-* Fixed an issue where backup fails when a single instance in **Not Use** status for **Use table locking** is changed to a high availability instance
+* Fixed an issue where backup fails when a single instance in a **Not Use** status for **Use table locking** is changed to a high availability instance
 
 ### August 9, 2022
 
