@@ -84,9 +84,6 @@ DBインスタンスの各種性能指標とDBインスタンスに関連する�
 | INSTANCE | INSTC_51_01 | ユーザークエリ遅延によるバックアップ失敗 |
 | INSTANCE | INSTC_52_01 | ユーザークエリ遅延によるバックアップおよびエクスポート失敗 |
 | BACKUP | BACUP_02_01 | バックアップ削除完了 |
-| BACKUP | BACUP_04_00 | Object Storageアップロード開始 |
-| BACKUP | BACUP_04_01 | Object Storageアップロード完了 |
-| BACKUP | BACUP_04_04 | Object Storageアップロード失敗 |
 | BACKUP | BACUP_05_00 | バックアップのエクスポート開始 |
 | BACKUP | BACUP_05_01 | バックアップのエクスポート完了 |
 | BACKUP | BACUP_05_04 | バックアップのエクスポート失敗 |

@@ -1,5 +1,16 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### October 11, 2022
+
+#### Feature Updates
+
+* Changed the domain change tooltip displayed on the instance details screen
+
+#### Bug Fixes
+
+* Removed no longer used event codes
+* Fixed an issue where a read replica cannot be deleted intermittently under certain conditions
+
 ### September 14, 2022
 
 #### Bug Fixes
