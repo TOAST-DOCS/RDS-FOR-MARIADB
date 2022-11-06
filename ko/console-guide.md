@@ -35,7 +35,7 @@
 > [참고] 인스턴스 목록은 각 인스턴스의 생성 순서대로 정렬되며, Candidate Master는 Master의 고가용성 옵션 사용 시점에 생성되기 때문에 장애 조치 이후 인스턴스의 순서가 바뀔 수 있습니다.
 > [참고] 기본 알람 사용 시 해당 인스턴스에 대한 알람이 자동 등록되며, 이름은 "{인스턴스 이름}-default"로 설정됩니다. 등록되는 알람은 변경 및 삭제할 수 있으며, 적용되는 인스턴스도 변경할 수 있습니다.
 
-![backup_and_access_0_ko](https://static.toastoven.net/prod_rds/22.08.09/backup_and_access_0_ko.png)
+![backup_and_access_ko](https://static.toastoven.net/prod_rds/22.08.09/backup_and_access_ko.png)
 
 * 자동 백업 및 접근 제어 설정을 한 후, **다음** 버튼을 누릅니다.
 * 쿼리 지연 대기 시간: 백업 수행 시에 FLUSH TABLES WITH READ LOCK 지연 대기 시간을 설정할 수 있습니다.
