@@ -1,5 +1,11 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### November 15, 2022
+
+#### Bug Fixes
+
+* Fixed an issue where, when `sha256_password` is set under the `default_authentication_plugin` parameter, high availability configuration is turned off.
+
 ### October 11, 2022
 
 #### Feature Updates
@@ -118,10 +124,10 @@
 
 * Changed the minimum length of the name that can be entered when creating a DB schema in the web console to 1 character, which is the same as that of MySQL
 
-### December 14, 2021 
+### December 14, 2021
 
-#### New Releases 
+#### New Releases
 
-- TOAST Relational Database Service (RDS) provides Relational Database in the cloud environment. 
-- No complicated configuration is required to enable relational database. 
+- TOAST Relational Database Service (RDS) provides Relational Database in the cloud environment.
+- No complicated configuration is required to enable relational database.
 - Supports MariaDB 10.3.30.  
