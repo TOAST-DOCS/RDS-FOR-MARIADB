@@ -97,7 +97,7 @@ DB Configuration画面で設定値を変更できます。
 
 ![instance_detail_1_jp](https://static.toastoven.net/prod_rds/22.06.14/instance_detail_1_jp.png)
 
-* 次はMySQL Workbenchの接続例です。
+* 次はMariaDB Workbenchの接続例です。
 
 ![rds_06_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_06_20210112_jp.png)
 

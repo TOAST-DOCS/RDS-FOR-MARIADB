@@ -93,7 +93,7 @@
 
 ![rds_06_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_06_20210112_en.png)
 
-* Below is an example of connecting to MySQL Workbench.
+* Below is an example of connecting to MariaDB Workbench.
 
 #### Constraints
 

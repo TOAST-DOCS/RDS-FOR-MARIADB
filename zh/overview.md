@@ -1,54 +1,17 @@
-## Database > RDS for MariaDB > Overview
+## Database > RDS for MariaDB > 개요
 
-NHN Cloud RDS for MariaDB provides relational database in the cloud environment. 
-You can use a highly available relational database without complex setting. 
+RDS for MariaDB은 MariaDB 데이터베이스를 클라우드 환경에서 사용할 수 있는 서비스입니다. 손쉽게 MariaDB이 설치된 가상 장비를 사용할 수 있습니다. 
 
-## Characteristics and Features
+## 주요 기능
 
-* RDS for MariaDB is available only when you enable the Compute & Network product.
+* 손쉽게 원하는 사양 및 볼륨 크기로 MariaDB 데이터베이스를 사용할 수 있습니다.
+* 장애가 발생하더라도 가용성에 문제가 없도록 고가용성 기능을 설정할 수 있습니다.
+* RDS for MariaDB은 원하는 시각에 자동 또는 수동으로 백업을 수행할 수 있으며, 생성된 백업을 이용해 데이터베이스를 복원할 수 있습니다
+* RDS for MariaDB에서 발생한 이벤트를 확인할 수 있으며, 구독하여 메일 또는 SMS 등으로 관련 내용을 받아 볼 수 있습니다.
+* 데이터베이스 설정값들을 파라미터 그룹으로 관리하여 쉽고 빠르게 여러 데이터베이스에 적용할 수 있습니다.
+* 데이터베이스에 접속할 수 있는 보안 규칙을 쉽고 빠르게 설정할 수 있습니다.
+* 데이터베이스의 상태를 한눈에 파악할 수 있는 서버 대시보드를 제공합니다.
+* 서버 대시보드에서 인스턴스 및 데이터베이스의 각종 지표를 그래프로 확인할 수 있습니다.
 
-### DB Instance
-
-* A database server that can be created instantly when you want.
-
-### Management
-
-* Backup is automatically performed at the time you want.
-* Multiple management tasks can be performed at the time that does not affect your service.
-
-### Monitoring
-
-* You can monitor the status of DB instance's hardware and database without extra installation process. By setting notifications for anomalies, you can respond to issues quickly.
-
-## Glossary 
-
-### DB Instance 
-
-* Unit of relational database provided by RDS. 
-* Refers both to virtual appliance and relational database that is installed. 
-* Can be created by all-type virtual appliances provided by NHN Cloud Compute & Network. 
-* The DB instance supports HDD and SSD storage of 20 GB to 2 TB.
-* Cannot directly access OS of a DB instance, but access to DB instance is available only via the port entered when it is created.  
-* Can be created only by selecting VPC subnet of user's Compute & Network service, so as to communicate instances of user's Compute & Network service.  
-* DB instance is disconnected from external networks, other than user's subnet. To enable external connection, floating IP must be associated. 
-* If you're using Compute & Network, you can set a subnet to connect when a DB instance is created.   
-* Network connection is enabled between DB instances and other instances in a connected subnet. 
-* The Master is a general instance that can read or write. 
-* The Read Only Slave instance replicates master in real time and it can read only. 
-* The Candidate Master is a standby instance which is created at a different availability zone from the master, against potential failure for the use of high availability. 
-
-### Availability Zone
-
-* Logical area where DB instance is to be created. 
-
-### Floating IP 
-
-* A floating IP to enable external communication. 
-* Internet gateway must be available for user's VPC subnet which is connected with DB instance where floating IP is to be configured. 
-* Database of DB instances associated with floating IP can be accessed from outside.
-* Floating IP is immediately charged as soon as it is created, apart from DB instances.
-
-### High Availability 
-
-* With the High Availability feature, when an issue arises from instances currently in service or at an availability zone of such instances, measures are automatically taken against failure in the candidate master instance created at another availability zone. This can shorten failure duration of database to the best possible extent.
-* High availability is ensured for master instances.
+> [주의]
+> RDS for MariaDB은 사용자의 Compute & Network 서비스를 활성화해야만 사용할 수 있습니다.
