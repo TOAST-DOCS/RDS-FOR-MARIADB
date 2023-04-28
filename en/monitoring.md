@@ -105,7 +105,7 @@ The performance indicators can be visualized in charts in the server dashboard. 
 ### Layout
 
 The layout must be first configured to view the chart. The layout consists of various charts and each chart location and size is saved. 
-RDS for MariaDB provides two default layouts: **default system index** and **default MySQL index**. The user cannot modify nor delete the default layout.
+RDS for MariaDB provides two default layouts: **default system index** and **default MariaDB index**. The user cannot modify nor delete the default layout.
 
 ### Chart
 

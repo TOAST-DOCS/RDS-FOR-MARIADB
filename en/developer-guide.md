@@ -41,7 +41,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### If an error `ERROR 1418` occurs while importing data
 
 * The `ERROR 1418` error occurs when the function declaration in the mysqldump file does not include NO SQL, READS SQL DATA, and DETERMINISTIC, and binary logging is enabled.
-    * For detailed explanation, refer to the [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MySQL document.
+    * For detailed explanation, refer to the [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
 * To solve this issue, the value of the `log_bin_trust_function_creators` parameter of the DB instance to apply the mysqldump file must be changed to `1`.
 
 ### Export by Replication 
@@ -322,7 +322,7 @@ MariaDB> CALL mysql.tcrds_repl_slave_start();
 ### tcrds_repl_skip_repl_error
 
 * Perform SQL_SLAVE_SKIP_COUNTER=1. Resolve replication error by performing tcrds_repl_skip_repl_error procedure when Duplicate key error occurs as shown below.
-* MySQL error code 1062: 'Duplicate entry ? for key ?'
+* MariaDB error code 1062: 'Duplicate entry ? for key ?'
 
 ```
 MariaDB> CALL mysql. tcrds_repl_skip_repl_error();

@@ -95,7 +95,7 @@
 
 ![rds_06_20210112](https://static.toastoven.net/prod_rds/21.01.12/rds_06_20210112.png)
 
-* MySQL Workbench 접속 예시입니다.
+* MariaDB Workbench 접속 예시입니다.
 
 #### 제약사항
 

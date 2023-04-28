@@ -311,7 +311,7 @@ MariaDB> CALL mysql.tcrds_repl_slave_start();
 ### tcrds_repl_skip_repl_error
 
 * SQL_SLAVE_SKIP_COUNTER=1を実行します。次のようなDuplicate keyエラー発生した時は、tcrds_repl_skip_repl_errorプロシージャを実行すると複製エラーを解決できます。
-* MySQL error code 1062: 'Duplicate entry ? for key ?'
+* MariaDB error code 1062: 'Duplicate entry ? for key ?'
 
 ```
 MariaDB> CALL mysql. tcrds_repl_skip_repl_error();
