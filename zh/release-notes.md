@@ -1,5 +1,14 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### April 11, 2023
+
+#### Feature Updates
+
+* Overhauled UI / UX
+* Added parameter group and DB security group features
+* Made modifications so that manual backup is not deleted when DB instance is deleted
+* Added Open API 3.0
+
 ### February 14, 2023
 
 #### Feature Updates
@@ -159,10 +168,10 @@
 
 * Changed the minimum length of the name that can be entered when creating a DB schema in the web console to 1 character, which is the same as that of MariaDB
 
-### December 14, 2021
+### December 14, 2021 
 
-#### New Releases
+#### New Releases 
 
-- TOAST Relational Database Service (RDS) provides Relational Database in the cloud environment.
-- No complicated configuration is required to enable relational database.
+- TOAST Relational Database Service (RDS) provides Relational Database in the cloud environment. 
+- No complicated configuration is required to enable relational database. 
 - Supports MariaDB 10.3.30.  

@@ -1,17 +1,17 @@
-## Database > RDS for MariaDB > 개요
+## Database > RDS for MariaDB > Overview
 
-RDS for MariaDB은 MariaDB 데이터베이스를 클라우드 환경에서 사용할 수 있는 서비스입니다. 손쉽게 MariaDB이 설치된 가상 장비를 사용할 수 있습니다. 
+RDS for MariaDB enables you to use MariaDB databases in the cloud environment. You can easily use virtual machines with MariaDB installed.
 
-## 주요 기능
+## Main Features
 
-* 손쉽게 원하는 사양 및 볼륨 크기로 MariaDB 데이터베이스를 사용할 수 있습니다.
-* 장애가 발생하더라도 가용성에 문제가 없도록 고가용성 기능을 설정할 수 있습니다.
-* RDS for MariaDB은 원하는 시각에 자동 또는 수동으로 백업을 수행할 수 있으며, 생성된 백업을 이용해 데이터베이스를 복원할 수 있습니다
-* RDS for MariaDB에서 발생한 이벤트를 확인할 수 있으며, 구독하여 메일 또는 SMS 등으로 관련 내용을 받아 볼 수 있습니다.
-* 데이터베이스 설정값들을 파라미터 그룹으로 관리하여 쉽고 빠르게 여러 데이터베이스에 적용할 수 있습니다.
-* 데이터베이스에 접속할 수 있는 보안 규칙을 쉽고 빠르게 설정할 수 있습니다.
-* 데이터베이스의 상태를 한눈에 파악할 수 있는 서버 대시보드를 제공합니다.
-* 서버 대시보드에서 인스턴스 및 데이터베이스의 각종 지표를 그래프로 확인할 수 있습니다.
+* You can easily use MariaDB databases with the specifications and volume size you want.
+* You can set up high availability features so that there is no availability issue even if a failure occurs.
+* RDS for MariaDB can perform backup automatically or manually at any time. You can use the backup to restore the database.
+* You can check the events that occurred on RDS for MariaDB, and you can subscribe and receive related information by mail or SMS.
+* Allows you to manage database setting values as a parameter group, and apply them to multiple databases quickly and easily.
+* You can quickly and easily set up security rules that allow you to access the database.
+* Provides a server dashboard that provides a quick-to-check view of the health of the database.
+* Provides various metrics for instances and databases with graphs on the server dashboard.
 
-> [주의]
-> RDS for MariaDB은 사용자의 Compute & Network 서비스를 활성화해야만 사용할 수 있습니다.
+> [Caution]
+> RDS for MariaDB is not available until you enable your Compute & Network services.
