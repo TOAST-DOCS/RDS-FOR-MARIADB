@@ -1,5 +1,14 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### April 11, 2023
+
+#### Feature Updates
+
+* Overhauled UI / UX
+* Added parameter group and DB security group features
+* Made modifications so that manual backup is not deleted when DB instance is deleted
+* Added Open API 3.0
+
 ### February 14, 2023
 
 #### Feature Updates
