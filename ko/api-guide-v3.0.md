@@ -1,7 +1,7 @@
 ## Database > RDS for MariaDB > API 가이드
 
-| 리전 | 엔드포인트                                         |
-|---|-----------------------------------------------|
+| 리전 | 엔드포인트                                           |
+|---|-------------------------------------------------|
 | 한국(판교) 리전 | https://kr1-rds-mariadb.api.nhncloudservice.com |
 
 ## 인증 및 권한
@@ -34,7 +34,7 @@ API 요청 시 인증에 실패하거나 권한이 없을 경우 다음과 같�
 ### 리전 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/project/regions
+GET /v3.0/project/regions
 ```
 
 #### 요청
@@ -56,20 +56,12 @@ GET /rds/api/public/external/v3.0/project/regions
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "regions": [
         {
             "regionCode": "KR1",
-            "isEnabled": true
-        },
-        {
-            "regionCode": "KR2",
-            "isEnabled": true
-        },
-        {
-            "regionCode": "JP1",
             "isEnabled": true
         }
     ]
@@ -82,7 +74,7 @@ GET /rds/api/public/external/v3.0/project/regions
 ### 프로젝트 멤버 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/project/members
+GET /v3.0/project/members
 ```
 
 #### 요청
@@ -107,7 +99,7 @@ GET /rds/api/public/external/v3.0/project/members
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "members": [
@@ -131,7 +123,7 @@ GET /rds/api/public/external/v3.0/project/members
 ### DB 인스턴스 사양 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-flavors
+GET /v3.0/db-flavors
 ```
 
 #### 요청
@@ -155,7 +147,7 @@ GET /rds/api/public/external/v3.0/db-flavors
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbFlavors": [
@@ -179,7 +171,7 @@ GET /rds/api/public/external/v3.0/db-flavors
 ### 서브넷 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/network/subnets
+GET /v3.0/network/subnets
 ```
 
 #### 요청
@@ -205,7 +197,7 @@ GET /rds/api/public/external/v3.0/network/subnets
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "subnets": [
@@ -230,7 +222,7 @@ GET /rds/api/public/external/v3.0/network/subnets
 ### DB 엔진 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-versions
+GET /v3.0/db-versions
 ```
 #### 요청
 
@@ -253,13 +245,13 @@ GET /rds/api/public/external/v3.0/db-versions
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbVersions": [
         {
-            "dbVersion": "MYSQL_V8028",
-            "dbVersionName": "MariaDB 8.0.28",
+            "dbVersion": "MARIADB_V10330",
+            "dbVersionName": "Maria DB 10.3.30",
             "restorableFromObs": true
         }
     ]
@@ -277,7 +269,7 @@ GET /rds/api/public/external/v3.0/db-versions
 
 
 ```
-GET /rds/api/public/external/v3.0/storages
+GET /v3.0/storages
 ```
 
 #### 요청
@@ -297,7 +289,7 @@ GET /rds/api/public/external/v3.0/storages
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "storages": [
@@ -335,7 +327,7 @@ GET /rds/api/public/external/v3.0/storages
 
 
 ```
-GET /rds/api/public/external/v3.0/jobs/{jobId}
+GET /v3.0/jobs/{jobId}
 ```
 
 #### 요청
@@ -366,7 +358,7 @@ GET /rds/api/public/external/v3.0/jobs/{jobId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "jobId": "0ddb042c-5af6-43fb-a914-f4dd0540eb7c",
@@ -392,7 +384,7 @@ GET /rds/api/public/external/v3.0/jobs/{jobId}
 ### DB 인스턴스 그룹 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instance-groups
+GET /v3.0/db-instance-groups
 ```
 
 #### 요청
@@ -416,7 +408,7 @@ GET /rds/api/public/external/v3.0/db-instance-groups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbInstanceGroups": [
@@ -438,7 +430,7 @@ GET /rds/api/public/external/v3.0/db-instance-groups
 ### DB 인스턴스 그룹 상세 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instance-groups/{dbInstanceGroupId}
+GET /v3.0/db-instance-groups/{dbInstanceGroupId}
 ```
 
 #### 요청
@@ -469,7 +461,7 @@ GET /rds/api/public/external/v3.0/db-instance-groups/{dbInstanceGroupId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbInstanceGroupId": "36617a8e-0df8-4b16-b6ea-6306019e95da",
@@ -544,7 +536,7 @@ GET /rds/api/public/external/v3.0/db-instance-groups/{dbInstanceGroupId}
 ### DB 인스턴스 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances
+GET /v3.0/db-instances
 ```
 
 #### 요청
@@ -575,7 +567,7 @@ GET /rds/api/public/external/v3.0/db-instances
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbInstances": [
@@ -584,7 +576,7 @@ GET /rds/api/public/external/v3.0/db-instances
             "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
             "dbInstanceName": "db-instance",
             "description": null,
-            "dbVersion": "MYSQL_V8028",
+            "dbVersion": "MARIADB_V10330",
             "dbPort": 10000,
             "dbInstanceType": "MASTER",
             "dbInstanceStatus": "AVAILABLE",
@@ -604,7 +596,7 @@ GET /rds/api/public/external/v3.0/db-instances
 ### DB 인스턴스 상세 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
+GET /v3.0/db-instances/{dbInstanceId}
 ```
 
 #### 요청
@@ -641,14 +633,14 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbInstanceId": "d067593b-1acc-4ccc-9e8a-cc72d6d79ec3",
     "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
     "dbInstanceName": "db-instance",
     "description": null,
-    "dbVersion": "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbPort": 10000,
     "dbInstanceType": "MASTER",
     "dbInstanceStatus": "AVAILABLE",
@@ -669,7 +661,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
 ### DB 인스턴스 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances
+POST /v3.0/db-instances
 ```
 
 #### 요청
@@ -700,7 +692,6 @@ POST /rds/api/public/external/v3.0/db-instances
 | backup.backupPeriod                          |Body|Number|O| 백업 보관 기간(일)<br/>- 최솟값: `0`<br/>- 최댓값: `730`                                                                                                                                                                                 |
 | backup.ftwrlWaitTimeout                      |Body|Number|X| 쿼리 지연 대기 시간(초)<br/>- 기본값: `1800`<br/>- 최솟값: `0`<br/>- 최댓값: `21600`                                                                                                                                                          |
 | backup.backupRetryCount                      |Body|Number|X| 백업 재시도 횟수<br/>- 기본값: `0`<br/>- 최솟값: `0`<br/>- 최댓값: `10`                                                                                                                                                                     |
-| backup.replicationRegion                     |Body|Enum|X| 백업 복제 리전<br />- `KR1`: 한국(판교)<br/>- `KR2`: 한국(평촌)<br/>- `JP1`: 일본(도쿄)                                                                                                                                                       |
 | backup.useBackupLock                         |Body|Boolean|X| 테이블 잠금 사용 여부<br/>- 기본값: `true`                                                                                                                                                                                              |
 | backup.backupSchedules                       |Body|Array|O| 백업 스케줄 목록                                                                                                                                                                                                                   |
 | backup.backupSchedules.backupWndBgnTime      |Body|String|O| 백업 시작 시각<br/>- 예시: `00:00:00`                                                                                                                                                                                               |
@@ -716,7 +707,7 @@ POST /rds/api/public/external/v3.0/db-instances
     "dbInstanceName": "db-instance",
     "description": "description",
     "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbVersion": "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbPort": 10000,
     "dbUserName": "db-user",
     "dbPassword": "password",
@@ -763,7 +754,7 @@ POST /rds/api/public/external/v3.0/db-instances
 ### DB 인스턴스 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
+PUT /v3.0/db-instances/{dbInstanceId}
 ```
 
 #### 요청
@@ -808,7 +799,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
 ### DB 인스턴스 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
+DELETE /v3.0/db-instances/{dbInstanceId}
 ```
 
 #### 요청
@@ -831,7 +822,7 @@ DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}
 ### DB 인스턴스 재시작하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/restart
+POST /v3.0/db-instances/{dbInstanceId}/restart
 ```
 
 #### 요청
@@ -854,7 +845,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/restart
 ### DB 인스턴스 시작하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/start
+POST /v3.0/db-instances/{dbInstanceId}/start
 ```
 
 #### 요청
@@ -877,7 +868,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/start
 ### DB 인스턴스 정지하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/stop
+POST /v3.0/db-instances/{dbInstanceId}/stop
 ```
 
 #### 요청
@@ -900,7 +891,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/stop
 ### DB 인스턴스 백업하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup
+POST /v3.0/db-instances/{dbInstanceId}/backup
 ```
 
 #### 요청
@@ -922,7 +913,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup
 ### DB 인스턴스 복제하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/replicate
+POST /v3.0/db-instances/{dbInstanceId}/replicate
 ```
 
 #### 요청
@@ -947,7 +938,6 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/replicate
 |backup.backupPeriod|Body|Number|X|백업 보관 기간(일)<br/>- 기본값: 원본 DB 인스턴스 값<br/>- 최솟값: `0`<br/>- 최댓값: `730`|
 |backup.ftwrlWaitTimeout|Body|Number|X|쿼리 지연 대기 시간(초)<br/>- 기본값: 원본 DB 인스턴스 값<br/>- 최솟값: `0`<br/>- 최댓값: `21600`|
 |backup.backupRetryCount|Body|Number|X|백업 재시도 횟수<br/>- 기본값: 원본 DB 인스턴스 값<br/>- 최솟값: `0`<br/>- 최댓값: `10`|
-|backup.replicationRegion|Body|Enum|X|백업 복제 리전<br />- `KR1`: 한국(판교)<br/>- `KR2`: 한국(평촌)<br/>- `JP1`: 일본(도쿄)<br/>- 기본값: 원본 DB 인스턴스 값|
 |backup.useBackupLock|Body|Boolean|X|테이블 잠금 사용 여부<br/>- 기본값: 원본 DB 인스턴스 값|
 |backup.backupSchedules|Body|Array|X|백업 스케줄 목록|
 |backup.backupSchedules.backupWndBgnTime|Body|String|X|백업 시작 시각<br/>- 예시: `00:00:00`<br/>- 기본값: 원본 DB 인스턴스 값|
@@ -988,7 +978,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/replicate
 ### DB 인스턴스 승격하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/promote
+POST /v3.0/db-instances/{dbInstanceId}/promote
 ```
 
 #### 요청
@@ -1011,7 +1001,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/promote
 ### 고가용성 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
+PUT /v3.0/db-instances/{dbInstanceId}/high-availability
 ```
 
 #### 요청
@@ -1035,7 +1025,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
 ### 고가용성 다시 시작하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability/resume
+POST /v3.0/db-instances/{dbInstanceId}/high-availability/resume
 ```
 
 #### 요청
@@ -1058,7 +1048,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
 ### 고가용성 일시 중지하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability/pause
+POST /v3.0/db-instances/{dbInstanceId}/high-availability/pause
 ```
 
 #### 요청
@@ -1081,7 +1071,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
 ### 고가용성 복구하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability/repair
+POST /v3.0/db-instances/{dbInstanceId}/high-availability/repair
 ```
 
 #### 요청
@@ -1104,7 +1094,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
 ### 고가용성 분리하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability/split
+POST /v3.0/db-instances/{dbInstanceId}/high-availability/split
 ```
 
 #### 요청
@@ -1127,7 +1117,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/high-availability
 ### 스토리지 정보 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/storage-info
+GET /v3.0/db-instances/{dbInstanceId}/storage-info
 ```
 
 #### 요청
@@ -1154,7 +1144,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/storage-info
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "storageType": "General SSD",
@@ -1174,7 +1164,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/storage-info
 ### 스토리지 정보 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/storage-info
+PUT /v3.0/db-instances/{dbInstanceId}/storage-info
 ```
 
 #### 요청
@@ -1197,7 +1187,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/storage-info
 ### 백업 정보 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
+GET /v3.0/db-instances/{dbInstanceId}/backup-info
 ```
 
 #### 요청
@@ -1230,7 +1220,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "backupPeriod": 1,
@@ -1259,7 +1249,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
 ### 백업 정보 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
+PUT /v3.0/db-instances/{dbInstanceId}/backup-info
 ```
 
 #### 요청
@@ -1270,7 +1260,6 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
 |backupPeriod|Body|Number|X|백업 보관 기간(일)<br/>- 최솟값: `0`<br/>- 최댓값: `730`|
 |ftwrlWaitTimeout|Body|Number|X|쿼리 지연 대기 시간(초)<br/>- 최솟값: `0`<br/>- 최댓값: `21600`|
 |backupRetryCount|Body|Number|X|백업 재시도 횟수<br/>- 최솟값: `0`<br/>- 최댓값: `10`|
-|replicationRegion|Body|Enum|X|백업 복제 리전<br />- `KR1`: 한국(판교)<br/>- `KR2`: 한국(평촌)<br/>- `JP1`: 일본(도쿄)|
 |useBackupLock|Body|Boolean|X|테이블 잠금 사용 여부|
 |backupSchedules|Body|Array|X|백업 스케줄 목록|
 |backupSchedules.backupWndBgnTime|Body|String|O|백업 시작 시각<br/>- 예시: `00:00:00`|
@@ -1283,7 +1272,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
 ```json
 {
 "backupPeriod": 5,
-"userBackupNoLock": true,
+"useBackupLock": true,
 "backupSchedules": [
     {
         "backupWndBgnTime": "01:00:00",
@@ -1311,7 +1300,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/backup-info
 ### 네트워크 정보 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/network-info
+GET /v3.0/db-instances/{dbInstanceId}/network-info
 ```
 
 #### 요청
@@ -1344,6 +1333,24 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/network-info
 
 ```json
 {
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "availabilityZone": "kr-pub-a",
+    "subnet": {
+        "subnetId": "bd453789-34ae-416c-9f78-05b9e43a46be",
+        "subnetName": "Default Network",
+        "subnetCidr": "192.168.0.0/16"
+    },
+    "endPoints": [
+        {
+            "domain": "ea548a78-d85f-43b4-8ddf-c88d999b9905.internal.kr1.mariadb.rds.nhncloudservice.com",
+            "ipAddress": "192.168.0.2",
+            "endPointType": "INTERNAL"
+        }
+    ]
 }
 ```
 
@@ -1355,7 +1362,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/network-info
 ### 네트워크 정보 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/network-info
+PUT /v3.0/db-instances/{dbInstanceId}/network-info
 ```
 
 #### 요청
@@ -1377,7 +1384,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/network-info
 ### DB 사용자 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users
+GET /v3.0/db-instances/{dbInstanceId}/db-users
 ```
 
 #### 요청
@@ -1408,7 +1415,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbUsers": [
@@ -1434,7 +1441,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users
 ### DB 사용자 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users
+POST /v3.0/db-instances/{dbInstanceId}/db-users
 ```
 
 #### 요청
@@ -1474,7 +1481,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users
 ### DB 사용자 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
+PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ```
 
 #### 요청
@@ -1510,7 +1517,7 @@ PUT /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId
 ### DB 사용자 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
+DELETE /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ```
 
 #### 요청
@@ -1533,7 +1540,7 @@ DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-users/{dbUse
 ### DB 스키마 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas
+GET /v3.0/db-instances/{dbInstanceId}/db-schemas
 ```
 
 #### 요청
@@ -1561,7 +1568,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbSchemas": [
@@ -1584,7 +1591,7 @@ GET /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas
 ### DB 스키마 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas
+POST /v3.0/db-instances/{dbInstanceId}/db-schemas
 ```
 
 #### 요청
@@ -1605,7 +1612,7 @@ POST /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas
 ### DB 스키마 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
+DELETE /v3.0/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
 ```
 
 #### 요청
@@ -1641,7 +1648,7 @@ DELETE /rds/api/public/external/v3.0/db-instances/{dbInstanceId}/db-schemas/{dbS
 ### 백업 목록 조회
 
 ```
-GET /rds/api/public/external/v3.0/backups
+GET /v3.0/backups
 ```
 
 #### 요청
@@ -1679,7 +1686,7 @@ GET /rds/api/public/external/v3.0/backups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "totalCounts": 1,
@@ -1689,7 +1696,7 @@ GET /rds/api/public/external/v3.0/backups
             "backupName": "backup",
             "backupStatus": "COMPLETED",
             "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd",
-            "dbVersion": "MYSQL_V8028",
+            "dbVersion": "MARIADB_V10330",
             "backupType": "AUTO",
             "backupSize": 4996786,
             "createdYmdt": "2023-02-21T00:35:00+09:00",
@@ -1707,7 +1714,7 @@ GET /rds/api/public/external/v3.0/backups
 ### 백업 내보내기
 
 ```
-POST /rds/api/public/external/v3.0/backups/{backupId}/export
+POST /v3.0/backups/{backupId}/export
 ```
 
 #### 요청
@@ -1748,7 +1755,7 @@ POST /rds/api/public/external/v3.0/backups/{backupId}/export
 ### 백업 복원하기
 
 ```
-POST /rds/api/public/external/v3.0/backups/{backupId}/restore
+POST /v3.0/backups/{backupId}/restore
 ```
 
 #### 요청
@@ -1777,7 +1784,6 @@ POST /rds/api/public/external/v3.0/backups/{backupId}/restore
 | backup.backupPeriod                          | Body   | Number  | O  | 백업 보관 기간(일)<br/>- 최솟값: `0`<br/>- 최댓값: `730`                                                                                                                                                                                 |
 | backup.ftwrlWaitTimeout                      | Body   | Number  | X  | 쿼리 지연 대기 시간(초)<br/>- 기본값: `1800`<br/>- 최솟값: `0`<br/>- 최댓값: `21600`                                                                                                                                                          |
 | backup.backupRetryCount                      | Body   | Number  | X  | 백업 재시도 횟수<br/>- 기본값: `0`<br/>- 최솟값: `0`<br/>- 최댓값: `10`                                                                                                                                                                     |
-| backup.replicationRegion                     | Body   | Enum    | X  | 백업 복제 리전<br />- `KR1`: 한국(판교)<br/>- `KR2`: 한국(평촌)<br/>- `JP1`: 일본(도쿄)                                                                                                                                                       |
 | backup.useBackupLock                         | Body   | Boolean | X  | 테이블 잠금 사용 여부<br/>- 기본값: `true`                                                                                                                                                                                                 |
 | backup.backupSchedules                       | Body   | Array   | O  | 백업 스케줄 목록                                                                                                                                                                                                                   |
 | backup.backupSchedules.backupWndBgnTime      | Body   | String  | O  | 백업 시작 시각<br/>- 예시: `00:00:00`                                                                                                                                                                                               |
@@ -1829,7 +1835,7 @@ POST /rds/api/public/external/v3.0/backups/{backupId}/restore
 ### 백업 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/backups/{backupId}
+DELETE /v3.0/backups/{backupId}
 ```
 
 #### 요청
@@ -1865,7 +1871,7 @@ DELETE /rds/api/public/external/v3.0/backups/{backupId}
 ### DB 보안 그룹 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-security-groups
+GET /v3.0/db-security-groups
 ```
 
 #### 요청
@@ -1892,7 +1898,7 @@ GET /rds/api/public/external/v3.0/db-security-groups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbSecurityGroups": [
@@ -1916,7 +1922,7 @@ GET /rds/api/public/external/v3.0/db-security-groups
 ### DB 보안 그룹 상세 보기
 
 ```
-GET /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
+GET /v3.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 요청
@@ -1959,7 +1965,7 @@ GET /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "dbSecurityGroup": {
@@ -1997,7 +2003,7 @@ GET /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/db-security-groups
+POST /v3.0/db-security-groups
 ```
 
 #### 요청
@@ -2054,7 +2060,7 @@ POST /rds/api/public/external/v3.0/db-security-groups
 ### DB 보안 그룹 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
+PUT /v3.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 요청
@@ -2091,7 +2097,7 @@ PUT /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
+DELETE /v3.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 요청
@@ -2111,7 +2117,7 @@ DELETE /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 규칙 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rules
+POST /v3.0/db-security-groups/{dbSecurityGroupId}/rules
 ```
 
 #### 요청
@@ -2159,7 +2165,7 @@ POST /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rules
 ### DB 보안 그룹 규칙 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
+PUT /v3.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 ```
 
 #### 요청
@@ -2206,7 +2212,7 @@ PUT /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rules/{
 ### DB 보안 그룹 규칙 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rules
+DELETE /v3.0/db-security-groups/{dbSecurityGroupId}/rules
 ```
 
 #### 요청
@@ -2232,7 +2238,7 @@ DELETE /rds/api/public/external/v3.0/db-security-groups/{dbSecurityGroupId}/rule
 ### 파라미터 그룹 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/parameter-groups
+GET /v3.0/parameter-groups
 ```
 
 #### 요청
@@ -2264,7 +2270,7 @@ GET /rds/api/public/external/v3.0/parameter-groups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "parameterGroups": [
@@ -2272,7 +2278,7 @@ GET /rds/api/public/external/v3.0/parameter-groups
             "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
             "parameterGroupName": "parameter-group",
             "description": null,
-            "dbVersion": "MYSQL_V8023",
+            "dbVersion": "MARIADB_V10330",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-02-31T15:28:17+09:00",
             "updatedYmdt": "2023-02-31T15:28:17+09:00"
@@ -2290,7 +2296,7 @@ GET /rds/api/public/external/v3.0/parameter-groups
 ### 파라미터 그룹 상세 보기
 
 ```
-GET /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
+GET /v3.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 요청
@@ -2330,13 +2336,13 @@ GET /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
     "parameterGroupName": "parameter-group",
     "description": null,
-    "dbVersion": "MYSQL_V8023",
+    "dbVersion": "MARIADB_V10330",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -2365,7 +2371,7 @@ GET /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
 ### 파라미터 그룹 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/parameter-groups
+POST /v3.0/parameter-groups
 ```
 
 #### 요청
@@ -2382,7 +2388,7 @@ POST /rds/api/public/external/v3.0/parameter-groups
 ```json
 {
     "parameterGroupName": "parameter-group",
-    "dbVersion": "MYSQL_V8023"
+    "dbVersion": "MARIADB_V10330"
 }
 ```
 
@@ -2401,7 +2407,7 @@ POST /rds/api/public/external/v3.0/parameter-groups
 ### 파라미터 그룹 복사하기
 
 ```
-POST /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/copy
+POST /v3.0/parameter-groups/{parameterGroupId}/copy
 ```
 
 #### 요청
@@ -2438,7 +2444,7 @@ POST /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/copy
 ### 파라미터 그룹 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
+PUT /v3.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 요청
@@ -2472,7 +2478,7 @@ PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
 ### 파라미터 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/parameters
+PUT /v3.0/parameter-groups/{parameterGroupId}/parameters
 ```
 
 #### 요청
@@ -2512,7 +2518,7 @@ PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/parameters
 ### 파라미터 그룹 재설정하기
 
 ```
-PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/reset
+PUT /v3.0/parameter-groups/{parameterGroupId}/reset
 ```
 
 #### 요청
@@ -2530,7 +2536,7 @@ PUT /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}/reset
 ### 파라미터 그룹 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
+DELETE /v3.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 요청
@@ -2552,7 +2558,7 @@ DELETE /rds/api/public/external/v3.0/parameter-groups/{parameterGroupId}
 ### 사용자 그룹 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/user-groups
+GET /v3.0/user-groups
 ```
 
 #### 요청
@@ -2577,7 +2583,7 @@ GET /rds/api/public/external/v3.0/user-groups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "userGroups": [
@@ -2599,7 +2605,7 @@ GET /rds/api/public/external/v3.0/user-groups
 ### 사용자 그룹 상세 보기
 
 ```
-GET /rds/api/public/external/v3.0/user-groups/{userGroupId}
+GET /v3.0/user-groups/{userGroupId}
 ```
 
 #### 요청
@@ -2628,7 +2634,7 @@ GET /rds/api/public/external/v3.0/user-groups/{userGroupId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
@@ -2651,7 +2657,7 @@ GET /rds/api/public/external/v3.0/user-groups/{userGroupId}
 ### 사용자 그룹 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/user-groups
+POST /v3.0/user-groups
 ```
 
 #### 요청
@@ -2685,7 +2691,7 @@ POST /rds/api/public/external/v3.0/user-groups
 ### 사용자 그룹 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/user-groups/{userGroupId}
+PUT /v3.0/user-groups/{userGroupId}
 ```
 
 #### 요청
@@ -2718,7 +2724,7 @@ PUT /rds/api/public/external/v3.0/user-groups/{userGroupId}
 ### 사용자 그룹 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/user-groups/{userGroupId}
+DELETE /v3.0/user-groups/{userGroupId}
 ```
 
 #### 요청
@@ -2738,7 +2744,7 @@ DELETE /rds/api/public/external/v3.0/user-groups/{userGroupId}
 ### 알림 그룹 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/notification-groups
+GET /v3.0/notification-groups
 ```
 
 #### 요청
@@ -2767,7 +2773,7 @@ GET /rds/api/public/external/v3.0/notification-groups
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "notificationGroups": [
@@ -2792,7 +2798,7 @@ GET /rds/api/public/external/v3.0/notification-groups
 
 
 ```
-GET /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
+GET /v3.0/notification-groups/{notificationGroupId}
 ```
 #### 요청
 
@@ -2828,7 +2834,7 @@ GET /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "notificationGroupId": "b3901f17-9971-4d1e-8a81-8448cf533dc7",
@@ -2859,7 +2865,7 @@ GET /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
 ### 알람 그룹 생성하기
 
 ```
-POST /rds/api/public/external/v3.0/notification-groups
+POST /v3.0/notification-groups
 ```
 #### 요청
 
@@ -2899,7 +2905,7 @@ POST /rds/api/public/external/v3.0/notification-groups
 ### 알람 그룹 수정하기
 
 ```
-PUT /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
+PUT /v3.0/notification-groups/{notificationGroupId}
 ```
 
 #### 요청
@@ -2937,7 +2943,7 @@ PUT /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
 ### 알람 그룹 삭제하기
 
 ```
-DELETE /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
+DELETE /v3.0/notification-groups/{notificationGroupId}
 ```
 #### 요청
 
@@ -2958,7 +2964,7 @@ DELETE /rds/api/public/external/v3.0/notification-groups/{notificationGroupId}
 ### Metric 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/metrics
+GET /v3.0/metrics
 ```
 
 
@@ -2982,7 +2988,7 @@ GET /rds/api/public/external/v3.0/metrics
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "metrics": [
@@ -3002,7 +3008,7 @@ GET /rds/api/public/external/v3.0/metrics
 ### 통계 정보 조회
 
 ```
-GET /rds/api/public/external/v3.0/metric-statistics
+GET /v3.0/metric-statistics
 ```
 
 #### 요청
@@ -3066,7 +3072,7 @@ GET /rds/api/public/external/v3.0/metric-statistics
 
 
 ```
-GET /rds/api/public/external/v3.0/events
+GET /v3.0/events
 ```
 
 
@@ -3108,7 +3114,7 @@ GET /rds/api/public/external/v3.0/events
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "totalCounts": 28,
@@ -3152,7 +3158,7 @@ GET /rds/api/public/external/v3.0/events
 ### 이벤트 코드 목록 보기
 
 ```
-GET /rds/api/public/external/v3.0/event-codes
+GET /v3.0/event-codes
 ```
 
 #### 요청
@@ -3175,7 +3181,7 @@ GET /rds/api/public/external/v3.0/event-codes
 {
     "header": {
         "resultCode": 0,
-        "resultMessage": "",
+        "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
     "eventCodes": [
