@@ -64,14 +64,6 @@ GET /v3.0/project/regions
         {
             "regionCode": "KR1",
             "isEnabled": true
-        },
-        {
-            "regionCode": "KR2",
-            "isEnabled": true
-        },
-        {
-            "regionCode": "JP1",
-            "isEnabled": true
         }
     ]
 }
@@ -259,8 +251,8 @@ GET /v3.0/db-versions
     },
     "dbVersions": [
         {
-            "dbVersion": "MYSQL_V8028",
-            "dbVersionName": "MariaDB 8.0.28",
+            "dbVersion": "MARIADB_V10330",
+            "dbVersionName": "Maria DB 10.3.30",
             "restorableFromObs": true
         }
     ]
@@ -585,7 +577,7 @@ GET /v3.0/db-instances
             "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
             "dbInstanceName": "db-instance",
             "description": null,
-            "dbVersion": "MYSQL_V8028",
+            "dbVersion": "MARIADB_V10330",
             "dbPort": 10000,
             "dbInstanceType": "MASTER",
             "dbInstanceStatus": "AVAILABLE",
@@ -649,7 +641,7 @@ GET /v3.0/db-instances/{dbInstanceId}
     "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
     "dbInstanceName": "db-instance",
     "description": null,
-    "dbVersion": "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbPort": 10000,
     "dbInstanceType": "MASTER",
     "dbInstanceStatus": "AVAILABLE",
@@ -701,7 +693,6 @@ POST /v3.0/db-instances
 | backup.backupPeriod                        |Body|Number|O| バックアップ保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730`                                                                                                                                                                                  |
 | backup.ftwrlWaitTimeout                    |Body|Number|X| クエリ遅延待機時間(秒)<br/>- デフォルト値: `1800`<br/>- 最小値: `0`<br/>- 最大値: `21600`                                                                                                                                                            |
 | backup.backupRetryCount                    |Body|Number|X| バックアップ再試行回数<br/>- デフォルト値: `0`<br/>- 最小値: `0`<br/>- 最大値: `10`                                                                                                                                                                   |
-| backup.replicationRegion                   |Body|Enum|X| バックアップ複製リージョン<br />- `KR1`:韓国(パンギョ)<br/>- `KR2`:韓国(ピョンチョン)<br/>- `JP1`:日本(東京)                                                                                                                                                  |
 | backup.useBackupLock                       |Body|Boolean|X| テーブルロックを使用するかどうか<br/>- デフォルト値: `true`                                                                                                                                                                                          |
 | backup.backupSchedules                     |Body|Array|O| バックアップスケジュールリスト                                                                                                                                                                                                                |
 | backup.backupSchedules.backupWndBgnTime    |Body|String|O| バックアップ開始時刻<br/>- 例: `00:00:00`                                                                                                                                                                                                 |
@@ -717,7 +708,7 @@ POST /v3.0/db-instances
     "dbInstanceName": "db-instance",
     "description": "description",
     "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbVersion": "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbPort": 10000,
     "dbUserName": "db-user",
     "dbPassword": "password",
@@ -948,7 +939,6 @@ POST /v3.0/db-instances/{dbInstanceId}/replicate
 | backup.backupPeriod                          |Body|Number|X|バックアップ保管期間(日)<br/>- デフォルト値:原本DBインスタンス値<br/>- 最小値: `0`<br/>- 最大値: `730`|
 | backup.ftwrlWaitTimeout                      |Body|Number|X|クエリ遅延待機時間(秒)<br/>- デフォルト値:原本DBインスタンス値<br/>- 最小値: `0`<br/>- 最大値: `21600`|
 | backup.backupRetryCount                      |Body|Number|X|バックアップ再試行回数<br/>- デフォルト値:原本DBインスタンス値<br/>- 最小値: `0`<br/>- 最大値: `10`|
-| backup.replicationRegion                     |Body|Enum|X|バックアップ複製リージョン<br />- `KR1`:韓国(パンギョ)<br/>- `KR2`:韓国(ピョンチョン)<br/>- `JP1`:日本(東京)<br/>- デフォルト値:原本DBインスタンス値|
 | backup.useBackupLock                         |Body|Boolean|X|テーブルロックを使用するかどうか<br/>- デフォルト値:原本DBインスタンス値|
 | backup.backupSchedules                       |Body|Array|X|バックアップスケジュールリスト|
 | backup.backupSchedules.backupWndBgnTime      |Body|String|X|バックアップ開始時刻<br/>- 例: `00:00:00`<br/>- デフォルト値:原本DBインスタンス値|
@@ -1271,7 +1261,6 @@ PUT /v3.0/db-instances/{dbInstanceId}/backup-info
 |backupPeriod|Body|Number|X|バックアップ保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730`|
 |ftwrlWaitTimeout|Body|Number|X|クエリ遅延待機時間(秒)<br/>- 最小値: `0`<br/>- 最大値: `21600`|
 |backupRetryCount|Body|Number|X|バックアップ再試行回数<br/>- 最小値: `0`<br/>- 最大値: `10`|
-|replicationRegion|Body|Enum|X|バックアップ複製リージョン<br />- `KR1`:韓国(パンギョ)<br/>- `KR2`:韓国(ピョンチョン)<br/>- `JP1`:日本(東京)|
 |useBackupLock|Body|Boolean|X|テーブルロックを使用するかどうか|
 |backupSchedules|Body|Array|X|バックアップスケジュールリスト|
 |backupSchedules.backupWndBgnTime|Body|String|O|バックアップ開始時刻<br/>- 例: `00:00:00`|
@@ -1358,7 +1347,7 @@ GET /v3.0/db-instances/{dbInstanceId}/network-info
     },
     "endPoints": [
         {
-            "domain": "ea548a78-d85f-43b4-8ddf-c88d999b9905.internal.kr1.mysql.rds.nhncloudservice.com",
+            "domain": "ea548a78-d85f-43b4-8ddf-c88d999b9905.internal.kr1.mariadb.rds.nhncloudservice.com",
             "ipAddress": "192.168.0.2",
             "endPointType": "INTERNAL"
         }
@@ -1708,7 +1697,7 @@ GET /v3.0/backups
             "backupName": "backup",
             "backupStatus": "COMPLETED",
             "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd",
-            "dbVersion": "MYSQL_V8028",
+            "dbVersion": "MARIADB_V10330",
             "backupType": "AUTO",
             "backupSize": 4996786,
             "createdYmdt": "2023-02-21T00:35:00+09:00",
@@ -1796,7 +1785,6 @@ POST /v3.0/backups/{backupId}/restore
 | backup.backupPeriod                          | Body   | Number  | O  | バックアップ保管期間(日)<br/>- 最小値: `0`<br/>- 最大値: `730`                                                                                                                                                                               |
 | backup.ftwrlWaitTimeout                      | Body   | Number  | X  | クエリ遅延待機時間(秒)<br/>- デフォルト値: `1800`<br/>- 最小値: `0`<br/>- 最大値: `21600`                                                                                                                                                         |
 | backup.backupRetryCount                      | Body   | Number  | X  | バックアップ再試行回数<br/>- デフォルト値: `0`<br/>- 最小値: `0`<br/>- 最大値: `10`                                                                                                                                                                |
-| backup.replicationRegion                     | Body   | Enum    | X  | バックアップ複製リージョン<br />- `KR1`:韓国(パンギョ)<br/>- `KR2`:韓国(ピョンチョン)<br/>- `JP1`:日本(東京)                                                                                                                                               |
 | backup.useBackupLock                         | Body   | Boolean | X  | テーブルロックを使用するかどうか<br/>- デフォルト値: `true`                                                                                                                                                                                       |
 | backup.backupSchedules                       | Body   | Array   | O  | バックアップスケジュールリスト                                                                                                                                                                                                             |
 | backup.backupSchedules.backupWndBgnTime      | Body   | String  | O  | バックアップ開始時刻<br/>- 例: `00:00:00`                                                                                                                                                                                              |
@@ -2291,7 +2279,7 @@ GET /v3.0/parameter-groups
             "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
             "parameterGroupName": "parameter-group",
             "description": null,
-            "dbVersion": "MYSQL_V8023",
+            "dbVersion": "MARIADB_V10330",
             "parameterGroupStatus": "STABLE",
             "createdYmdt": "2023-02-31T15:28:17+09:00",
             "updatedYmdt": "2023-02-31T15:28:17+09:00"
@@ -2355,7 +2343,7 @@ GET /v3.0/parameter-groups/{parameterGroupId}
     "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
     "parameterGroupName": "parameter-group",
     "description": null,
-    "dbVersion": "MYSQL_V8023",
+    "dbVersion": "MARIADB_V10330",
     "parameterGroupStatus": "STABLE",
     "parameters": [
         {
@@ -2401,7 +2389,7 @@ POST /v3.0/parameter-groups
 ```json
 {
     "parameterGroupName": "parameter-group",
-    "dbVersion": "MYSQL_V8023"
+    "dbVersion": "MARIADB_V10330"
 }
 ```
 
