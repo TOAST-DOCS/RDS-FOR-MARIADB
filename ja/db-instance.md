@@ -29,20 +29,20 @@ NHN Cloudは、物理的なハードウェアの問題で生じる障害に備�
 
 以下に明示されたバージョンを使用できます。
 
-| バージョン        | 備考                                                         |
-|--------------|--------------------------------------------------------------|
-| MariaDB 10.3.30 |                                                              |
+| バージョン           | 備考 |
+|-----------------|----|
+| MariaDB 10.3.30 |    |
 
 ### DBインスタンスタイプ
 
 DBインスタンスはタイプごとに異なるCPUコア数とメモリ容量を持っています。
 DBインスタンス作成時、データベースのワークロードに応じて適切なDBインスタンスタイプを選択する必要があります。
 
-| タイプ | 説明                                                      |
-|-----|-----------------------------------------------------------|
-| m2  | CPUとメモリをバランスよく設定したタイプです。                                |
-| c2  | CPUのパフォーマンスを高く設定したインスタンスタイプです。                               |
-| r2  | 他のリソースに比べてメモリの使用量が多い場合に使用できます。                     |
+| タイプ | 説明                                                    |
+|-----|-------------------------------------------------------|
+| m2  | CPUとメモリをバランスよく設定したタイプです。                              |
+| c2  | CPUのパフォーマンスを高く設定したインスタンスタイプです。                        |
+| r2  | 他のリソースに比べてメモリの使用量が多い場合に使用できます。                        |
 | x1  | 高スペックのCPUとメモリをサポートするタイプです。高性能が必要なサービスやアプリケーションに使用します。 |
 
 作成済みのDBインスタンスのタイプはWebコンソールから簡単に変更できます。
@@ -54,50 +54,50 @@ DBインスタンス作成時、データベースのワークロードに応じ
 
 DBインスタンスの状態は下記のような値で構成され、ユーザーの行為と現在の状態によって変更されます。
 
-| 状態              | 説明                                           |
-|-------------------|------------------------------------------------|
-| BEFORE_CREATE     | 作成前                                        |
-| AVAILABLE         | 使用可能                                        |
-| STORAGE_FULL      | 容量不足                                         |
-| FAIL_TO_CREATE    | 作成失敗                                        |
-| FAIL_TO_CONNECT   | 接続失敗                                        |
-| REPLICATION_STOP  | 複製中断                                        |
-| FAILOVER          | フェイルオーバー完了                                     |
+| 状態                | 説明                                              |
+|-------------------|-------------------------------------------------|
+| BEFORE_CREATE     | 作成前                                             |
+| AVAILABLE         | 使用可能                                            |
+| STORAGE_FULL      | 容量不足                                            |
+| FAIL_TO_CREATE    | 作成失敗                                            |
+| FAIL_TO_CONNECT   | 接続失敗                                            |
+| REPLICATION_STOP  | 複製中断                                            |
+| FAILOVER          | フェイルオーバー完了                                      |
 | FAILOVER_SHUTDOWN | フェイルオーバー完了(停止), 2023年4月11日以前にフェイルオーバーしたDBインスタンス |
-| SHUTDOWN          | 停止した                                          |
+| SHUTDOWN          | 停止した                                            |
 
 ### DBインスタンス作業
 
 DBインスタンスで実行される作業は下記のような値で構成され、Webコンソールの操作または事前に指定された自動化バッチに基づいて作業が始まります。
 
-| 作業                     | 説明         |
-|--------------------------|--------------|
-| APPLYING_PARAMETER_GROUP | パラメータグループの適用中 |
-| BACKING_UP               | バックアップ中       |
-| CANCELING                | キャンセル中       |
-| CREATING                 | 作成中       |
-| CREATING_SCHEMA          | DBスキーマの作成中	 |
-| CREATING_USER            | ユーザーの作成中	    |
-| DELETING                 | 削除中       |
-| DELETING_SCHEMA          | DBスキーマの削除中 |
-| DELETING_USER            | ユーザーの削除中   |
-| EXPORTING_BACKUP         | バックアップのエクスポート中  |
-| FAILING_OVER             | フェイルオーバー中    |
-| MIGRATING                | マイグレーション中   |
-| MODIFYING                | 修正中       |
-| PREPARING                | 準備中       |
-| PROMOTING                | 昇格中       |
-| REBUILDING               | 再構築中      |
-| REPAIRING                | 復旧中       |
-| REPLICATING              | 複製中       |
-| RESTARTING               | 再起動中      |
-| RESTARTING_FORCIBLY      | 強制再起動中   |
-| RESTORING                | 復元中       |
-| STARTING                 | 起動中        |
-| STOPPING                 | 停止中       |
-| SYNCING_SCHEMA           | DBスキーマの同期中 |
-| SYNCING_USER             | ユーザーの同期中	   |
-| UPDATING_USER            | ユーザーの修正中	    |
+| 作業                       | 説明             |
+|--------------------------|----------------|
+| APPLYING_PARAMETER_GROUP | パラメータグループの適用中  |
+| BACKING_UP               | バックアップ中        |
+| CANCELING                | キャンセル中         |
+| CREATING                 | 作成中            |
+| CREATING_SCHEMA          | DBスキーマの作成中	    |
+| CREATING_USER            | ユーザーの作成中	      |
+| DELETING                 | 削除中            |
+| DELETING_SCHEMA          | DBスキーマの削除中     |
+| DELETING_USER            | ユーザーの削除中       |
+| EXPORTING_BACKUP         | バックアップのエクスポート中 |
+| FAILING_OVER             | フェイルオーバー中      |
+| MIGRATING                | マイグレーション中      |
+| MODIFYING                | 修正中            |
+| PREPARING                | 準備中            |
+| PROMOTING                | 昇格中            |
+| REBUILDING               | 再構築中           |
+| REPAIRING                | 復旧中            |
+| REPLICATING              | 複製中            |
+| RESTARTING               | 再起動中           |
+| RESTARTING_FORCIBLY      | 強制再起動中         |
+| RESTORING                | 復元中            |
+| STARTING                 | 起動中            |
+| STOPPING                 | 停止中            |
+| SYNCING_SCHEMA           | DBスキーマの同期中     |
+| SYNCING_USER             | ユーザーの同期中	      |
+| UPDATING_USER            | ユーザーの修正中	      |
 
 > [注意]
 > DBインスタンスは一度に1つの作業しか処理できません。
@@ -139,16 +139,16 @@ DBインスタンスのデータベースを定期的にバックアップする
 
 DBインスタンス作成時、基本通知を設定できます。基本通知を設定すると、`{{DBインスタンス名}-default`という名前で新しい通知グループが作成され、下記の通知項目が自動で設定されます。基本通知として作成された通知グループは自由に修正、削除できます。通知グループについての詳しい説明は[通知グループ](notification-group.md)を参照してください。
 
-| 項目                       | 比較方法 | しきい値         | 持続時間 |
-|----------------------------|-------|---------------|-------|
-| CPU使用率                  | &gt;= | 80%           | 5分  |
-| Storageの空き容量           | &lt;= | 5,120MB       | 5分  |
-| Database Connection Status | &lt;= | 0             | 0分  |
-| Storage使用量              | &gt;= | 95%           | 5分  |
-| ストレージ障害                    | &lt;= | 0             | 0分  |
-| Connection Ratio           | &gt;= | 85%           | 5分  |
-| メモリ使用量                  | &gt;= | 90%           | 5分  |
-| Slow Query                 | &gt;= | 60 counts/min | 5分  |
+| 項目                         | 比較方法  | しきい値          | 持続時間 |
+|----------------------------|-------|---------------|------|
+| CPU使用率                     | &gt;= | 80%           | 5分   |
+| Storageの空き容量               | &lt;= | 5,120MB       | 5分   |
+| Database Connection Status | &lt;= | 0             | 0分   |
+| Storage使用量                 | &gt;= | 95%           | 5分   |
+| ストレージ障害                    | &lt;= | 0             | 0分   |
+| Connection Ratio           | &gt;= | 85%           | 5分   |
+| メモリ使用量                     | &gt;= | 90%           | 5分   |
+| Slow Query                 | &gt;= | 60 counts/min | 5分   |
 
 ### DBインスタンスの停止
 
@@ -222,7 +222,8 @@ DBインスタンスに接続されたパラメータグループのパラメー
 
 ### 自動フェイルオーバー
 
-予備マスターでマスターの状態チェックに4回連続失敗した場合、マスターがサービスを提供できないと判断し、自動的にフェイルオーバーを実行します。スプリットブレイン防止のため、障害が発生したマスターに割り当てられたすべてのユーザーセキュリティグループの接続を解除して外部からの接続を遮断し、予備マスターがマスターの役割を代行します。接続のための内部ドメインのA recordは障害が発生したマスターから予備マスターに変更されるので、アプリケーションの変更は必要ありません。フェイルオーバーが完了すると、障害が発生したマスターの種類はフェイルオーバーが発生したマスターに、予備マスターの種類はマスターに変更されます。フェイルオーバーが発生したマスターを復旧または再構築するまでフェイルオーバーは実行されません。昇格されたマスターは、フェイルオーバーが発生したマスターのすべての自動バックアップを継承します。フェイルオーバーの過程でマスターが変更されると、バイナリログがすべて削除されるため、既存のバックアップを利用した時点復元はサポートされません。昇格されたマスターで新規にバックアップが行われた時点から時点復元を行うことができます。
+予備マスターでマスターの状態チェックに4回連続失敗した場合、マスターがサービスを提供できないと判断し、自動的にフェイルオーバーを実行します。スプリットブレイン防止のため、障害が発生したマスターに割り当てられたすべてのユーザーセキュリティグループの接続を解除して外部からの接続を遮断し、予備マスターがマスターの役割を代行します。接続のための内部ドメインのA
+recordは障害が発生したマスターから予備マスターに変更されるので、アプリケーションの変更は必要ありません。フェイルオーバーが完了すると、障害が発生したマスターの種類はフェイルオーバーが発生したマスターに、予備マスターの種類はマスターに変更されます。フェイルオーバーが発生したマスターを復旧または再構築するまでフェイルオーバーは実行されません。昇格されたマスターは、フェイルオーバーが発生したマスターのすべての自動バックアップを継承します。フェイルオーバーの過程でマスターが変更されると、バイナリログがすべて削除されるため、既存のバックアップを利用した時点復元はサポートされません。昇格されたマスターで新規にバックアップが行われた時点から時点復元を行うことができます。
 
 > [参考]
 > 高可用性機能はドメインに基づいているため、接続をしようとするクライアントがDNSサーバーに接続できないネットワーク環境の場合、ドメインを介してDBインスタンスに接続することができず、フェイルオーバー発生時、正常な接続ができません。
@@ -316,12 +317,12 @@ mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_
 ```
 
 * パラメータの説明
-  * master_instance_ip:複製対象(Master)サーバーのIP
-  * master_instance_port :複製対象(Master)サーバーのMariaDBポート
-  * user_id_for_replication:複製対象(Master)サーバーのMariaDBに接続する複製用アカウント
-  * password_for_replication_user:複製用アカウントパスワード
-  * MASTER_LOG_FILE:複製対象(Master)のbinary logファイル名
-  * MASTER_LOG_POS:複製対象(Master)のbinary logポジション
+    * master_instance_ip:複製対象(Master)サーバーのIP
+    * master_instance_port :複製対象(Master)サーバーのMariaDBポート
+    * user_id_for_replication:複製対象(Master)サーバーのMariaDBに接続する複製用アカウント
+    * password_for_replication_user:複製用アカウントパスワード
+    * MASTER_LOG_FILE:複製対象(Master)のbinary logファイル名
+    * MASTER_LOG_POS:複製対象(Master)のbinary logポジション
 
 ```
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4);
@@ -369,6 +370,7 @@ mysql> CALL mysql.tcrds_repl_skip_repl_error();
 * 次のような複製エラーが発生した場合、tcrds_repl_next_changemasterプロシージャを実行すると、複製エラーを解決できます。
 
 例) MariaDB error code 1236 (ER_MASTER_FATAL_ERROR_READING_BINLOG): Got fatal error from master when reading data from binary log
+
 ```
 mysql> CALL mysql.tcrds_repl_next_changemaster();
 ```
@@ -415,7 +417,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### データのインポート中に`ERROR 1418`エラーが発生する場合
 
 * `ERROR 1418`エラーはmysqldumpファイルの関数宣言にNO SQL、READS SQL DATA, DETERMINISTICがなく、バイナリログが有効な状態の時に発生します。
-  * 詳細については[The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB文書を参照してください。
+    * 詳細については[The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB文書を参照してください。
 * これを解決するためには、mysqldumpファイルを適用するDBインスタンスの`log_bin_trust_function_creators`パラメータの値を`1`に変更する必要があります。
 
 ### 複製を利用してエクスポート

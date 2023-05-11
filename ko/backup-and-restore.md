@@ -82,7 +82,7 @@ DB 인스턴스의 백업 보관 기간을 1일 이상으로 설정하면 자동
 
 ### 외부 MariaDB 백업을 이용한 복원
 
-외부 MariaDB 백업 파일을 이용하여 DB 인스턴스를 생성할 수 있습니다. 
+외부 MariaDB 백업 파일을 이용하여 DB 인스턴스를 생성할 수 있습니다.
 
 > [주의]
 > innodb_data_file_path의 설정값이 ibdata1:12M:autoextend가 아니면 RDS for MariaDB의 DB 인스턴스로 복원할 수 없습니다.

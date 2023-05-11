@@ -7,29 +7,29 @@
 * Made improvements so that the user interface is consistent with NHN Cloud services
 * Made modifications so that manual backup is not deleted even when DB instances are deleted
 * Added parameter group feature
-  * The database settings of DB instance can be freely changed
-  * Applicable to multiple instances
-  * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
+    * The database settings of DB instance can be freely changed
+    * Applicable to multiple instances
+    * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
 * Added DB security group feature
-  * The access control of DB instance can be freely set
-  * Applicable to multiple instances
-  * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
+    * The access control of DB instance can be freely set
+    * Applicable to multiple instances
+    * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
 * Provided a screen to view DB instances grouped by replication arrangements
 * Displayed candidate master to web console
-  * Available to secure storage by deleting the binary log of candidate master
-  * Various logs of candidate master can be checked and downloaded
-  * Rebuilding candidate master is available when an issue occur
-    * The fixed IP does not change because DB instance of the candidate master remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
+    * Available to secure storage by deleting the binary log of candidate master
+    * Various logs of candidate master can be checked and downloaded
+    * Rebuilding candidate master is available when an issue occur
+        * The fixed IP does not change because DB instance of the candidate master remain unchanged
+        * All data in the database is deleted, and recovered with the data of the master
 * Rebuilding read replica is available
-  * The fixed IP address does not change because the DB instance of the read replica remain unchanged
-  * All data in the database is deleted, and recovered with the data of the master
+    * The fixed IP address does not change because the DB instance of the read replica remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
 * Recovery of master with a completed failover
-  * High availability recovery of a new master and a master with a completed failover is available
-  * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
+    * High availability recovery of a new master and a master with a completed failover is available
+    * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
 * Rebuilding master with a completed failover
-  * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
-  * All data in the database is deleted, and recovered with the data of the master
+    * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
 
 ### 2023. 02. 14.
 
@@ -41,7 +41,6 @@
 
 * IAMコンソールでエラーが発生した時に適切なエラーページに移動しない問題を修正
 * フェイルオーバーを利用してDBインスタンスタイプの変更またはストレージの拡張を行う場合にPing間隔がデフォルト値に設定される問題を修正
-
 
 ### 2023. 01. 10.
 
