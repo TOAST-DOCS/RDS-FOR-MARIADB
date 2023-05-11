@@ -1,6 +1,6 @@
 ## Database > RDS for MariaDB > 개요
 
-RDS for MariaDB은 MariaDB 데이터베이스를 클라우드 환경에서 사용할 수 있는 서비스입니다. 손쉽게 MariaDB이 설치된 가상 장비를 사용할 수 있습니다. 
+RDS for MariaDB은 MariaDB 데이터베이스를 클라우드 환경에서 사용할 수 있는 서비스입니다. 손쉽게 MariaDB이 설치된 가상 장비를 사용할 수 있습니다.
 
 ## 주요 기능
 

@@ -45,26 +45,26 @@
 
 DB 인스턴스의 각종 성능 지표를 차트 형태로 볼 수 있습니다. 성능 지표마다 각기 다른 형태의 차트로 구성되어 있습니다. 기본적인 시스템 지표 이외에 MariaDB에서 제공하는 각종 성능 지표를 차트로 제공하고 있습니다. 차트별로 확인할 수 있는 지표는 아래와 같습니다.
 
-| 차트                         | 지표(단위)                                                                                                                              | 비고                                |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|
-| CPU 사용률                    | cpu used (%)                                                                                                                         |                                   |
-| CPU 상세                     | cpu user (%)<br/>cpu system (%)<br/>cpu nice (%)<br/>cpu IO wait (%)                                                                 |                                   |
-| 메모리 사용량                    | memory used (%)                                                                                                                      |                                   |
-| 메모리 상세                     | memory used (bytes)<br/>memory free (bytes)                                                                                          |                                   |
-| 스왑 사용량                     | swap used (bytes)<br> swap total (bytes)                                                                                             |                                   |
-| Storage 사용량                | storage used (%)                                                                                                                     |                                   |
-| Storage 남은 사용량             | storage free (%)                                                                                                                     |                                   |
-| Storage IO                 | disk read (bytes)<br> disk write (bytes)                                                                                             |                                   |
+| 차트                         | 지표(단위)                                                                                                                               | 비고                                  |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| CPU 사용률                    | cpu used (%)                                                                                                                         |                                     |
+| CPU 상세                     | cpu user (%)<br/>cpu system (%)<br/>cpu nice (%)<br/>cpu IO wait (%)                                                                 |                                     |
+| 메모리 사용량                    | memory used (%)                                                                                                                      |                                     |
+| 메모리 상세                     | memory used (bytes)<br/>memory free (bytes)                                                                                          |                                     |
+| 스왑 사용량                     | swap used (bytes)<br> swap total (bytes)                                                                                             |                                     |
+| Storage 사용량                | storage used (%)                                                                                                                     |                                     |
+| Storage 남은 사용량             | storage free (%)                                                                                                                     |                                     |
+| Storage IO                 | disk read (bytes)<br> disk write (bytes)                                                                                             |                                     |
 | 네트워크 데이터 송수신               | nic incoming (bytes)<br> nic outgoing (bytes)                                                                                        | MariaDB에서 사용하는 기본적인 네트워크 전송이 발생합니다. |
-| CPU 평균 부하                  | 1m<br/>5m<br/>15m                                                                                                                    |                                   |
-| Queries Per Second         | qps (count/sec)                                                                                                                      |                                   |
-| Database Activity          | select (count/sec)<br/>insert (count/sec)<br/>update (count/sec)<br/>delete (count/sec)<br/>replace (count/sec)<br/>call (count/sec) |                                   |
-| Buffer Pool                | Buffer Pool Total (MB)<br/>Buffer Pool Used (MB)                                                                                     |                                   |
-| Slow Query                 | counts/min                                                                                                                           |                                   |
-| 복제 딜레이                     | sec                                                                                                                                  |                                   |
-| Row Access                 | index (counts/sec)<br/>full scan (counts/sec)                                                                                        |                                   |
-| Database Connection Status | mysql status                                                                                                                         | 접속 불가: 0, 접속 가능: 1                |
-| 스토리지 결함                    | disk fault status                                                                                                                    | 비정상: 0, 정상: 1                     |
+| CPU 평균 부하                  | 1m<br/>5m<br/>15m                                                                                                                    |                                     |
+| Queries Per Second         | qps (count/sec)                                                                                                                      |                                     |
+| Database Activity          | select (count/sec)<br/>insert (count/sec)<br/>update (count/sec)<br/>delete (count/sec)<br/>replace (count/sec)<br/>call (count/sec) |                                     |
+| Buffer Pool                | Buffer Pool Total (MB)<br/>Buffer Pool Used (MB)                                                                                     |                                     |
+| Slow Query                 | counts/min                                                                                                                           |                                     |
+| 복제 딜레이                     | sec                                                                                                                                  |                                     |
+| Row Access                 | index (counts/sec)<br/>full scan (counts/sec)                                                                                        |                                     |
+| Database Connection Status | mysql status                                                                                                                         | 접속 불가: 0, 접속 가능: 1                  |
+| 스토리지 결함                    | disk fault status                                                                                                                    | 비정상: 0, 정상: 1                       |
 
 ## 서버 그룹
 

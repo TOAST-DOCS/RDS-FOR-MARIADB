@@ -13,11 +13,13 @@ mysqldumpを利用してNHN Cloud RDSの外部にデータでエクスポート�
 下記のmysqldumpコマンドを使用して外部にデータをエクスポートします。
 
 #### ファイルでエクスポートする場合
+
 ```
 mysqldump -h{rds_insance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} > {local_path_and_file_name}
 ```
 
 #### NHN Cloud RDS外部のmysql dbにエクスポートする場合
+
 ```
 mysqldump -h{rds_insance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} | mysql -h{external_db_host} -u{external_db_id} -p{external_db_password} --port={external_db_port}
 ```
@@ -164,7 +166,6 @@ MariaDB> call mysql.tcrds_repl_init();
 
 * RDS for MariaDBのバックアップファイルをオブジェクトストレージへエクスポートしたり、オブジェクトストレージのバックアップファイルを利用してDBインスタンスを復元できます。
 
-
 > [注意]オブジェクトストレージのバックアップファイルと復元しようとしているMariaDBのバージョンは同じである必要があります。
 
 ### オブジェクトストレージにバックアップをエクスポート
@@ -214,6 +215,7 @@ find {MariaDBデータ保存パス} -name "*.qp" -print0 | xargs -0 rm
 * 一般MariaDBバックアップファイルを利用してRDS for MariaDBのDBインスタンスに復元できます。
 
 > [注意] innodb_data_file_pathの設定値がibdata1:12M:autoextendではない場合、RDS for MariaDBのDBインスタンスに復元できません。
+
 * MariaDBがインストールされたサーバーで以下のコマンドを利用してバックアップを行います。
 
 ```
@@ -221,11 +223,11 @@ mariabackup --defaults-file={my.cnfパス} --user {ユーザー} --password '{�
 ```
 
 * バックアップログファイルの最後の行に`completed OK!`があるかを確認します。
-  * completed OK!がない場合、バックアップが正常に終了していないので、ログファイルにあるエラーメッセージを参考にしてバックアップを再度行います。
+    * completed OK!がない場合、バックアップが正常に終了していないので、ログファイルにあるエラーメッセージを参考にしてバックアップを再度行います。
 * 完了したバックアップファイルをオブジェクトストレージにアップロードします。
-  * 一度にアップロードできる最大ファイルサイズは5GBです。
-  * バックアップファイルのサイズが5GBより大きい場合、splitなどのユーティリティを利用してバックアップファイルを5GB以下に分割してマルチパートでアップロードする必要があります。
-  * 詳細はhttps://docs.nhncloud.com/ja/Storage/Object%20Storage/ja/api-guide/#_43を参照してください。
+    * 一度にアップロードできる最大ファイルサイズは5GBです。
+    * バックアップファイルのサイズが5GBより大きい場合、splitなどのユーティリティを利用してバックアップファイルを5GB以下に分割してマルチパートでアップロードする必要があります。
+    * 詳細はhttps://docs.nhncloud.com/ja/Storage/Object%20Storage/ja/api-guide/#_43を参照してください。
 * 復元するプロジェクトのWebコンソールに接続した後、Instanceタブでオブジェクトストレージにあるバックアップから復元ボタンをクリックします。
 * バックアップファイルが保存されたオブジェクトストレージの情報と、DBインスタンスの情報を入力した後、**作成**ボタンをクリックします。
 
@@ -284,6 +286,7 @@ ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','
 ```
 
 > [注意] 複製用アカウントが複製対象(Master) MariaDBに作成されている必要があります。
+
 ### tcrds_repl_init
 
 * MariaDB 複製情報を初期化します。
