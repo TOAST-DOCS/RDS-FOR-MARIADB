@@ -1,4 +1,4 @@
-## Database > RDS for MariaDB > Back up and Restoration
+## Database > RDS for MariaDB > Backup and Restoration
 
 ## Backup
 
