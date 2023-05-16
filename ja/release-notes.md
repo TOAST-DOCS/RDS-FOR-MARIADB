@@ -1,16 +1,46 @@
 ## Database > RDS for MariaDB > リリースノート
 
+### May 16, 2023
+
+#### Added Features and Updates
+
+* Made improvements so that the user interface is consistent with NHN Cloud services
+* Made modifications so that manual backup is not deleted even when DB instances are deleted
+* Added parameter group feature
+    * The database settings of DB instance can be freely changed
+    * Applicable to multiple instances
+    * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
+* Added DB security group feature
+    * The access control of DB instance can be freely set
+    * Applicable to multiple instances
+    * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
+* Provided a screen to view DB instances grouped by replication arrangements
+* Displayed candidate master to web console
+    * Available to secure storage by deleting the binary log of candidate master
+    * Various logs of candidate master can be checked and downloaded
+    * Rebuilding candidate master is available when an issue occur
+        * The fixed IP does not change because DB instance of the candidate master remain unchanged
+        * All data in the database is deleted, and recovered with the data of the master
+* Rebuilding read replica is available
+    * The fixed IP address does not change because the DB instance of the read replica remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
+* Recovery of master with a completed failover
+    * High availability recovery of a new master and a master with a completed failover is available
+    * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
+* Rebuilding master with a completed failover
+    * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
+
 ### 2023. 02. 14.
 
 #### 機能改善
 
-* サーバーダッシュボードのMySQL指標のうち、ConnectionチャートにMax Connection値を追加で表記するように改善
+* サーバーダッシュボードのMariaDB指標のうち、ConnectionチャートにMax Connection値を追加で表記するように改善
 
 #### バグ修正
 
 * IAMコンソールでエラーが発生した時に適切なエラーページに移動しない問題を修正
 * フェイルオーバーを利用してDBインスタンスタイプの変更またはストレージの拡張を行う場合にPing間隔がデフォルト値に設定される問題を修正
-
 
 ### 2023. 01. 10.
 
@@ -147,7 +177,7 @@
 * 特定条件でモニタリングデータが収集されない現象を修正
 * フェイルオーバーが発生したインスタンスの自動バックアップが削除されない現象を修正
 * 作成に失敗した自動バックアップが期限切れになったときに削除されない現象を修正
-* MySQLに登録されたユーザーが多すぎる場合に、復元に失敗する現象を修正
+* MariaDBに登録されたユーザーが多すぎる場合に、復元に失敗する現象を修正
 * access ruleを修正してもバックアップ設定変更イベントが記録される現象を修正
 
 ### 2022. 01. 11.
@@ -158,7 +188,7 @@
 
 ### 機能改善
 
-* WebコンソールでDBスキーマを作成する時、入力可能な名前の最小文字数をMySQLと同じに修正
+* WebコンソールでDBスキーマを作成する時、入力可能な名前の最小文字数をMariaDBと同じに修正
 
 ### 2021.12.14
 

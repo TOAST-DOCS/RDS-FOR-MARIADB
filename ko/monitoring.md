@@ -8,8 +8,8 @@ DB 인스턴스의 각종 성능 지표와 DB 인스턴스와 관련된 여러 �
 
 이벤트는 RDS for MariaDB이나 사용자에 의해 발생한 중요한 사건을 의미합니다. 이벤트는 이벤트 유형, 발생 일시, 이벤트 소스와 메시지로 구성됩니다. 이벤트는 웹 콘솔에서 조회 가능하며, 구독을 통해 이메일, SMS로 이벤트 발생 알림을 받을 수 있습니다. 이벤트의 유형과 발생 가능한 이벤트는 아래와 같습니다.
 
-| 이벤트 유형 | 이벤트 코드      | 이벤트 메시지                          |
-| --- |-------------|----------------------------------|
+| 이벤트 유형   | 이벤트 코드      | 이벤트 메시지                          |
+|----------|-------------|----------------------------------|
 | INSTANCE | INSTC_02_01 | DB Instance 시작                   |
 | INSTANCE | INSTC_03_01 | DB Instance 종료                   |
 | INSTANCE | INSTC_04_00 | DB Instance 삭제 시작                |
@@ -87,16 +87,16 @@ DB 인스턴스의 각종 성능 지표와 DB 인스턴스와 관련된 여러 �
 | INSTANCE | INSTC_53_01 | DB 인스턴스 중지 완료                    |
 | INSTANCE | INSTC_53_04 | DB 인스턴스 중지 실패                    |
 | INSTANCE | INSTC_55_01 | 복제 지연으로 인한 장애 조치 재시작 실패          |
-| BACKUP | BACUP_02_01 | 백업 삭제 완료                         |
-| BACKUP | BACUP_05_00 | 백업 내보내기 시작                       |
-| BACKUP | BACUP_05_01 | 백업 내보내기 완료                       |
-| BACKUP | BACUP_05_04 | 백업 내보내기 실패                       |
-| BACKUP | BACUP_06_01 | 사용자 쿼리 지연으로 인한 백업 실패             |
-| TENANT | TENAT_01_04 | CPU 코어 수 제한                      |
-| TENANT | TENAT_02_04 | RAM 용량 제한                        |
-| TENANT | TENAT_03_04 | 개별 볼륨 크기 제한                      |
-| TENANT | TENAT_04_04 | 프로젝트 전체 볼륨 크기 제한                 |
-| TENANT | TENAT_05_04 | Read Only Slave 개수 제한            |
+| BACKUP   | BACUP_02_01 | 백업 삭제 완료                         |
+| BACKUP   | BACUP_05_00 | 백업 내보내기 시작                       |
+| BACKUP   | BACUP_05_01 | 백업 내보내기 완료                       |
+| BACKUP   | BACUP_05_04 | 백업 내보내기 실패                       |
+| BACKUP   | BACUP_06_01 | 사용자 쿼리 지연으로 인한 백업 실패             |
+| TENANT   | TENAT_01_04 | CPU 코어 수 제한                      |
+| TENANT   | TENAT_02_04 | RAM 용량 제한                        |
+| TENANT   | TENAT_03_04 | 개별 볼륨 크기 제한                      |
+| TENANT   | TENAT_04_04 | 프로젝트 전체 볼륨 크기 제한                 |
+| TENANT   | TENAT_05_04 | Read Only Slave 개수 제한            |
 
 ### 이벤트 구독
 
@@ -108,7 +108,7 @@ DB 인스턴스의 각종 성능 지표와 DB 인스턴스와 관련된 여러 �
 
 ### 레이아웃
 
-차트를 보기 위해서 레이아웃을 먼저 구성해야 합니다. 레아아웃은 여러 차트로 구성되며 각 차트의 위치와 크기를 저장합니다. 
+차트를 보기 위해서 레이아웃을 먼저 구성해야 합니다. 레아아웃은 여러 차트로 구성되며 각 차트의 위치와 크기를 저장합니다.
 RDS for MariaDB는 **기본 시스템 지표**, **기본 MariaDB 지표** 2개의 기본 레이아웃을 제공합니다. 기본 레이아웃은 사용자가 수정, 삭제할 수 없습니다.
 
 ### 차트
@@ -116,25 +116,25 @@ RDS for MariaDB는 **기본 시스템 지표**, **기본 MariaDB 지표** 2개�
 DB 인스턴스의 각종 성능 지표를 차트 형태로 볼 수 있습니다. 성능 지표마다 각기 다른 형태의 차트로 구성되어 있습니다.
 RDS for MariaDB에서 지원하는 차트는 아래와 같습니다.
 
-| 차트                 | 지표 (단위) |
-|--------------------| --- |
-| CPU 사용률            | cpu used (%) |
-| CPU 상세             | cpu user (%)<br> cpu system (%)<br>cpu nice (%)<br>cpu IO wait(%) |
-| 메모리 사용량            | memory used (%) |
+| 차트                 | 지표 (단위)                                                                                          |
+|--------------------|--------------------------------------------------------------------------------------------------|
+| CPU 사용률            | cpu used (%)                                                                                     |
+| CPU 상세             | cpu user (%)<br> cpu system (%)<br>cpu nice (%)<br>cpu IO wait(%)                                |
+| 메모리 사용량            | memory used (%)                                                                                  |
 | 메모리 상세             | memory used (bytes)<br> memory buffers (bytes)<br> memory cached (bytes)<br> memory free (bytes) |
-| 스왑 사용량             | swap used (bytes)<br> swap total (bytes) |
-| Storage 사용량        | storage used (%) |
-| Storage IO         | disk read (bytes)<br> disk write (bytes) |
-| 네트워크 데이터 송수신       | nic incoming (bytes)<br> nic outgoing (bytes) |
-| CPU 평균 부하          | 1m<br> 5m<br> 15m |
-| Queries Per Second | qps |
-| Connection         | total<br> running<br> cached |
-| Connection Ratio   | ratio (%) |
-| Database Activity  | select<br> insert<br> update<br> delete<br> replace<br> call<br> |
-| Buffer Pool        | buffer pool total (bytes)<br> buffer pool used (%) |
-| Slow Query         | counts |
-| 복제 지연              | sec (초) |
-| Row Access         | index<br> full scan |
+| 스왑 사용량             | swap used (bytes)<br> swap total (bytes)                                                         |
+| Storage 사용량        | storage used (%)                                                                                 |
+| Storage IO         | disk read (bytes)<br> disk write (bytes)                                                         |
+| 네트워크 데이터 송수신       | nic incoming (bytes)<br> nic outgoing (bytes)                                                    |
+| CPU 평균 부하          | 1m<br> 5m<br> 15m                                                                                |
+| Queries Per Second | qps                                                                                              |
+| Connection         | total<br> running<br> cached                                                                     |
+| Connection Ratio   | ratio (%)                                                                                        |
+| Database Activity  | select<br> insert<br> update<br> delete<br> replace<br> call<br>                                 |
+| Buffer Pool        | buffer pool total (bytes)<br> buffer pool used (%)                                               |
+| Slow Query         | counts                                                                                           |
+| 복제 지연              | sec (초)                                                                                          |
+| Row Access         | index<br> full scan                                                                              |
 
 ## 알림 그룹
 

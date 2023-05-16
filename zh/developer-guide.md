@@ -12,12 +12,14 @@
 * To export data out of NHN Cloud, create and associate a floating IP with an RDS instance to export data.
 * Use mysqldump commands as below, to export data.
 
-####  Exporting in Files
+#### Exporting in Files
+
 ```
 mysqldump -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} > {local_path_and_file_name}
 ```
 
 #### Exporting in MariaDB db out of NHN Cloud RDS
+
 ```
 mysqldump -h{rds_instance_floating_ip} -u{db_id} -p{db_password} --port={db_port} --single-transaction --routines --events --triggers --databases {database_name1, database_name2, ...} | mysql -h{external_db_host} -u{external_db_id} -p{external_db_password} --port={external_db_port}
 ```
@@ -41,7 +43,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### If an error `ERROR 1418` occurs while importing data
 
 * The `ERROR 1418` error occurs when the function declaration in the mysqldump file does not include NO SQL, READS SQL DATA, and DETERMINISTIC, and binary logging is enabled.
-  * For detailed explanation, refer to the [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MySQL document.
+    * For detailed explanation, refer to the [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
 * To solve this issue, the value of the `log_bin_trust_function_creators` parameter of the DB instance to apply the mysqldump file must be changed to `1`.
 
 ### Export by Replication
@@ -231,11 +233,11 @@ mariabackup --defaults-file={my.cnf path} --user {username} --password '{passwor
 ```
 
 * Make sure that `completed OK!` exists at the last line of the backup log file.
-  * If completed OK! does not exist, it indicates that backup was not properly finished, so proceed with backup again by referring to the error message in the log file.
+    * If completed OK! does not exist, it indicates that backup was not properly finished, so proceed with backup again by referring to the error message in the log file.
 * Update completed backup file to object storage.
-  * The maximum file size that can be uploaded at a time is 5 GB.
-  * If the size of backup file is larger than 5 GB, use a utility such as split to split the backup file to a size below 5 GB and perform multipart uploading.
-  * For more details, see https://docs.nhncloud.com/en/Storage/Object%20Storage/en/api-guide/#multipart-upload.
+    * The maximum file size that can be uploaded at a time is 5 GB.
+    * If the size of backup file is larger than 5 GB, use a utility such as split to split the backup file to a size below 5 GB and perform multipart uploading.
+    * For more details, see https://docs.nhncloud.com/en/Storage/Object%20Storage/en/api-guide/#multipart-upload.
 * Access the web console of the project to restore, and click the Restore from Backup in Object Storage button in the Instance tab.
 * Enter the information of the object storage where the backup file is stored and the DB instance, and click the **Create** button.
 
@@ -282,12 +284,12 @@ MariaDB> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instanc
 ```
 
 * Explaining parameter
-  * master_instance_ip : IP of replication target (Master) server
-  * master_instance_port : MariaDB Port of replication target (Master) server
-  * user_id_for_replication : Account for replication to access the MariaDB of replication target (Master) server
-  * password_for_replication_user : Password of account for replication
-  * MASTER_LOG_FILE : Binary log file name of replication target (Master)
-  * MASTER_LOG_POS : Binary log file position of replication target (Master)
+    * master_instance_ip : IP of replication target (Master) server
+    * master_instance_port : MariaDB Port of replication target (Master) server
+    * user_id_for_replication : Account for replication to access the MariaDB of replication target (Master) server
+    * password_for_replication_user : Password of account for replication
+    * MASTER_LOG_FILE : Binary log file name of replication target (Master)
+    * MASTER_LOG_POS : Binary log file position of replication target (Master)
 
 ```
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4);
@@ -322,7 +324,7 @@ MariaDB> CALL mysql.tcrds_repl_slave_start();
 ### tcrds_repl_skip_repl_error
 
 * Perform SQL_SLAVE_SKIP_COUNTER=1. Resolve replication error by performing tcrds_repl_skip_repl_error procedure when Duplicate key error occurs as shown below.
-* MySQL error code 1062: 'Duplicate entry ? for key ?'
+* MariaDB error code 1062: 'Duplicate entry ? for key ?'
 
 ```
 MariaDB> CALL mysql. tcrds_repl_skip_repl_error();

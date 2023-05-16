@@ -1,10 +1,19 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### April 11, 2023
+
+#### Feature Updates
+
+* Overhauled UI / UX
+* Added parameter group and DB security group features
+* Made modifications so that manual backup is not deleted when DB instance is deleted
+* Added Open API 3.0
+
 ### February 14, 2023
 
 #### Feature Updates
 
-* Made modifications so that the Max Connection value is displayed on the Connection chart in MySQL metrics of the server dashboard
+* Made modifications so that the Max Connection value is displayed on the Connection chart in MariaDB metrics of the server dashboard
 
 #### Bug Fixes
 
@@ -146,7 +155,7 @@
 * Fixed an issue where monitoring data is not collected under certain conditions
 * Fixed an issue where an automatic backup of failed-over instance is not deleted
 * Fixed an issue where an automatic backup that has failed to be created is not deleted when it reaches its expiration date
-* Fixed an issue where restoration fails when there are too many users registered in MySQL
+* Fixed an issue where restoration fails when there are too many users registered in MariaDB
 * Fixed an issue where a backup settings modification event is logged even when the access rule is modified
 
 ### January 11, 2022
@@ -157,7 +166,7 @@
 
 #### Feature Updates
 
-* Changed the minimum length of the name that can be entered when creating a DB schema in the web console to 1 character, which is the same as that of MySQL
+* Changed the minimum length of the name that can be entered when creating a DB schema in the web console to 1 character, which is the same as that of MariaDB
 
 ### December 14, 2021
 
