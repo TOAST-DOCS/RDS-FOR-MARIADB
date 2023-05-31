@@ -46,7 +46,7 @@ GET /v3.0/project/regions
 | 이름                 | 종류   | 형식      | 설명                                                                         |
 |--------------------|------|---------|----------------------------------------------------------------------------|
 | regions            | Body | Array   | 리전 목록                                                                      |
-| regions.regionCode | Body | Enum    | 리전 코드<br/>- `KR1`: 한국(판교) 리전<br/>- `KR2`: 한국(평촌) 리전<br/>- `JP1`: 일본(도쿄) 리전 |
+| regions.regionCode | Body | Enum    | 리전 코드<br/>- `KR1`: 한국(판교) 리전 |
 | regions.isEnabled  | Body | Boolean | 리전의 활성화 여부                                                                 |
 
 <details><summary>예시</summary>
