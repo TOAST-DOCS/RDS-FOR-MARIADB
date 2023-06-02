@@ -27,10 +27,6 @@ following settings.
 
 * When using table lock, set the wait time for `FLUSH TABLES WITH READ LOCK` syntax. `FLUSH TABLES WITH READ LOCK` syntax will wait for the query latency dash time. It can be set from 0 to 21,600 seconds. Longer settings reduce the likelihood of backup failures due to DML query load, but may result in longer overall backup times.
 
-**Backup Replication Region**
-
-* Set the backup file to be replicated to object storage in another region. Backup replication regions are features for disaster recovery that replicate and manage backup files from the original region equally to the destination region. Replication occurs in the background at regular intervals. When you set up a backup replication region, you are charged with inter-regional replication traffic, and the destination region is charged additionally for object storage usage.
-
 **Back Retry Times**
 
 * You can set the backup to retry if it fails due to DML query load or for other various reasons. You can retry maximum 10 times. Depending on the backup run time setting, you might not try again because there are still more retries.
