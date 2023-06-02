@@ -1,35 +1,46 @@
 ## Database > RDS for MariaDB > リリースノート
 
-### May 16, 2023
+### 2023. 06. 13.
 
-#### Added Features and Updates
+#### 機能追加および改善
 
-* Made improvements so that the user interface is consistent with NHN Cloud services
-* Made modifications so that manual backup is not deleted even when DB instances are deleted
-* Added parameter group feature
-    * The database settings of DB instance can be freely changed
-    * Applicable to multiple instances
-    * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
-* Added DB security group feature
-    * The access control of DB instance can be freely set
-    * Applicable to multiple instances
-    * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
-* Provided a screen to view DB instances grouped by replication arrangements
-* Displayed candidate master to web console
-    * Available to secure storage by deleting the binary log of candidate master
-    * Various logs of candidate master can be checked and downloaded
-    * Rebuilding candidate master is available when an issue occur
-        * The fixed IP does not change because DB instance of the candidate master remain unchanged
-        * All data in the database is deleted, and recovered with the data of the master
-* Rebuilding read replica is available
-    * The fixed IP address does not change because the DB instance of the read replica remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
-* Recovery of master with a completed failover
-    * High availability recovery of a new master and a master with a completed failover is available
-    * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
-* Rebuilding master with a completed failover
-    * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
+* 予備マスターに問題が発生した場合、再構築をサポート
+    * 予備マスターのDBインスタンスは変更されないため、固定IPアドレスが変更されない
+    * データベースのデータはすべて削除され、マスターのデータで復旧されます
+* 유저 그룹에 사용자 추가시, 조직, 프로젝트 안의 모든 사용자를 추가할 수 있도록 개선
+
+### 2023. 05. 16.
+
+#### 機能追加および改善
+
+* サービスのユーザーインターフェース(UI)をNHN Cloud全体のサービスと一貫性があるように改善
+* DBインスタンスが削除されても、手動バックアップは削除されないように修正。
+* パラメータグループ機能を追加
+    * DBインスタンスのデータベース設定を自由に変更できるようにサポート
+    * 複数のDBインスタンスに適用可能
+    * 既存のDBインスタンスの設定変更は、DBインスタンスと同じ名前のパラメータグループにマイグレーション
+* DBセキュリティグループ機能を追加
+    * DBインスタンスのアクセス制御を自由に設定できるようにサポート
+    * 複数のDBインスタンスに適用可能
+    * 既存のDBインスタンスに設定されたアクセス制御ルールは`{DBインスタンス名}__{DBインスタンスID}`ルールで命名されたDBセキュリティグループにマイグレーション
+* 複製関係によってDBインスタンスをまとめて見ることができる画面を提供
+* Webコンソールに予備マスターを表示
+    * 予備マスターのバイナリログ(binary log)を削除して容量を確保可能
+    * 予備マスターの各種ログの確認及びダウンロードをサポート
+* リードレプリカの再構築をサポート
+    * リードレプリカのDBインスタンスは変更されないため、固定IPアドレスは変更されません
+    * データベースのデータは全て削除され、マスターのデータで復旧されます
+* フェイルオーバーが発生したマスターの復旧サポート
+    * フェイルオーバーが発生したマスターと新規マスターを高可用性構成で復旧可能
+    * 復旧は失敗する可能性があり、復旧できないフェイルオーバーが発生したマスターは再構築可能
+* フェイルオーバーが発生したマスター再構築サポート
+    * フェイルオーバーが発生したマスターのDBインスタンスは変更されないため、固定IPアドレスは変更されません
+    * データベースのデータは全て削除され、マスターのデータで復旧されます
+* MySQL 8.0.32バージョン追加
+
+#### バグ修正
+
+* リードレプリカのバックアップで時点復元ができない問題を修正しました。
 
 ### 2023. 02. 14.
 
