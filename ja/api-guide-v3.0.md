@@ -2569,6 +2569,7 @@ GET /v3.0/user-groups/{userGroupId}
     },
     "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
     "userGroupName": "dev-team",
+	"userGroupTypeCode": "INDIVIDUAL_MEMBER",
     "members": [
         {
             "memberId": "1321e759-2ef3-4b85-9921-b13e918b24b5"
@@ -2595,7 +2596,8 @@ POST /v3.0/user-groups
 | 名前            | 種類   | 形式     | 必須 | 説明                |
 |---------------|------|--------|----|-------------------|
 | userGroupName | Body | String | O  | ユーザーグループを識別できる名前  |
-| memberIds     | Body | Array  | O  | プロジェクトメンバーの識別子リスト |
+| memberIds     | Body | Array  | O  | プロジェクトメンバーの識別子リスト  <br /> `selectAllYN`이 true인 경우 해당 필드 값은 무시됨.    |
+|    selectAllYN  | Body | Boolean  | X  | 프로젝트 멤버 전체 유무 <br /> true인 경우 해당 그룹은 전체 멤버에 대해 설정됨   |
 
 <details><summary>例</summary>
 <p>
@@ -2606,7 +2608,12 @@ POST /v3.0/user-groups
     "memberIds": ["1321e759-2ef3-4b85-9921-b13e918b24b5"]
 }
 ```
-
+```json
+{
+    "userGroupName": "dev-team",
+    "selectAllYN":true
+}
+```
 </p>
 </details>
 
@@ -2631,6 +2638,7 @@ PUT /v3.0/user-groups/{userGroupId}
 | userGroupId   | URL  | UUID   | O  | ユーザーグループの識別子      |
 | userGroupName | Body | String | X  | ユーザーグループを識別できる名前  |
 | memberIds     | Body | Array  | X  | プロジェクトメンバーの識別子リスト |
+|    selectAllYN  | Body | Boolean  | X  | 프로젝트 멤버 전체 유무 <br /> true인 경우 해당 그룹은 전체 멤버에 대해 설정됨   |
 
 <details><summary>例</summary>
 <p>

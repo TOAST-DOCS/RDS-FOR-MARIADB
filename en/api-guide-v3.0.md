@@ -2567,6 +2567,7 @@ This API does not require a request body.
     },
     "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
     "userGroupName": "dev-team",
+	"userGroupTypeCode": "INDIVIDUAL_MEMBER",
     "members": [
         {
             "memberId": "1321e759-2ef3-4b85-9921-b13e918b24b5"
@@ -2593,7 +2594,8 @@ POST /v3.0/user-groups
 | Name          | Type | Format | Required | Description                  |
 |---------------|------|--------|----------|------------------------------|
 | userGroupName | Body | String | O        | Name to identify user groups |
-| memberIds     | Body | Array  | O        | Project member identifiers   |
+| memberIds     | Body | Array  | O        | Project member identifiers   <br /> `selectAllYN`이 true인 경우 해당 필드 값은 무시됨.    |
+|    selectAllYN  | Body | Boolean  | X  | 프로젝트 멤버 전체 유무 <br /> true인 경우 해당 그룹은 전체 멤버에 대해 설정됨   |
 
 <details><summary>Example</summary>
 <p>
@@ -2604,7 +2606,12 @@ POST /v3.0/user-groups
     "memberIds": ["1321e759-2ef3-4b85-9921-b13e918b24b5"]
 }
 ```
-
+```json
+{
+    "userGroupName": "dev-team",
+    "selectAllYN":true
+}
+```
 </p>
 </details>
 
@@ -2629,6 +2636,7 @@ PUT /v3.0/user-groups/{userGroupId}
 | userGroupId   | URL  | UUID   | O        | User group identifier        |
 | userGroupName | Body | String | X        | Name to identify user groups |
 | memberIds     | Body | Array  | X        | Project member identifiers   |
+|    selectAllYN  | Body | Boolean  | X  | 프로젝트 멤버 전체 유무 <br /> true인 경우 해당 그룹은 전체 멤버에 대해 설정됨   |
 
 <details><summary>Example</summary>
 <p>
