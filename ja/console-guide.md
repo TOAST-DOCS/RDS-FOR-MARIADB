@@ -444,22 +444,22 @@ DBインスタンスに関連するさまざまな作業中に発生する各種
 
 * ❶ユーザーグループ作成ボタンをクリックするとユーザーグループを作成することができるポップアップが表示されます。
 
-![user_group_create_1_ja](https://static.toastoven.net/prod_rds/22.03.15/user_group_create_1_ja.png)
+![user_group_create_1_ja](https://static.toastoven.net/prod_rds/23.06.13/user_group_create_1_ja.png)
 
 * ❷グループ名を入力します。
 * ❸通知対象ユーザーが表示されます。**x**ボタンをクリックすると通知対象から除外されます。
 * ❹通知対象にユーザーを追加します。
-* ❺ `전체 프로젝트 멤버`를 통보 대상에 추가합니다. 
-  * 추가 시 개별 사용자 추가는 취소됩니다.
-  * 해당 사용자 그룹을 이용하여 알람을 전송하게 되는 경우, 당시 전체 프로젝트 멤버 대상으로 알람을 전송합니다.
+* ❺ `全プロジェクトメンバー`を通知対象に追加します。 
+  * 追加 すると、個別ユーザーの追加はキャンセルされます。
+  * 該当ユーザーグループを利用してアラームを送信する場合、その時点で全プロジェクトメンバーを対象にアラームを送信します。
 
 ### ユーザーグループ修正
 
-![user_group_modify_0_ja](https://static.toastoven.net/prod_rds/22.03.15/user_group_modify_0_ja.png)
+![user_group_modify_0_ja](https://static.toastoven.net/prod_rds/23.06.13/user_group_modify_0_ja.png)
 
 * ❶修正したいユーザーグループの編集ボタンをクリックすると、ユーザーグループを修正することができるポップアップが表示されます。
 
-![user_group_modify_1_ja](https://static.toastoven.net/prod_rds/22.03.15/user_group_modify_1_ja.png)
+![user_group_modify_1_ja](https://static.toastoven.net/prod_rds/23.06.13/user_group_modify_1_ja.png)
 
 * ❷修正したい項目を修正した後、確認ボタンをクリックするとユーザーグループが修正されます。
 
