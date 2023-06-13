@@ -161,7 +161,7 @@
 
 ### ユーザーグループの作成
 
-![user_group_01_ko](https://static.toastoven.net/prod_rds/23.04.11/user_group_01_ja.png)
+![user_group_01_ko](https://static.toastoven.net/prod_rds/23.06.13/user_group_01_ja.png)
 
 * ❶ **ユーザーグループ作成**を押すと、ユーザーグループを作成できるポップアップウィンドウが表示されます。
 * ❷ ユーザーグループに追加されたユーザーが表示されます。
