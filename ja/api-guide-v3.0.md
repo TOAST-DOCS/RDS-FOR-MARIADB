@@ -1330,6 +1330,7 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 
 </p>
 </details>
+
 #### 응답
 
 | 이름 | 종류 | 형식 | 설명 |
