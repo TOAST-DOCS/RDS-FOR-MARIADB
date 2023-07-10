@@ -616,6 +616,7 @@ GET /v3.0/db-instances/{dbInstanceId}
 | dbFlavorId         | Body | UUID     | DB 인스턴스 사양의 식별자                                                                                                                       |
 | parameterGroupId   | Body | UUID     | DB 인스턴스에 적용된 파라미터 그룹의 식별자                                                                                                             |
 | dbSecurityGroupIds | Body | Array    | DB 인스턴스에 적용된 DB 보안 그룹의 식별자 목록                                                                                                         |
+| useDeletionProtection | Body | Boolean    | DB 인스턴스 삭제 보호 여부                                                                                                             |
 | createdYmdt        | Body | DateTime | 생성 일시(YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                     |
 | updatedYmdt        | Body | DateTime | 수정 일시(YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                     |
 
@@ -641,6 +642,7 @@ GET /v3.0/db-instances/{dbInstanceId}
     "dbFlavorId": "e9ed4ef6-78d7-46fa-ace9-32481e97f3b7",
     "parameterGroupId": "b03e8b13-de27-4d04-a488-ff5689589372",
     "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
+    "useDeletionProtection": false,
     "createdYmdt": "2022-11-23T12:03:13+09:00",
     "updatedYmdt": "2022-12-02T17:20:17+09:00"
 }
@@ -674,6 +676,7 @@ POST /v3.0/db-instances
 | useHighAvailability                          | Body | Boolean | X  | 고가용성 사용 여부<br/>- 기본값: `false`                                                                                                                                                                                               |
 | pingInterval                                 | Body | Number  | X  | 고가용성 사용 시 Ping 간격(초)<br/>- 기본값: `3`<br/>- 최솟값: `1`<br/>- 최댓값: `600`                                                                                                                                                         |
 | useDefaultUserNotification                   | Body | Boolean | X  | 기본 알람 사용 여부<br/>- 기본값: `false`                                                                                                                                                                                              |
+| useDeletionProtection                        |Body|Boolean|X| 삭제 보호 여부<br/>- 기본값: `false`                                                                                                                                                                                                 |
 | network                                      | Body | Object  | O  | 네트워크 정보 객체                                                                                                                                                                                                                  |
 | network.subnetId                             | Body | UUID    | O  | 서브넷의 식별자                                                                                                                                                                                                                    |
 | network.usePublicAccess                      | Body | Boolean | X  | 외부 접속 가능  여부<br/>- 기본값: `false`                                                                                                                                                                                             |
@@ -912,6 +915,7 @@ POST /v3.0/db-instances/{dbInstanceId}/replicate
 | dbSecurityGroupIds                           | Body | Array   | X  | DB 보안 그룹의 식별자 목록<br/>- 기본값: 원본 DB 인스턴스 값                                                                                                                                                                                                            |
 | userGroupIds                                 | Body | Array   | X  | 사용자 그룹의 식별자 목록                                                                                                                                                                                                                                      |
 | useDefaultUserNotification                   | Body | Boolean | X  | 기본 알람 사용 여부<br/>- 기본값: `false`                                                                                                                                                                                                                      |
+| useDeletionProtection                        |Body|Boolean|X| 삭제 보호 여부<br/>- 기본값: `false`                                                                                                                                                                                                 |
 | network                                      | Body | Object  | O  | 네트워크 정보 객체                                                                                                                                                                                                                                          |
 | network.usePublicAccess                      | Body | Boolean | X  | 외부 접속 가능 여부<br/>- 기본값: 원본 DB 인스턴스 값                                                                                                                                                                                                                 |
 | network.availabilityZone                     | Body | Enum    | O  | DB 인스턴스를 생성할 가용성 영역<br/>- 예시: `kr-pub-a`                                                                                                                                                                                                            |
@@ -974,6 +978,24 @@ POST /v3.0/db-instances/{dbInstanceId}/promote
 | 이름    | 종류   | 형식   | 설명          |
 |-------|------|------|-------------|
 | jobId | Body | UUID | 요청한 작업의 식별자 |
+
+---
+
+### DB 인스턴스 삭제 보호 설정 변경하기
+
+```
+PUT /v3.0/db-instances/{dbInstanceId}/deletion-protection
+```
+
+#### 요청
+| 이름 | 종류 | 형식 | 필수 | 설명 |
+| --- | --- | --- | --- | --- |
+| dbInstanceId | URL | UUID | O | DB 인스턴스의 식별자 |
+| useDeletionProtection | Body | Boolean | O | 삭제 보호 여부 |
+
+#### 응답
+
+이 API는 응답 본문을 반환하지 않습니다.
 
 ---
 
@@ -1727,6 +1749,7 @@ POST /v3.0/backups/{backupId}/restore
 | useHighAvailability                          | Body | Boolean | X  | 고가용성 사용 여부<br/>- 기본값: `false`                                                                                                                                                                                               |
 | pingInterval                                 | Body | Number  | X  | 고가용성 사용 시 Ping 간격(초)<br/>- 기본값: `3`<br/>- 최솟값: `1`<br/>- 최댓값: `600`                                                                                                                                                         |
 | useDefaultNotification                       | Body | Boolean | X  | 기본 알림 사용 여부<br/>- 기본값: `false`                                                                                                                                                                                              |
+| useDeletionProtection                        | Body   | Boolean | X  | 삭제 보호 여부<br/>- 기본값: `false`                                                                                                                                                                                                 | 
 | network                                      | Body | Object  | O  | 네트워크 정보 객체                                                                                                                                                                                                                  |
 | network.subnetId                             | Body | UUID    | O  | 서브넷의 식별자                                                                                                                                                                                                                    |
 | network.usePublicAccess                      | Body | Boolean | X  | 외부 접속 가능 여부<br/>- 기본값: `false`                                                                                                                                                                                              |
