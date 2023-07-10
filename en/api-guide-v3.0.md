@@ -6,7 +6,7 @@
 
 ## Authentication and Authorization
 
-`User Access Key ID` and `Secret Access Key` are required for authentication to use APIs.<b>Go to Member Information > API Security Settings<b>to create them.
+`User Access Key ID` and `Secret Access Key` are required for authentication to use APIs.<b>Go to Member Information > API Security Settings<b> to create them.
 The created Key must be included in the request Header.
 
 | Name                       | Type   | Format | Required | Description                                      |
@@ -137,7 +137,7 @@ This API does not require a request body.
     "members": [
         {
             "memberId": "1b1d3627-507a-49ea-8cb7-c86dfa9caa58",
-            "memberName": "Hong Gil Dong",
+            "memberName": "Hong Gildong",
             "emailAddress": "gildong.hong@nhn.com",
             "phoneNumber": "+821012345678"
         }
@@ -341,7 +341,7 @@ This API does not require a request body.
 | Status Name                       | Description                           |
 |-----------------------------------|---------------------------------------|
 | `READY`                           | Task in preparation                   |
-| `Training creation is requested.` | Task in progress                      |
+| `RUNNING` | Task in progress                      |
 | `COMPLETED`                       | Task completed                        |
 | `REGISTERED`                      | Task registered                       |
 | `WAIT_TO_REGISTER`                | Task waiting to register              |
@@ -648,6 +648,7 @@ This API does not require a request body.
 | dbFlavorId         | Body | UUID     | Identifier of DB instance specifications                                                                                                                                |
 | parameterGroupId   | Body | UUID     | Parameter group identifier applied to DB instance                                                                                                                       |
 | dbSecurityGroupIds | Body | Array    | DB security group identifiers applied to DB instance                                                                                                                    |
+| useDeletionProtection | Body | Boolean    | Whether to protect DB instance against deletion                                                                                                             |
 | createdYmdt        | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
 | updatedYmdt        | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
 
@@ -673,6 +674,7 @@ This API does not require a request body.
     "dbFlavorId": "e9ed4ef6-78d7-46fa-ace9-32481e97f3b7",
     "parameterGroupId": "b03e8b13-de27-4d04-a488-ff5689589372",
     "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
+    "useDeletionProtection": false,
     "createdYmdt": "2022-11-23T12:03:13+09:00",
     "updatedYmdt": "2022-12-02T17:20:17+09:00"
 }
@@ -706,6 +708,7 @@ POST /v3.0/db-instances
 | useHighAvailability                          | Body | Boolean | X        | Whether to use high availability<br/>Default: `false`                                                                                                                                                                                                                     |
 | pingInterval                                 | Body | Number  | X        | Ping interval (sec) when using high availability<br/>Default: `6`<br/>- Minimum value: `1`<br/>- Maximum value: `600`                                                                                                                                                     |
 | useDefaultUserNotification                   | Body | Boolean | X        | Whether to use default notification<br/>Default: `false`                                                                                                                                                                                                                  |
+| useDeletionProtection | Body | Boolean | X | Whether to protect against deletion<br/>Default: `false` |
 | network                                      | Body | Object  | O        | Network information objects                                                                                                                                                                                                                                               |
 | network.subnetId                             | Body | UUID    | O        | Subnet identifier                                                                                                                                                                                                                                                         |
 | network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>Default: `false`                                                                                                                                                                                                                  |
@@ -977,6 +980,7 @@ POST /v3.0/db-instances/{dbInstanceId}/replicate
 | dbSecurityGroupIds                           | Body | Array   | X        | DB security group identifiers<br/>- Default: Original DB instance value                                                                                                                                                                                                                                             |
 | userGroupIds                                 | Body | Array   | X        | User group identifiers                                                                                                                                                                                                                                                                                              |
 | useDefaultUserNotification                   | Body | Boolean | X        | Whether to use default notification<br/>Default: `false`                                                                                                                                                                                                                                                            |
+| useDeletionProtection | Body | Boolean | X | Whether to protect against deletion<br/>Default: `false` |
 | network                                      | Body | Object  | O        | Network information objects                                                                                                                                                                                                                                                                                         |
 | network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>- Default: Original DB instance value                                                                                                                                                                                                                                       |
 | network.availabilityZone                     | Body | Enum    | O        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`                                                                                                                                                                                                                                       |
@@ -1433,6 +1437,38 @@ POST /v3.0/db-instances/restore-from-obs
 | --- | --- | --- | --- |
 | jobId | Body | UUID | 요청한 작업의 식별자 |
 
+### Change DB Instance Deletion Protection Settings
+
+```
+PUT /v3.0/db-instances/{dbInstanceId}/deletion-protection
+```
+
+#### Request
+
+| Name                    | Type   | Format      | Required | Description           |
+|-----------------------|------|---------|----|--------------|
+| dbInstanceId          | URL  | UUID    | O  | DB instance identifier |
+| useDeletionProtection | Body | Boolean | O  | Whether to protect against deletion     |
+
+#### Response
+
+This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -1914,7 +1950,7 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 
 ```json
 {
-"authorityType": "DDL"
+    "authorityType": "DDL"
 }
 ```
 
@@ -2186,6 +2222,7 @@ POST /v3.0/backups/{backupId}/restore
 | useHighAvailability                          | Body | Boolean | X        | Whether to use high availability<br/>Default: `false`                                                                                                                                                                                                                     |
 | pingInterval                                 | Body | Number  | X        | Ping interval (sec) when using high availability<br/>Default: `6`<br/>- Minimum value: `1`<br/>- Maximum value: `600`                                                                                                                                                     |
 | useDefaultNotification                       | Body | Boolean | X        | Whether to use default notification<br/>Default: `false`                                                                                                                                                                                                                  |
+| useDeletionProtection | Body | Boolean | X | Whether to protect against deletion<br/>Default: `false` | 
 | network                                      | Body | Object  | O        | Network information objects                                                                                                                                                                                                                                               |
 | network.subnetId                             | Body | UUID    | O        | Subnet identifier                                                                                                                                                                                                                                                         |
 | network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>Default: `false`                                                                                                                                                                                                                  |
@@ -2493,6 +2530,22 @@ PUT /v3.0/db-security-groups/{dbSecurityGroupId}
 This API does not return a response body.
 
 
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
+
 ---
 
 ### Delete DB Security Group
@@ -2512,6 +2565,22 @@ This API does not require a request body.
 #### Response
 
 This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -2863,6 +2932,22 @@ PUT /v3.0/parameter-groups/{parameterGroupId}
 
 This API does not return a response body.
 
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
+
 ---
 
 ### Modify Parameter
@@ -2901,6 +2986,22 @@ PUT /v3.0/parameter-groups/{parameterGroupId}/parameters
 
 This API does not return a response body.
 
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
+
 ---
 
 ### Reset Parameter Group
@@ -2918,6 +3019,22 @@ PUT /v3.0/parameter-groups/{parameterGroupId}/reset
 #### Response
 
 This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -2938,6 +3055,22 @@ This API does not require a request body.
 #### Response
 
 This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -3055,7 +3188,7 @@ POST /v3.0/user-groups
 |---------------|------|--------|----------|------------------------------|
 | userGroupName | Body | String | O        | Name to identify user groups |
 | memberIds     | Body | Array  | O  | Project member identifiers<br /> If `selectAllYN` is true, the field value is ignored    |
-| selectAllYN   | Body | Boolean  | X  | Whether all project members are included <br /> If true, the group is set for all members   |
+| selectAllYN   | Body | Boolean  | X  | All project members or not <br /> If true, the group is set for all members   |
 
 <details><summary>Example</summary>
 <p>
@@ -3096,7 +3229,7 @@ PUT /v3.0/user-groups/{userGroupId}
 | userGroupId   | URL  | UUID   | O        | User group identifier        |
 | userGroupName | Body | String | X        | Name to identify user groups |
 | memberIds     | Body | Array  | X        | Project member identifiers   |
-| selectAllYN   | Body | Boolean  | X  | Whether all project members are included <br /> If true, the group is set for all members  |
+| selectAllYN   | Body | Boolean  | X  | All project members or not <br /> If true, the group is set for all members  |
 
 <details><summary>Example</summary>
 <p>
@@ -3115,6 +3248,22 @@ PUT /v3.0/user-groups/{userGroupId}
 
 This API does not return a response body.
 
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
+
 ---
 
 ### Delete User Group
@@ -3132,6 +3281,22 @@ DELETE /v3.0/user-groups/{userGroupId}
 #### Response
 
 This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -3332,6 +3497,22 @@ PUT /v3.0/notification-groups/{notificationGroupId}
 
 This API does not return a response body.
 
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
+
 ---
 
 ### Delete Notification Group
@@ -3351,6 +3532,22 @@ This API does not require a request body.
 #### Response
 
 This API does not return a response body.
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
