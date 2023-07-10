@@ -876,7 +876,7 @@ POST /v3.0/db-instances/{dbInstanceId}/force-restart
 
 #### 응답
 
-이 API는 응답 본문을 반환하지 않습니다.
+This API does not return a response body.
 
 <details><summary>Example</summary>
 <p>
