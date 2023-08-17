@@ -1077,7 +1077,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 | restorableBackups.backup.dbVersion | Body | String | DB engine type |
 | restorableBackups.backup.failoverCount | Body | Number | Number of failovers |
 | restorableBackups.backup.binLogFileName | Body | String | Binary log file name |
-| restorableBackups.backup.binLogFilePosition | Body | Number | Binary log file location |
+| restorableBackups.backup.binLogPosition | Body | Number | Binary log file location |
 | restorableBackups.backup.createdYmdt | Body | DateTime | Date and time of backup creation |
 | restorableBackups.backup.updatedYmdt | Body | DateTime | Date and time of backup renewal |
 | restorableBackups.restorableBinLogs | Body | Array | Binary log names that can be restored using the backup |
