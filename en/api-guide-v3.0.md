@@ -56,7 +56,7 @@ The API responds with "200 OK" to all API requests. For more information on the 
 
 | DB engine type | Available for creation | Available for restoration from OBS |
 | -------- | -------- | ---------------- |
-| MARIADB\_V10330 | X | X |
+| MARIADB_V10330 | X | X |
 
 
 * You can use the value for the dbVersion field of ENUM type.
