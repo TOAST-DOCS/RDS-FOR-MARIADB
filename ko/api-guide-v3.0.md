@@ -1076,7 +1076,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 | restorableBackups.backup.dbVersion | Body | String | DB 엔진 유형 |
 | restorableBackups.backup.failoverCount | Body | Number | 장애 조치 횟수 |
 | restorableBackups.backup.binLogFileName | Body | String | 바이너리 로그 파일 이름 |
-| restorableBackups.backup.binLogFilePosition | Body | Number | 바이너리 로그 파일 위치 |
+| restorableBackups.backup.binLogPosition | Body | Number | 바이너리 로그 파일 위치 |
 | restorableBackups.backup.createdYmdt | Body | DateTime | 백업 생성 일시 |
 | restorableBackups.backup.updatedYmdt | Body | DateTime | 백업 갱신 일시 |
 | restorableBackups.restorableBinLogs | Body | Array | 해당 백업을 이용하여 복원 가능한 바이너리 로그 이름 목록 |
