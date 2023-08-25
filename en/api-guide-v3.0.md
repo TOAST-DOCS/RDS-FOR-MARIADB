@@ -1103,7 +1103,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 				"backupStatus": "COMPLETED",
 				"dbInstanceId": "dba1be25-9429-4589-9716-7fb6daad7cb9",
 				"dbInstanceName": "original-db-instance-name",
-				"dbVersion": "MYSQL_V8032",
+				"dbVersion": "MARIADB_V10330",
 				"backupType": "MANUAL",
 				"backupSize": 8299904,
 				"useBackupLock": true,
@@ -1398,7 +1398,7 @@ POST /v3.0/db-instances/restore-from-obs
     "description": "description",
     "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
     "dbPort": 10000,
-    "dbVersion":: "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbUserName": "db-user",
     "dbPassword": "password",
     "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
@@ -1433,6 +1433,9 @@ POST /v3.0/db-instances/restore-from-obs
 	}
 }
 ```
+
+</p>
+</details>
 
 #### Response
 

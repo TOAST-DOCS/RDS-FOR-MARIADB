@@ -1069,7 +1069,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 | restorableBackups.backup.backupName | Body | String | バックアップ名 |
 | restorableBackups.backup.useBackupLock | Body | Boolean | テーブルロックを使用するかどうか |
 | restorableBackups.backup.backupSize | Body | Number | バックアップサイズ |
-| restorableBackups.backup.backupType | Body | Enum | バックアップタイプ<br><ul><li>`AUTO` :自動</li><li>`MANUAL` :手動</li></ul> |
+| restorableBackups.backup.backupType | Body | Enum | バックアップタイプ<br><ul><li>`AUTO` :自動</li><li>`MANUAL` :手動</li></ul> |
 | restorableBackups.backup.backupStatus | Body | Enum | バックアップ状態<br><ul><li>`BACKING_UP`:バックアップ中の場合</li><li>`COMPLETED`:バックアップが完了している場合</li><li>`DELETING`:バックアップが削除中の場合</li><li>`DELETED`:バックアップが削除されている場合</li><li>`ERROR`:エラーが発生した場合</li></ul> |
 | restorableBackups.backup.dbInstanceId | Body | UUID | 原本DBインスタンスの識別子 |
 | restorableBackups.backup.dbInstanceName | Body | String | 原本DBインスタンスの名前 |
@@ -1101,7 +1101,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 				"backupStatus": "COMPLETED",
 				"dbInstanceId": "dba1be25-9429-4589-9716-7fb6daad7cb9",
 				"dbInstanceName": "original-db-instance-name",
-				"dbVersion": "MYSQL_V8032",
+				"dbVersion": "MARIADB_V10330",
 				"backupType": "MANUAL",
 				"backupSize": 8299904,
 				"useBackupLock": true,
@@ -1393,7 +1393,7 @@ POST /v3.0/db-instances/restore-from-obs
     "description": "description",
     "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
     "dbPort": 10000,
-    "dbVersion":: "MYSQL_V8028",
+    "dbVersion": "MARIADB_V10330",
     "dbUserName": "db-user",
     "dbPassword": "password",
     "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
@@ -1428,6 +1428,9 @@ POST /v3.0/db-instances/restore-from-obs
 	}
 }
 ```
+
+</p>
+</details>
 
 #### 응답
 
