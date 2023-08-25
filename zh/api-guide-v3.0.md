@@ -1434,6 +1434,9 @@ POST /v3.0/db-instances/restore-from-obs
 }
 ```
 
+</p>
+</details>
+
 #### Response
 
 | Name | Type | Format | Description |
