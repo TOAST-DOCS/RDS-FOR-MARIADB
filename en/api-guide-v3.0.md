@@ -297,23 +297,23 @@ This API does not require a request body.
 
 ## Storage
 
-### 스토리지 타입 목록 보기
+### List Storage Type
 
 ```
 GET /v3.0/storage-types
 ```
 
-#### 요청
+#### Request
 
-이 API는 요청 본문을 요구하지 않습니다.
+This API does not require a request body.
 
-#### 응답
+#### Response
 
-| 이름           | 종류   | 형식    | 설명         |
-|--------------|------|-------|------------|
-| storageTypes | Body | Array | 스토리지 타입 목록 |
+| Name         | Type | Format | Description       |
+|--------------|------|--------|-------------------|
+| storageTypes | Body | Array  | Storage type list |
 
-<details><summary>예시</summary>
+<details><summary>Example</summary>
 <p>
 
 ```json
@@ -673,23 +673,24 @@ This API does not require a request body.
 
 #### Response
 
-| Name                  | Type | Format   | Description                                                                                                                                                             |
-|-----------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId          | Body | UUID     | DB instance identifier                                                                                                                                                  |
-| dbInstanceGroupId     | Body | UUID     | DB instance group identifier                                                                                                                                            |
-| dbInstanceName        | Body | String   | Name to identify DB instances                                                                                                                                           |
-| description           | Body | String   | Additional information on DB instances                                                                                                                                  |
-| dbVersion             | Body | Enum     | DB engine type                                                                                                                                                          |
-| dbPort                | Body | Number   | DB port                                                                                                                                                                 |
-| dbInstanceType        | Body | Enum     | DB instance role type<br/>- `MASTER`: Master<br/>- `FAILED_MASTER`: Failed over master<br/>- `CANDIDATE_MASTER`: Candidate master<br/>- `READ_ONLY_SLAVE`: Read replica |
-| dbInstanceStatus      | Body | Enum     | DB instance current status                                                                                                                                              |
-| progressStatus        | Body | Enum     | Current task status of DB instance                                                                                                                                      |
-| dbFlavorId            | Body | UUID     | Identifier of DB instance specifications                                                                                                                                |
-| parameterGroupId      | Body | UUID     | Parameter group identifier applied to DB instance                                                                                                                       |
-| dbSecurityGroupIds    | Body | Array    | DB security group identifiers applied to DB instance                                                                                                                    |
-| useDeletionProtection | Body | Boolean  | Whether to protect DB instance against deletion                                                                                                                         |
-| createdYmdt           | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-| updatedYmdt           | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
+| Name                        | Type | Format   | Description                                                                                                                                                             |
+|-----------------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| dbInstanceId                | Body | UUID     | DB instance identifier                                                                                                                                                  |
+| dbInstanceGroupId           | Body | UUID     | DB instance group identifier                                                                                                                                            |
+| dbInstanceName              | Body | String   | Name to identify DB instances                                                                                                                                           |
+| description                 | Body | String   | Additional information on DB instances                                                                                                                                  |
+| dbVersion                   | Body | Enum     | DB engine type                                                                                                                                                          |
+| dbPort                      | Body | Number   | DB port                                                                                                                                                                 |
+| dbInstanceType              | Body | Enum     | DB instance role type<br/>- `MASTER`: Master<br/>- `FAILED_MASTER`: Failed over master<br/>- `CANDIDATE_MASTER`: Candidate master<br/>- `READ_ONLY_SLAVE`: Read replica |
+| dbInstanceStatus            | Body | Enum     | DB instance current status                                                                                                                                              |
+| progressStatus              | Body | Enum     | Current task status of DB instance                                                                                                                                      |
+| dbFlavorId                  | Body | UUID     | Identifier of DB instance specifications                                                                                                                                |
+| parameterGroupId            | Body | UUID     | Parameter group identifier applied to DB instance                                                                                                                       |
+| dbSecurityGroupIds          | Body | Array    | DB security group identifiers applied to DB instance                                                                                                                    |
+| useDeletionProtection       | Body | Boolean  | Whether to protect DB instance against deletion                                                                                                                         |
+| supportAuthenticationPlugin | Body | Boolean  | Whether to support authentication plugin                                                                                                                                |
+| createdYmdt                 | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
+| updatedYmdt                 | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
 
 <details><summary>Example</summary>
 <p>
@@ -714,6 +715,7 @@ This API does not require a request body.
     "parameterGroupId": "b03e8b13-de27-4d04-a488-ff5689589372",
     "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
     "useDeletionProtection": false,
+    "supportAuthenticationPlugin": true,
     "createdYmdt": "2022-11-23T12:03:13+09:00",
     "updatedYmdt": "2022-12-02T17:20:17+09:00"
 }
