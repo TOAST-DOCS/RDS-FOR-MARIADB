@@ -31,6 +31,8 @@ NHN Cloud는 물리 하드웨어 문제로 생기는 장애에 대비하기 위�
 
 | 버전              | 비고 |
 |-----------------|----|
+| MariaDB 10.6.12 |    |
+| MariaDB 10.6.11 |    |
 | MariaDB 10.3.30 |    |
 
 ### DB 인스턴스 타입
@@ -364,15 +366,29 @@ mysql> CALL mysql.tcrds_repl_slave_start();
 mysql> CALL mysql.tcrds_repl_skip_repl_error();
 ```
 
-### tcrds_repl_next_changemaster
+### tcrds_innodb_monitor_reset
 
-* Master의 다음 바이너리(binary log) 로그를 읽을 수 있도록 복제 정보를 변경합니다.
-* 다음과 같은 복제 에러 발생 시 tcrds_repl_next_changemaster 프로시저를 실행하면 복제 에러를 해결할 수 있습니다.
-
-예) MariaDB error code 1236 (ER_MASTER_FATAL_ERROR_READING_BINLOG): Got fatal error from master when reading data from binary log
+* information_schema.INNODB_METRICS 테이블의 counter를 0으로 재설정하는 innodb_monitor_reset variables를 실행하는 프로시저입니다.
+* `SET GLOBAL innodb_monitor_reset = '{counter-name|module_name|pattern|all}';` 쿼리를 실행합니다.
+* innodb_monitor_enable, innodb_monitor_disable는 RDS 파라미터로 제공합니다.
 
 ```
-mysql> CALL mysql.tcrds_repl_next_changemaster();
+mysql> CALL mysql.tcrds_innodb_monitor_reset('{counter-name|module_name|pattern|all}');
+```
+
+```
+ex) CALL mysql.tcrds_innodb_monitor_reset('dml_reads');
+CALL mysql.tcrds_innodb_monitor_reset('module_dml');
+```
+
+### tcrds_innodb_monitor_reset_all
+
+* counter 값을 재설정하는 innodb_monitor_reset_all variables를 실행하는 프로시저입니다.
+* innodb_monitor_reset_all을 사용하려면 counter가 disable 상태여야 합니다.
+* `SET GLOBAL tcrds_innodb_monitor_reset_all = '{counter-name|module_name|pattern|all}';` 쿼리르 실행합니다.
+
+```
+mysql> CALL mysql.tcrds_innodb_monitor_reset_all('{counter-name|module_name|pattern|all}');
 ```
 
 ## 데이터 마이그레이션
