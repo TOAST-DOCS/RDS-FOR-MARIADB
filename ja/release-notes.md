@@ -1,5 +1,17 @@
 ## Database > RDS for MariaDB > リリースノート
 
+### 2023. 10. 17.
+
+#### 機能追加および改善
+
+* 高可用性構成およびリードレプリカ追加時、リードレプリカのバックアップも使用して作成できるように改善
+* MariaDB 10.6.11, MariaDB 10.6.12バージョン追加
+* API v3.0追加および変更
+  * 復元される最後のクエリ照会APIを追加
+  * DBインスタンス詳細表示APIレスポンスに`needToApplyParameterGroup`, `needMigration`, `supportDbVersionUpgrade`フィールド追加
+
+
+
 ### 2023. 07. 11.
 
 #### 機能追加および改善

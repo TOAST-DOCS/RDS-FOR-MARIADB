@@ -32,6 +32,8 @@ You can use the versions specified below.
 
 | Version         | Note | 
 |-----------------|------| 
+| MariaDB 10.6.12 |      |
+| MariaDB 10.6.11 |      |
 | MariaDB 10.3.30 |      |
 
 ### DB Instance Type
@@ -372,14 +374,27 @@ mysql> CALL mysql.tcrds_repl_slave_start();
 mysql> CALL mysql.tcrds_repl_skip_repl_error(); 
 ```
 
-### tcrds_repl_next_changemaster
+### tcrds_innodb_monitor_reset
+* A procedure to run the innodb_monitor_reset variables, which reset the counter in the information_schema.INNODB_METRICS table to zero.
+* Execute `SET GLOBAL innodb_monitor_reset = '{counter-name|module_name|pattern|all}';`.
+* innodb_monitor_enable, innodb_monitor_disable are provided as RDS parameters.
 
-* Changes the replication information in order to read the following binary log on the Master.
-* The following Duplicate errors can be resolved by running the tcrds_repl_next_changemaster procedure.
-* example) MariaDB error code 1236 (ER_MASTER_FATAL_ERROR_READING_BINLOG): Got fatal error from master when reading data from binary log
+```
+mysql> CALL mysql.tcrds_innodb_monitor_reset('{counter-name|module_name|pattern|all}');
+```
 
-``` 
-mysql> CALL mysql.tcrds_repl_next_changemaster(); 
+```
+ex) CALL mysql.tcrds_innodb_monitor_reset('dml_reads');
+CALL mysql.tcrds_innodb_monitor_reset('module_dml');
+```
+
+### tcrds_innodb_monitor_reset_all
+* A procedure to run innodb_monitor_reset_all variables that reset the value of counter.
+* To use innodb_monitor_reset_all, the counter must be in the disable state.
+* Execute `SET GLOBAL tcrds_innodb_monitor_reset_all = '{counter-name|module_name|pattern|all}';`.
+
+```
+mysql> CALL mysql.tcrds_innodb_monitor_reset_all('{counter-name|module_name|pattern|all}');
 ```
 
 ## Data Migration
