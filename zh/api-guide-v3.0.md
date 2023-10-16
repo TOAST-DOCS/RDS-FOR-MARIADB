@@ -1107,6 +1107,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 
 | Name                                    | Type | Format   | Description                                                                                                                                                                                                          |
 |-----------------------------------------|------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| oldestRestorableYmdt                    | Body | DateTime | Oldest restoreable time                                                                                                                                                                                              |
 | latestRestorableYmdt                    | Body | DateTime | Most recent restoreable time                                                                                                                                                                                         |
 | restorableBackups                       | Body | Array    | List of restoreable backups                                                                                                                                                                                          |
 | restorableBackups.backup                | Body | Object   | Backup information objects                                                                                                                                                                                           |
@@ -1136,6 +1137,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 		"resultMessage": "SUCCESS",
 		"isSuccessful": true
 	},
+    "oldestRestorableYmdt": "2023-07-09T16:33:33+09:00",
 	"latestRestorableYmdt": "2023-07-10T15:44:44+09:00",
 	"restorableBackups": [
 		{
