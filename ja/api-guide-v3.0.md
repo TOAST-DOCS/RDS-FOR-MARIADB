@@ -55,9 +55,11 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 
 ## DBエンジンタイプ
 
-| DBエンジンタイプ      | 作成可否 | OBSから復元可否 |
-|----------------|------|-----------|
-| MARIADB_V10330 | X    | X         |
+| DBエンジンタイプ | 作成可否 | OBSから復元可否 |
+| -------- | -------- | ---------------- |
+| MARIADB_V10330 | O | O |
+| MARIADB_V10611 | O | O |
+| MARIADB_V10612 | O | O |
 
 * ENUMタイプのdbVersionフィールドに対して該当値を使用できます。
 * バージョンによって作成または復元が不可能な場合があります。
@@ -690,6 +692,9 @@ GET /v3.0/db-instances/{dbInstanceId}
 | dbSecurityGroupIds          | Body | Array    | DBインスタンスに適用されたDBセキュリティグループの識別子リスト                                                                                                       |
 | useDeletionProtection       | Body | Boolean  | DBインスタンス削除保護の有無                                                                                                                         |
 | supportAuthenticationPlugin | Body | Boolean  | 認証プラグインサポートの有無                                                                                                                          |
+| needToApplyParameterGroup   | Body | Boolean  | 最新パラメータグループの適用が必要かどうか                                                                                                                   |
+| needMigration               | Body | Boolean  | マイグレーションが必要かどうか                                                                                                                          |
+| supportDbVersionUpgrade     | Body | Boolean  | DBのバージョンアップグレードをサポートするかどうか                                                                                                                     |
 | createdYmdt                 | Body | DateTime | 作成日時(YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                        |
 | updatedYmdt                 | Body | DateTime | 修正日時(YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                        |
 
@@ -717,6 +722,9 @@ GET /v3.0/db-instances/{dbInstanceId}
     "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
     "useDeletionProtection": false,
     "supportAuthenticationPlugin": true,
+    "needToApplyParameterGroup": false,
+    "needMigration": false,
+    "supportDbVersionUpgrade": true,
     "createdYmdt": "2022-11-23T12:03:13+09:00",
     "updatedYmdt": "2022-12-02T17:20:17+09:00"
 }
@@ -1105,6 +1113,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 
 | 名前                                      | 種類   | 形式       | 説明                                                                                                                                                                                       |
 |-----------------------------------------|------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| oldestRestorableYmdt                    | Body | DateTime | 最古の復元可能時間                                                                                                                                                                                |
 | latestRestorableYmdt                    | Body | DateTime | 最新の復元可能時間                                                                                                                                                                                |
 | restorableBackups                       | Body | Array    | 復元可能なバックアップリスト                                                                                                                                                                           |
 | restorableBackups.backup                | Body | Object   | バックアップ情報オブジェクト                                                                                                                                                                           |
@@ -1134,6 +1143,7 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 		"resultMessage": "SUCCESS",
 		"isSuccessful": true
 	},
+    "oldestRestorableYmdt": "2023-07-09T16:33:33+09:00",
 	"latestRestorableYmdt": "2023-07-10T15:44:44+09:00",
 	"restorableBackups": [
 		{
@@ -1164,6 +1174,88 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info
 </p>
 </details>
 
+
+---
+
+### 復元される最後のクエリ照会
+
+```
+GET /v3.0/db-instances/{dbInstanceId}/restoration-info/last-query
+```
+
+#### 共通リクエスト
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| dbInstanceId | URL | UUID | O | DBインスタンスの識別子 |
+| restoreType | Query | Enum | O | 復元タイプの種類<br><ul><li>`TIMESTAMP`:復元可能な時間内の時間を利用した時点復元タイプ</li><li>`BINLOG`:復元可能なバイナリログ位置を利用した時点復元タイプ</li></ul>  |
+
+#### restoreTypeが`TIMESTAMP`の場合
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| restoreYmdt | Query | DateTime | O | DBインスタンス復元日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+	"restoreType": "TIMESTAMP",
+	"restoreYmdt": "2023-07-10T15:44:44+09:00"
+}
+```
+
+</p>
+</details>
+
+#### restoreTypeが`BINLOG`の場合
+
+| 名前 | 種類 | 形式 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| backupId | Query | UUID | O | 復元に使用するバックアップの識別子 |
+| binLogFileName | Query | String | O | 復元に使用するバイナリログの名前 |
+| binLogPosition | Query | Number | O | 復元に使用するバイナリログの位置 |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+	"restoreType": "BINLOG",
+    "backupId":"3ae7914f-9b42-4729-b125-87417b72cf36",
+	"binLogFileName": "mysql-bin.000001",
+	"binLogPosition": 1234567
+}
+```
+
+</p>
+</details>
+
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| executedYmdt | Body | DateTime | クエリ実行日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| lastQuery | Body | String | 最後に実行したクエリ |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "executedYmdt": "2023-03-17T14:02:29+09:00",
+    "lastQuery": "INSERT INTO `test`.`test`SET  @1='0123'"
+}
+```
+
+</p>
+</details>
 
 ---
 
