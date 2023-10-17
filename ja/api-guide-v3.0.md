@@ -1196,19 +1196,6 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info/last-query
 | --- | --- | --- | --- | --- |
 | restoreYmdt | Query | DateTime | O | DBインスタンス復元日時(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 
-<details><summary>例</summary>
-<p>
-
-```json
-{
-	"restoreType": "TIMESTAMP",
-	"restoreYmdt": "2023-07-10T15:44:44+09:00"
-}
-```
-
-</p>
-</details>
-
 #### restoreTypeが`BINLOG`の場合
 
 | 名前 | 種類 | 形式 | 必須 | 説明 |
@@ -1216,21 +1203,6 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info/last-query
 | backupId | Query | UUID | O | 復元に使用するバックアップの識別子 |
 | binLogFileName | Query | String | O | 復元に使用するバイナリログの名前 |
 | binLogPosition | Query | Number | O | 復元に使用するバイナリログの位置 |
-
-<details><summary>例</summary>
-<p>
-
-```json
-{
-	"restoreType": "BINLOG",
-    "backupId":"3ae7914f-9b42-4729-b125-87417b72cf36",
-	"binLogFileName": "mysql-bin.000001",
-	"binLogPosition": 1234567
-}
-```
-
-</p>
-</details>
 
 #### レスポンス
 

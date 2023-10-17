@@ -1195,19 +1195,6 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info/last-query
 | --- | --- | --- | --- | --- |
 | restoreYmdt | Query | DateTime | O | DB 인스턴스 복원 일시(YYYY-MM-DDThh:mm:ss.SSSTZD) |
 
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-	"restoreType": "TIMESTAMP",
-	"restoreYmdt": "2023-07-10T15:44:44+09:00"
-}
-```
-
-</p>
-</details>
-
 #### restoreType이 `BINLOG`인 경우
 
 | 이름 | 종류    | 형식 | 필수 | 설명 |
@@ -1215,21 +1202,6 @@ GET /v3.0/db-instances/{dbInstanceId}/restoration-info/last-query
 | backupId | Query | UUID | O | 복원에 사용할 백업의 식별자 |
 | binLogFileName | Query  | String | O | 복원에 사용할 바이너리 로그 이름 |
 | binLogPosition | Query  | Number | O | 복원에 사용할 바이너리 로그 위치 |
-
-<details><summary>예시</summary>
-<p>
-
-```json
-{
-	"restoreType": "BINLOG",
-    "backupId":"3ae7914f-9b42-4729-b125-87417b72cf36",
-	"binLogFileName": "mysql-bin.000001",
-	"binLogPosition": 1234567
-}
-```
-
-</p>
-</details>
 
 #### 응답
 

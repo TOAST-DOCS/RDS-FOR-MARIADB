@@ -7,8 +7,8 @@
 * 고가용성 구성 및 읽기 복제본 추가 시 읽기 복제본의 백업도 사용하여 생성할 수 있도록 개선
 * MariaDB 10.6.11, MariaDB 10.6.12 버전 추가
 * API v3.0 추가 및 변경
-  * 복원될 마지막 쿼리 조회 API 추가
-  * DB 인스턴스 상세 보기 API 응답에 `needToApplyParameterGroup`, `needMigration`, `supportDbVersionUpgrade` 필드 추가
+    * 복원될 마지막 쿼리 조회 API 추가
+    * DB 인스턴스 상세 보기 API 응답에 `needToApplyParameterGroup`, `needMigration`, `supportDbVersionUpgrade` 필드 추가
 
 ### 2023. 07. 11.
 

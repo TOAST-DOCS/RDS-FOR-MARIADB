@@ -7,8 +7,8 @@
 * Improved to create instances by using read replica backups when configuring high availability and adding read replicas
 * Added the versions of MariaDB 10.6.11 and MariaDB 10.6.12
 * Added and modified API v3.0
-  * Added the API to list the last query to be restored
-  * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
+    * Added the API to list the last query to be restored
+    * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
 
 
 ### July 11, 2023
