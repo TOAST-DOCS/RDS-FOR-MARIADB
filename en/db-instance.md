@@ -175,6 +175,10 @@ To improve read performance, you can create a read replica which can be used for
 
 Breaking the replication relationship with the master and changing the read replica to the master is called promotion. The promoted master acts as an independent DB instance. If any replication delay between the read replica and the master that you want to promote, it will not be promoted until the delay is gone.
 
+### Force Promote Read Replica
+
+Force promotion to the read replica's point-in-time data, regardless of the state of the master or source region.
+
 ### Stop Replication of Read Replicas
 
 Read replicas can be stopped for several reasons. If the status of the read replica is `Replication stopped`, you must quickly determine the cause and perform normalization. If the ` Replication stopped` status persists for a long time, the replication delay will increase. If you do not have the binary log required for normalization, you must rebuild the read replica. The reason for replication stop can be determined by the `SHOW SLAVE STATUS` command in the read replica. If the value

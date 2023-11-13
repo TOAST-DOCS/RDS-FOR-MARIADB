@@ -1012,6 +1012,47 @@ POST /v3.0/db-instances/{dbInstanceId}/backup
 
 ---
 
+### Export after Backing up DB Instance
+
+```
+POST /v3.0/db-instances/{dbInstanceId}/backup-to-object-storage
+```
+
+#### Request
+
+| Name              | Type   | Format     | Required | Description                          |
+|-----------------|------|--------|----|-----------------------------|
+| dbInstanceId    | URL  | UUID   | O  | DB instance identifier                |
+| tenantId        | Body | String | O  | Tenant ID of object storage to store backup   |
+| username        | Body | String | O  | NHN Cloud member or IAM member ID   |
+| password        | Body | String | O  | API password for object storage where backup is stored |
+| targetContainer | Body | String | O  | Object storage container where backup is stored     |
+| objectPath      | Body | String | O  | Backup path to be stored in container            |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "tenantId": "399631c404744dbbb18ce4fa2dc71a5a",
+    "username": "gildong.hong@nhn.com",
+    "password": "password",
+    "targetContainer": "/container",
+    "objectPath": "/backups/backup_file"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+| --- | --- | --- | --- |
+| jobId | Body | UUID | Identifier of requested task |
+
+---
+
 ### Replicate DB Instance
 
 ```
@@ -3768,6 +3809,19 @@ GET /v3.0/metric-statistics
 ---
 
 ## Event
+
+### Event category
+
+Events can be categorized into categories, which are shown below.
+
+| Event category    | Description      |
+|-------------|---------|
+| ALL         | All      |
+| BACKUP      | Backups      |
+| DB_INSTANCE | DB Instance |
+| JOB         | Jobs      |
+| TENANT      | Tenant     |
+| MONITORING  | Monitoring    |
 
 ### List Events
 

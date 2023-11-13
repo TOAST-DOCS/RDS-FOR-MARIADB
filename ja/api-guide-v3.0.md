@@ -1012,6 +1012,47 @@ POST /v3.0/db-instances/{dbInstanceId}/backup
 
 ---
 
+### DBインスタンスバックアップ後にエクスポート
+
+```
+POST /v3.0/db-instances/{dbInstanceId}/backup-to-object-storage
+```
+
+#### リクエスト
+
+| 名前             | 種類  | 形式    | 必須 | 説明                         |
+|-----------------|------|--------|----|-----------------------------|
+| dbInstanceId    | URL  | UUID   | O  | DBインスタンスの識別子               |
+| tenantId        | Body | String | O  | バックアップが保存されるオブジェクトストレージのテナントID   |
+| username        | Body | String | O  | NHN Cloud会員またはIAMメンバーID   |
+| password        | Body | String | O  | バックアップが保存されるオブジェクトストレージのAPIパスワード |
+| targetContainer | Body | String | O  | バックアップが保存されるオブジェクトストレージのコンテナ    |
+| objectPath      | Body | String | O  | コンテナに保存されるバックアップのパス           |
+
+<details><summary>例</summary>
+<p>
+
+```json
+{
+    "tenantId": "399631c404744dbbb18ce4fa2dc71a5a",
+    "username": "gildong.hong@nhn.com",
+    "password": "password",
+    "targetContainer": "/container",
+    "objectPath": "/backups/backup_file"
+}
+```
+
+</p>
+</details>
+
+#### レスポンス
+
+| 名前 | 種類 | 形式 | 説明 |
+| --- | --- | --- | --- |
+| jobId | Body | UUID | リクエストした作業の識別子 |
+
+---
+
 ### DBインスタンスを複製する
 
 ```
@@ -1450,7 +1491,7 @@ POST /v3.0/db-instances/restore-from-obs
 |-----------------------------------------------------|------|---------|----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | restore                                             | Body | Object  | O  | 復元情報オブジェクト                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | restore.tenantId                                    | Body | String  | O  | バックアップが保存されたオブジェクトストレージのテナントID                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| restore.username                                    | Body | String  | O  | NHN CloudアカウントまたはIAMメンバーID                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| restore.username                                    | Body | String  | O  | NHN Cloud会員またはIAMメンバーID                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | restore.password                                    | Body | String  | O  | バックアップが保存されたオブジェクトストレージのAPIパスワード                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | restore.targetContainer                             | Body | String  | O  | バックアップが保存されたオブジェクトストレージのコンテナ                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | restore.objectPath                                  | Body | String  | O  | コンテナに保存されたバックアップのパス                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
@@ -2276,7 +2317,7 @@ POST /v3.0/backups/{backupId}/export
 |-----------------|------|--------|----|----------------------------------|
 | backupId        | URL  | UUID   | O  | バックアップの識別子                       |
 | tenantId        | Body | String | O  | バックアップが保存されるオブジェクトストレージのテナントID   |
-| username        | Body | String | O  | NHN CloudアカウントまたはIAMメンバーID       |
+| username        | Body | String | O  | NHN Cloud会員またはIAMメンバーID       |
 | password        | Body | String | O  | バックアップが保存されるオブジェクトストレージのAPIパスワード |
 | targetContainer | Body | String | O  | バックアップが保存されるオブジェクトストレージのコンテナ     |
 | objectPath      | Body | String | O  | コンテナに保存されるバックアップのパス              |
@@ -2304,6 +2345,9 @@ POST /v3.0/backups/{backupId}/export
 | jobId | Body | UUID | リクエストした作業の識別子 |
 
 ---
+
+> [注意]
+> 手動バックアップの場合、バックアップが行われたDBインスタンスが存在しない場合、バックアップをオブジェクトストレージにエクスポートすることができません。
 
 ### バックアップを復元する
 
@@ -3764,6 +3808,19 @@ GET /v3.0/metric-statistics
 ---
 
 ## イベント
+
+### イベントカテゴリー
+
+イベントはカテゴリに分類することができ、下記の通りです。
+
+| イベントカテゴリー   | 説明     |
+|-------------|---------|
+| ALL         | 全体     |
+| BACKUP      | バックアップ     |
+| DB_INSTANCE | DBインスタンス |
+| JOB         | 作業     |
+| TENANT      | テナント    |
+| MONITORING  | モニタリング   |
 
 ### イベントリスト照会
 

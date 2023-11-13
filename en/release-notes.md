@@ -1,5 +1,14 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### November 14, 2023.
+
+#### Added Features
+
+* Added forced promotion of DB instances
+* Improved to allow you to select notification type when subscribing to events
+* API v3.0 additions and changes
+  * Added the Export after backing up DB instance API
+
 ### October 17, 2023
 
 #### Added Features and Updates
