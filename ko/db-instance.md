@@ -158,7 +158,7 @@ DB 인스턴스를 일정 시간 동안 사용하지는 않지만, 삭제를 원
 
 > [참고]
 > 고가용성 DB 인스턴스, 읽기 복제본을 가지고 있는 마스터, 읽기 복제본은 중지할 수 없습니다.
-> DB 인스턴스가 플로팅 IP를 사용 중일 경우 중지와 상관 없이 플로팅 IP 요금이 과금됩니다.
+> DB 인스턴스가 플로팅 IP를 사용 중일 경우 중지와 상관없이 플로팅 IP 요금이 과금됩니다.
 
 ### 읽기 복제본 생성
 
@@ -174,6 +174,10 @@ DB 인스턴스를 일정 시간 동안 사용하지는 않지만, 삭제를 원
 ### 읽기 복제본 승격
 
 마스터와의 복제 관계를 끊고 읽기 복제본을 마스터로 변경하는 것을 승격이라 부릅니다. 승격된 마스터는 독립된 DB 인스턴스로서 동작하게 됩니다. 승격하려는 읽기 복제본과 마스터 사이에 복제 지연이 있는 경우, 해당 지연이 없어질 때까지 승격되지 않습니다.
+
+### 읽기 복제본 강제 승격
+
+마스터나 원본 리전의 상태와 상관없이 읽기 복제본의 현재 시점 데이터로 강제 승격합니다.
 
 ### 읽기 복제본의 복제 중단
 
@@ -320,7 +324,7 @@ mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_
 
 * 파라미터 설명
     * master_instance_ip: 복제 대상(Master) 서버의 IP
-    * master_instance_port : 복제 대상(Master) 서버의 MariaDB 포트
+    * master_instance_port: 복제 대상(Master) 서버의 MariaDB 포트
     * user_id_for_replication: 복제 대상(Master) 서버의 MariaDB에 접속할 복제용 계정
     * password_for_replication_user: 복제용 계정 패스워드
     * MASTER_LOG_FILE: 복제 대상(Master)의 binary log 파일명

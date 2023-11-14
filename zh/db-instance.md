@@ -175,6 +175,10 @@ To improve read performance, you can create a read replica which can be used for
 
 Breaking the replication relationship with the master and changing the read replica to the master is called promotion. The promoted master acts as an independent DB instance. If any replication delay between the read replica and the master that you want to promote, it will not be promoted until the delay is gone.
 
+### Force Promote Read Replica
+
+Force promotion to the read replica's point-in-time data, regardless of the state of the master or source region.
+
 ### Stop Replication of Read Replicas
 
 Read replicas can be stopped for several reasons. If the status of the read replica is `Replication stopped`, you must quickly determine the cause and perform normalization. If the ` Replication stopped` status persists for a long time, the replication delay will increase. If you do not have the binary log required for normalization, you must rebuild the read replica. The reason for replication stop can be determined by the `SHOW SLAVE STATUS` command in the read replica. If the value
@@ -326,12 +330,12 @@ mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_
 ```
 
 * Parameter description
-    * master_instance_ip : IP of replication target (Master) server
-    * master_instance_port : MariaDB Port on the replication target (Master) Server
-    * user_id_for_replication : Account for replication to access MariaDB on the replication target (Master) server
-    * password_for_replication_user : Account password for replication
-    * MASTER_LOG_FILE : The binary log file name of the replication target (Master)
-    * MASTER_LOG_POS : The binary log position of the replication target (Master)
+  * master_instance_ip : IP of replication target (Master) server
+  * master_instance_port : MariaDB Port on the replication target (Master) Server
+  * user_id_for_replication : Account for replication to access MariaDB on the replication target (Master) server
+  * password_for_replication_user : Account password for replication
+  * MASTER_LOG_FILE : The binary log file name of the replication target (Master)
+  * MASTER_LOG_POS : The binary log position of the replication target (Master)
 
 ```
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4); 
@@ -440,7 +444,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### When `ERROR 1418` occurs during data importing
 
 * `ERROR 1418` occurs when the function declaration in the mysqldump file does not contain NO SQL, READS SQL DATA, or DETERMINISTIC and binary logging is enabled.
-    * For detailed information, refer to [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
+  * For detailed information, refer to [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
 * To resolve this, Parameter value of `log_bin_trust_function_creators` of DB instance to which you want to apply mysqldump file should be changed to `1`.
 
 ### Export by using replication
