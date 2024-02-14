@@ -8,45 +8,57 @@ high-availability configuration or perform backups from read replica.
 > [Note]
 > High availability DB instances are backed up on the extra master without compromising the master's storage performance.
 
-### Auto Backup
-
-If you set the backup archive period for a DB instance to 1 or more days, automatic backups are enabled, and backups are performed at the specified backup run time. Automatic backups have the same life cycle as DB instances. When DB instance is deleted, all archived automatic backups are deleted. When you create DB instance, you can set the settings for automatic backups, and you can also change the backup settings for the DB instance that is already created. Automatic Backup supports the
-following settings.
-
-**Backup Retention Period**
-
-* Sets the time period for storing backups on storage. It can be kept for up to 730 days, and if the backup archive period changes, the expired automatic backup files will be deleted immediately.
+The following settings are applied to backup, and also to auto and manual backups.
 
 **Use Table Lock**
 
 * `FLUSH TABLES WITH READ LOCK` ets whether the syntax is enabled or disabled.
 * Table lock enables the `FLUSH TABLES WITH READ LOCK` syntax periodically during backups to ensure consistency in backup data. If `FLUSH TABLES WITH READ LOCK` syntax fails to run, the backup will fail.
-* You can disable table locking if the DML query load is high during a backup. If you do not use table lock, `FLUSH TABLES WITH READ LOCK` syntax will not run, so a high DML load does not cause the backup to fail. However, backups without table lock may not ensure consistency of backup data and do not support point-in-time restoration.
+* You can disable table locking if the DML query load is high during a backup. If you do not use table lock, `FLUSH TABLES WITH READ LOCK` syntax will not run, so a high DML load does not cause the backup to fail. However, backups without table lock may not ensure consistency of backup data, and as a result, some operations, including restore and replication processes, are not supported for backups created without table lock and for DB instances with table locking disabled.
 
-** Query Latency Dash Time (second)**
+**Query Latency Dash Time (second)**
 
 * When using table lock, set the wait time for `FLUSH TABLES WITH READ LOCK` syntax. `FLUSH TABLES WITH READ LOCK` syntax will wait for the query latency dash time. It can be set from 0 to 21,600 seconds. Longer settings reduce the likelihood of backup failures due to DML query load, but may result in longer overall backup times.
 
-**Back Retry Times**
+### Manual Backup
 
-* You can set the backup to retry if it fails due to DML query load or for other various reasons. You can retry maximum 10 times. Depending on the backup run time setting, you might not try again because there are still more retries.
+If you need to permanently store databases at a certain point in time, you can perform backups manually from the web console. Unlike auto backups, manual backups are not deleted, unless you explicitly delete the backup, as they are when DB instance is deleted Manual backups require you to enter a name for the backup and have the following limitations.
 
-**Backup Run Time**
+* Backup name has to be unique for each region.
+* Backup names are alphabetic, numeric, and - _ between 1 and 100 Only, and the first character has to be an alphabet.
 
-* Allows you set the time that the backup takes place. It consists of the backup start time, the backup window, and the backup retry expiration time. You can set the backup run time multiple times so that it does not overlap. Performs backup at any point in the backup window based on the start time of the backup. The backup window is not related to the total running time of the backup. Backup time is proportional to the size of the database and the service load. If the backup fails, retry the
-  backup based on the number of backups retries if it does not exceed the backup retries times.
+### Auto Backup
+
+In addition to manually performing backups, auto backups can occur when needed for restore operations or based on auto backup schedule settings. Auto backups have the same lifecycle as DB instances. When a DB instance is deleted, all archived auto backups are deleted. The following setting items are supported by auto backups.
+
+**Allow Auto Backup**
+
+* If you don't allow auto backups, all auto backups will be blocked from taking place, and some operations, including restore and replication processes, that might otherwise take place on demand, will not be supported. In addition, you won't be able to set the following auto backup-related items
+
+**Auto Backup Retention Period**
+
+* Sets the time period for storing auto backups on storage. It can be kept for up to 730 days, and if the auto backup archive period changes, the expired auto backup files will be deleted immediately.
+
+**Auto Backup Replication Region**
+
+* Set the auto backup file to be replicated to backup storage in another region. Auto Backup replication regions are features for disaster recovery that replicate and manage auto backup files from the original region equally to the destination region. Replication occurs in the background at regular intervals. When you set up an auto backup replication region, you are charged with inter-regional replication traffic, and the destination region is charged additionally for backup storage usage.
+
+**Number of Auto Backup Retries**
+
+* You can set the auto backup to retry if it fails due to DML query load or for other various reasons. You can retry maximum 10 times. Depending on the auto backup run time setting, you might not try again even if there are still more retries.
+
+**Use Auto Backup Schedule**
+
+* When using an auto backup schedule, backups are performed automatically at the auto backup performance time you set.
+
+**Auto Backup Run Time**
+
+* Allows you set the time that the backup automatically takes place. It consists of the backup start time, the backup window, and the backup retry expiration time. You can set the backup run time multiple times so that it does not overlap. Performs backup at any point in the backup window based on the start time of the backup. The backup window is not related to the total running time of the backup. Backup time is proportional to the size of the database and the service load. If the backup fails, retry the backup based on the number of backups retries if it does not exceed the backup retries times.
 
 Auto backup name is given in the format of `{DB instance name} yyyy-MM-dd-HH-mm`.
 
 > [Caution]
-> If you are unable to perform backup, for example, if the previous backup does not end, the backup may not be performed.
-
-### Manual Backup
-
-If you need to permanently store databases at a certain point in time, you can perform backups manually from the web console. Unlike automatic backups, manual backups are not deleted, unless you explicitly delete the backup, as they are when DB instance is deleted Manual backups require you to enter a name for the backup and have the following limitations.
-
-* Backup name has to be unique for each region.
-* Backup names are alphabetic, numeric, and - _ between 1 and 100 Only, and the first character has to be an alphabet.
+> Backups may not be performed in some situations, such as when a previous backup fails to terminate.
 
 ### Backup Storage and Pricing
 
