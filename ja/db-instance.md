@@ -212,6 +212,15 @@ DBインスタンスのMariaDBが正常に動作しない場合、強制的に�
 
 DBインスタンスに接続されたパラメータグループのパラメータが修正された場合、その修正を反映する必要があります。変更されたパラメータを適用するために再起動が必要な場合、DBインスタンスが再起動されます。パラメータグループの詳細については、[パラメータグループ](parameter-group.md)を参照してください。
 
+### DBスキーマ&ユーザー直接制御
+
+RDS for MariaDBではDBスキーマとユーザーを簡単に管理できるようにWebコンソールで管理機能を提供していますが、ユーザーが直接制御できるように設定する機能も提供しています。WebコンソールのDBインスタンス修正画面でDBスキーマ＆ユーザー直接制御の項目で設定できます。
+* 直接制御を使用すると、現在作成されているすべてのユーザーに下記の権限を付与します。
+
+```sql
+GRANT CREATE,DROP,LOCK TABLES,REFERENCES,EVENT,ALTER,INDEX,INSERT,SELECT,UPDATE,DELETE,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,EXECUTE,CREATE USER,PROCESS,RELOAD,REPLICATION SLAVE,REPLICATION CLIENT,SHOW DATABASES, CREATE TEMPORARY TABLES,TRIGGER ON *.* TO '{user_id}'@'{host}' WITH GRANT OPTION;
+```
+
 ## 高可用性DBインスタンス
 
 高可用性DBインスタンスは可用性とデータ耐久性を増加させ、障害許容が可能なデータベースを提供します。高可用性DBインスタンスはマスター、予備マスターで構成され、異なるアベイラビリティゾーンに作成されます。予備マスターは障害に備えたDBインスタンスで、通常は使用できません。高可用性DBインスタンスの場合、予備マスターでバックアップが行われます。

@@ -215,6 +215,15 @@ out of capacity, you may need to set a storage period for binary logs or expand 
 
 When the parameters of parameter group associated with DB instance are modified, they should be reflected. If restart is required to apply the changed parameters, the DB instance is restarted. For more details on the parameter group, see the [Parameter Group](parameter-group/).
 
+### DB Schema & Direct User Control
+
+RDS for MySQL provides management features in the web console to make it easy to manage DB schemas and users, but it also provides the feature to set up direct user control. This can be set via the DB Schema & User Direct Control item on the Modify DB Instance screen in the web console.
+* With direct control, all currently created users are granted the following permissions
+
+```sql
+GRANT CREATE,DROP,LOCK TABLES,REFERENCES,EVENT,ALTER,INDEX,INSERT,SELECT,UPDATE,DELETE,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,EXECUTE,CREATE USER,PROCESS,RELOAD,REPLICATION SLAVE,REPLICATION CLIENT,SHOW DATABASES, CREATE TEMPORARY TABLES,TRIGGER ON *.* TO '{user_id}'@'{host}' WITH GRANT OPTION;
+```
+
 ## High Availability DB instances
 
 High availability DB instances increase availability, data durability, and provide fault tolerant databases. High availability DB instances consist of master and candidate master and are created in different availability zones. Candidate master is a DB instance for failover and is not normally available. For high availability DB instances, backups are performed on the sample master.
@@ -330,12 +339,12 @@ mysql> CALL mysql. tcrds_repl_changemaster (master_instance_ip, master_instance_
 ```
 
 * Parameter description
-    * master_instance_ip : IP of replication target (Master) server
-    * master_instance_port : MariaDB Port on the replication target (Master) Server
-    * user_id_for_replication : Account for replication to access MariaDB on the replication target (Master) server
-    * password_for_replication_user : Account password for replication
-    * MASTER_LOG_FILE : The binary log file name of the replication target (Master)
-    * MASTER_LOG_POS : The binary log position of the replication target (Master)
+  * master_instance_ip : IP of replication target (Master) server
+  * master_instance_port : MariaDB Port on the replication target (Master) Server
+  * user_id_for_replication : Account for replication to access MariaDB on the replication target (Master) server
+  * password_for_replication_user : Account password for replication
+  * MASTER_LOG_FILE : The binary log file name of the replication target (Master)
+  * MASTER_LOG_POS : The binary log position of the replication target (Master)
 
 ```
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4); 
@@ -444,7 +453,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### When `ERROR 1418` occurs during data importing
 
 * `ERROR 1418` occurs when the function declaration in the mysqldump file does not contain NO SQL, READS SQL DATA, or DETERMINISTIC and binary logging is enabled.
-    * For detailed information, refer to [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
+  * For detailed information, refer to [The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MariaDB document.
 * To resolve this, Parameter value of `log_bin_trust_function_creators` of DB instance to which you want to apply mysqldump file should be changed to `1`.
 
 ### Export by using replication
