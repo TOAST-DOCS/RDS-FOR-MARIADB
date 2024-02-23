@@ -296,6 +296,14 @@ master changes during failover and all binary logs are deleted. You can restore 
 You can temporarily stop the high availability feature in situations where temporary interruption of connectivity or high load is expected. If the high availability feature is paused, it does not detect failures, and therefore does not fail. Even if a task that requires a restart while the high availability feature is paused do not resume the paused high availability feature. Data replication occurs normal when high availability is paused, but we do not recommend that you pause for a long time
 as no failures are to be detected.
 
+### 예비 마스터 승격
+
+예비 마스터도 읽기 복제본과 마찬가지로 마스터와의 복제 관계를 끊고 마스터로 승격시킬 수 있습니다. 고가용성을 해제하고 읽기 복제본으로 변경 후, 읽기 복제본 승격과 동일한 작업을 진행합니다. 승격하려는 예비 마스터와 마스터 사이에 복제 지연이 있는 경우, 해당 지연이 없어질 때까지 승격되지 않습니다.
+
+### 예비 마스터 강제 승격
+
+마스터의 상태와 상관없이 예비 마스터의 현재 시점 데이터로 강제 승격합니다.
+
 ## MariaDB Procedure
 
 RDS for MariaDB provides its own procedures for performing some of the features that are restricted from user accounts to provide user convenience.
