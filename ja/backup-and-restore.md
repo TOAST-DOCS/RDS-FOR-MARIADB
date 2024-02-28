@@ -9,6 +9,8 @@
 
 バックアップ時に適用される設定項目は以下の通りで、自動バックアップと手動バックアップの両方に適用されます。
 
+![backup-config-ja](https://static.toastoven.net/prod_rds/24.03.12/backup-config-ja.png)
+
 **テーブルロックの使用**
 
 * `FLUSH TABLES WITH READ LOCK`構文を実行するかどうかを設定します。
@@ -21,12 +23,36 @@
 
 ### 手動バックアップ
 
-特定の時点のデータベースを永久に保存するには、Webコンソールから手動でバックアップを実行することができます。手動バックアップは自動バックアップと異なり、明示的にバックアップを削除しない限り、DBインスタンスが削除されるときと同じように削除されません。手動バックアップの場合、バックアップの名前を入力する必要があり、下記のような制約があります。
+特定の時点のデータベースを永久に保存するには、Webコンソールから手動でバックアップを実行することができます。手動バックアップは自動バックアップと異なり、明示的にバックアップを削除しない限り、DBインスタンスが削除されるときと同じように削除されません。웹 콘솔에서 수동 백업을 수행하려면
+
+![db-instance-backup-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ja.png)
+
+❶ 백업하고자 하는 DB 인스턴스를 선택한 후 **백업** 버튼을 클릭하면 팝업 창이 나타납니다.
+
+![db-instance-backup-popup-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-popup-ja.png)
+
+❷ 원한다면 백업을 수행할 DB 인스턴스를 변경합니다.
+❸ 백업의 이름을 입력합니다. 아래와 같은 제약 사항이 있습니다.
 
 * バックアップ名はリージョンごとに固有の名前でなければなりません。
 * バックアップ名は1～100文字の間の英字、数字、一部の記号（-、_、.）のみ使用でき、最初の文字は英字のみ使用できます。
 
+혹은 백업 탭에서
+
+![manual-backup-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/manual-backup-ja.png)
+
+❶ **백업 생성** 버튼을 클릭하면 팝업 창이 나타납니다.
+
+![db-instance-backup-popup-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-backup-popup-ja.png)
+
+❷ 백업을 수행할 DB 인스턴스를 선택합니다.
+❸ 백업의 이름을 입력한 후 확인 버튼을 클릭하면 백업 생성 요청을 할 수 있습니다.
+
 ### 自動バックアップ
+
+手動でバックアップを実行する場合以外にも、復元作業のために必要な場合、または自動バックアップスケジュールの設定によって自動バックアップが実行されることがあります。自動バックアップはDBインスタンスとライフサイクルが同じです。DBインスタンスが削除されると、保管された自動バックアップはすべて削除されます。自動バックアップでサポートする設定項目は下記の通りです。
+
+![backup-config-ja](https://static.toastoven.net/prod_rds/24.03.12/backup-config-ja.png)
 
 手動でバックアップを実行する場合以外にも、復元作業のために必要な場合、または自動バックアップスケジュールの設定によって自動バックアップが実行されることがあります。自動バックアップはDBインスタンスとライフサイクルが同じです。DBインスタンスが削除されると、保管された自動バックアップはすべて削除されます。自動バックアップでサポートする設定項目は下記の通りです。
 
@@ -65,7 +91,32 @@
 
 ### バックアップのエクスポート
 
-内部オブジェクトストレージに保存されたバックアップファイルをNHN Cloudのユーザーオブジェクトストレージにエクスポートできます。手動バックアップまたは自動バックアップファイルをエクスポートしたり、バックアップを実行すると同時にバックアップファイルをユーザーオブジェクトストレージにエクスポートすることもできます。バックアップをエクスポートしている間、元のDBインスタンスのネットワーク性能の低下が発生する場合があります。
+#### 백업을 수행하면서 파일 내보내기
+
+백업을 수행함과 동시에 백업 파일을 사용자 오브젝트 스토리지로 내보낼 수 있습니다.
+
+![db-instance-list-export-obs-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-list-export-obs-ja.png)
+
+![db-instance-list-export-obs-modal-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-ja.png)
+
+❶ 백업하고자 하는 DB 인스턴스를 선택한 후 드롭다운 메뉴에서 **오브젝트 스토리지로 백업 내보내기** 메뉴를 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
+❷ 백업이 저장될 오브젝트 스토리지의 테넌트 ID를 입력합니다. 테넌트 ID는 API 엔드포인트 설정에서 확인할 수 있습니다.
+❸ 백업이 저장될 오브젝트 스토리지의 NHN Cloud 계정 혹은 IAM 회원 ID를 입력합니다.
+❹ 백업이 저장될 오브젝트 스토리지의 API 비밀번호를 입력합니다.
+❺ 백업이 저장될 오브젝트 스토리지의 컨테이너를 입력합니다.
+❻ 컨테이너에 저장될 백업의 경로를 입력합니다. 폴더 이름은 최대 255바이트이고, 전체 경로는 최대 1024바이트입니다. 특정 형태(. 또는 ..)는 사용할 수 없으며 특수문자(' " < > ;)와 공백은 입력할 수 없습니다.
+
+#### 백업 파일 내보내기
+
+내부 백업 스토리지에 저장된 백업 파일을 NHN Cloud의 사용자 오브젝트 스토리지로 내보낼 수 있습니다.
+
+![db-instance-detail-backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-detail-backup-export-ja.png)
+
+❶ 백업을 수행한 원본 DB 인스턴스의 상세 탭에서 내보내고자 하는 백업 파일을 선택한 후 **오브젝트 스토리지로 백업 내보내기** 버튼을 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
+
+![backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-ja.png)
+
+❷ 혹은 백업 탭에서 내보내고자 하는 백업 파일을 선택한 후 **오브젝트 스토리지로 백업 내보내기** 버튼을 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
 
 > [参考]
 > 手動バックアップの場合、バックアップを実行した元DBインスタンスが削除されると、バックアップをエクスポートできません。
@@ -81,6 +132,18 @@
 
 スナップショット復元は、バックアップを実行した時点に復元します。バックアップファイルだけで復元を行い、バックアップを行った元のDBインスタンスが必要ありません。
 
+스냅샷 복원은 백업을 수행한 시점으로 복원합니다. 백업 파일만으로 복원을 진행하여, 백업을 수행한 원본 DB 인스턴스가 필요하지 않습니다. 웹 콘솔에서 스냅샷 복원을 하려면
+
+![db-instance-snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-ja.png)
+
+❶ DB 인스턴스의 상세 탭에서 복원하려는 백업 파일을 선택한 후 **스냅샷 복원** 버튼을 클릭하면 DB 인스턴스 복원 화면으로 이동합니다.
+
+혹은
+
+![snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/snapshot-restoration-ja.png)
+
+❶ 백업 탭에서 복원하려는 백업 파일을 선택한 후 **스냅샷 복원** 버튼을 클릭하면 DB 인스턴스 복원 화면으로 이동합니다.
+
 ### 時点復元
 
 時点復元を利用して、希望する特定の時点またはバイナリログ(binary log)の特定の位置に復元できます。時点復元をするためには、バックアップファイルとバックアップを実行した時点から復元を希望する時点までのバイナリログ(binary log)が必要です。バイナリログ(binary log)は、バックアップが行われる元DBインスタンスのストレージに保存されます。バイナリログ(binary log)の保管期間が短い場合、ストレージ容量をより多く使うことがありますが、希望する時点への復元が難しい場合があります。下記の場合、時点復元に必要なバイナリログ(binary log)がないため、希望の時点に復元できない場合があります。
@@ -90,9 +153,41 @@
 * 高可用性DBインスタンスのフェイルオーバーによりバイナリログ(binary log)が削除された場合。
 * その他様々な理由でバイナリログ(binary log)が破損したり、削除されている場合。
 
-### 外部MariaDBバックアップを利用した復元
+웹 콘솔에서 시점 복원을 하려면
 
-外部MariaDBバックアップファイルを利用してDBインスタンスを作成できます。外部MariaDBバックアップファイルを作成する時、[バックアップ](backup-and-restore/#_1)項目を参照してRDS for MariaDBで使用するPercona XtraBackupと同じバージョンを使用する必要があります。
+![point-in-time-restoration-list-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-ja.png)
+
+❶ 시점 복원을 하려는 DB 인스턴스를 선택 후 **시점 복원** 버튼을 클릭하면 시점 복원을 할 수 있는 페이지로 이동합니다.
+
+#### Timestamp를 이용한 복원
+
+Timestamp를 사용한 복원 시에는 선택한 시점과 가장 가까운 백업 파일을 기준으로 복원을 진행한 뒤, 원하는 시점까지의 바이너리 로그(binary log)를 적용합니다.
+
+![point-in-time-restoration-01-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-ja.png)
+
+❶ 복원 방법을 선택합니다.
+
+![point-in-time-restoration-02-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-ja.png)
+
+❷ 복원 시각을 선택합니다. 가장 최근 시점으로 복원하거나, 원하는 특정 시점을 직접 입력할 수 있습니다.
+
+![point-in-time-restoration-03-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-ja.png)
+
+❸ **복원될 마지막 쿼리 확인** 버튼을 클릭하면 마지막으로 복원될 쿼리를 확인할 수 있는 팝업 창이 표시됩니다.
+
+#### 바이너리 로그(binary log)를 이용한 복원
+
+바이너리 로그(binary log)를 활용한 복원 과정에서는 선택한 백업 파일로 먼저 복원을 진행한 후, 원하는 위치까지의 바이너리 로그(binary log)를 적용합니다.
+
+![point-in-time-restoration-04-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-ja.png)
+
+❹ 바이너리 로그(binary log)로 복원을 하기 위해서는 먼저 백업 파일을 선택해야 합니다.
+❺ 바이너리 로그(binary log)파일을 선택합니다.
+❻ 바이너리 로그(binary log)의 특정 위치를 입력합니다.
+
+### 外部MySQLバックアップを利用した復元
+
+外部MySQLバックアップファイルを利用してDBインスタンスを作成できます。外部MySQLバックアップファイルを作成する時、[バックアップ](backup-and-restore/#_1)項目を参照してRDS for MySQLで使用するPercona XtraBackupと同じバージョンを使用する必要があります。
 
 > [注意]
 > innodb_data_file_pathの設定値がibdata1:12M:autoextendでない場合、RDS for MariaDBのDBインスタンスに復元できません。
