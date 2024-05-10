@@ -1,8 +1,9 @@
 ## Database > RDS for MariaDB > API Guide
 
-| Region                | Endpoint                                           |
-|-----------------------|----------------------------------------------------|
-| Korea (Pangyo) region | https://kr1-mariadb.api.gov-nhncloudservice.com |
+| Region                    | Endpoint                                            |
+|---------------------------|-----------------------------------------------------|
+| Korea (Pangyo) region     | https://kr1-rds-mariadb.api.gov-nhncloudservice.com |
+| Korea (Pyeongchon) region | https://kr2-rds-mariadb.api.gov-nhncloudservice.com |
 
 ## Monitoring
 
@@ -11,7 +12,7 @@
 - View the metrics necessary for viewing statistical information.
 
 ```
-GET /rds/api/v2.0/metrics
+GET /v2.0/metrics
 ```
 
 #### Request header
