@@ -10,11 +10,11 @@
 `User Access Key ID` and `Secret Access Key` are required for authentication to use APIs. To create them, select <b>API Security Setting</b> from the drop-down menu that appears when you hover over your account in the top right on the console.
 The created Key must be included in the request Header.
 
-| Name                       | Type   | Format | Required | Description                                      |
-|----------------------------|--------|--------|----------|--------------------------------------------------|
-| X-TC-APP-KEY               | Header | String | O        | Appkey of RDS for MariaDB                        |
-| X-TC-AUTHENTICATION-ID     | Header | String | O        | User Access Key ID in API Security Settings menu |
-| X-TC-AUTHENTICATION-SECRET | Header | String | O        | Secret Access Key in API Security Settings menu  |
+| Name                       | Type   | Format | Required | Description                                                |
+|----------------------------|--------|--------|----------|------------------------------------------------------------|
+| X-TC-APP-KEY               | Header | String | O        | Appkey of RDS for MariaDB or integrated Appkey for project |
+| X-TC-AUTHENTICATION-ID     | Header | String | O        | User Access Key ID in API Security Settings menu           |
+| X-TC-AUTHENTICATION-SECRET | Header | String | O        | Secret Access Key in API Security Settings menu            |
 
 In addition, the APIs you can call are limited based on the project member role. You can grant permissions separately for `RDS for MariaDB ADMIN` and `RDS for MariaDB VIEWER`.
 
@@ -691,11 +691,12 @@ This API does not require a request body.
 | dbFlavorId                  | Body | UUID     | Identifier of DB instance specifications                                                                                                                                |
 | parameterGroupId            | Body | UUID     | Parameter group identifier applied to DB instance                                                                                                                       |
 | dbSecurityGroupIds          | Body | Array    | DB security group identifiers applied to DB instance                                                                                                                    |
+| notificationGroupIds        | Body | Array    | Notification group identifiers applied to DB instance                                                                                                                   |
 | useDeletionProtection       | Body | Boolean  | Whether to protect DB instance against deletion                                                                                                                         |
 | supportAuthenticationPlugin | Body | Boolean  | Whether to support authentication plugin                                                                                                                                |
-| needToApplyParameterGroup   | Body | Boolean  | Need to apply the latest parameter group                                                                                                                   |
-| needMigration               | Body | Boolean  | Need to migrate                                                                                                                          |
-| supportDbVersionUpgrade     | Body | Boolean  | Whether to support DB version upgrade                                                                                                                     |
+| needToApplyParameterGroup   | Body | Boolean  | Need to apply the latest parameter group                                                                                                                                |
+| needMigration               | Body | Boolean  | Need to migrate                                                                                                                                                         |
+| supportDbVersionUpgrade     | Body | Boolean  | Whether to support DB version upgrade                                                                                                                                   |
 | createdYmdt                 | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
 | updatedYmdt                 | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
 
@@ -721,6 +722,7 @@ This API does not require a request body.
     "dbFlavorId": "e9ed4ef6-78d7-46fa-ace9-32481e97f3b7",
     "parameterGroupId": "b03e8b13-de27-4d04-a488-ff5689589372",
     "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
+    "notificationGroupIds": ["83a62a33-ddbf-4a04-8653-e54463d5b1ac"],
     "useDeletionProtection": false,
     "supportAuthenticationPlugin": true,
     "needToApplyParameterGroup": false,
@@ -1078,6 +1080,7 @@ POST /v3.0/db-instances/{dbInstanceId}/replicate
 | network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>- Default: Original DB instance value                                                                                                                                                                                                                                       |
 | network.availabilityZone                     | Body | Enum    | O        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`                                                                                                                                                                                                                                       |
 | storage                                      | Body | Object  | X        | Storage information objects                                                                                                                                                                                                                                                                                         |    
+| storage.storageType                          | Body | Enum    | X        | Block Storage Type<br/>- Example: `General SSD`                                                                                                                                                                                                                                                                     |
 | storage.storageSize                          | Body | Number  | X        | Block Storage Size (GB)<br/>- Default: Original DB instance value<br/>- Minimum value: `20`<br/>- Maximum value: `2048`                                                                                                                                                                                             |
 | backup                                       | Body | Object  | X        | Backup information objects                                                                                                                                                                                                                                                                                          |
 | backup.backupPeriod                          | Body | Number  | X        | Backup retention period<br/>- Default: Original DB instance value<br/>- Minimum value: `0`<br/>- Maximum value: `730`                                                                                                                                                                                               |

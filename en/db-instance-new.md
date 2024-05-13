@@ -31,6 +31,7 @@ You can use the versions specified below.
 
 | Version         | Note |
 |-----------------|------|
+| MariaDB 10.6.16 |      |
 | MariaDB 10.6.12 |      |
 | MariaDB 10.6.11 |      |
 | MariaDB 10.3.30 |      |
