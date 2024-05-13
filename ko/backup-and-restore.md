@@ -27,7 +27,7 @@
 
 ![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ko.png)
 
-❶ 백업할 DB 인스턴스를 선택한 뒤 **백업**을 클릭하면 **백업 생성** 팝업 화면이 나타납니다.
+❶ 백업하고자 하는 DB 인스턴스를 선택한 후 **백업** 버튼을 클릭하면 팝업 창이 나타납니다.
 
 ![db-instance-backup-popup-ko](https://static.toastoven.net/prod_rds/24.03.12/db-instance-backup-popup-ko.png)
 

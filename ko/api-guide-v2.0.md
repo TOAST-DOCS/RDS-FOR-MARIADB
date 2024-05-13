@@ -1,8 +1,8 @@
 ## Database > RDS for MariaDB > API 가이드
 
-| 리전        | 엔드포인트                                       |
-|-----------|---------------------------------------------|
-| 한국(판교) 리전 | https://kr1-mariadb.api.nhncloudservice.com |
+| 리전        | 엔드포인트                                           |
+|-----------|-------------------------------------------------|
+| 한국(판교) 리전 | https://kr1-rds-mariadb.api.nhncloudservice.com |
 
 ## Monitoring
 
@@ -11,7 +11,7 @@
 - 통계 정보 조회에 필요한 통계 항목(metric)을 조회합니다.
 
 ```
-GET /rds/api/v2.0/metrics
+GET /v2.0/metrics
 ```
 
 #### 요청 헤더

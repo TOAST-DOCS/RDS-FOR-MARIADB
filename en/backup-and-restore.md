@@ -22,10 +22,30 @@ The following settings are applied to backup, and also to auto and manual backup
 
 ### Manual Backup
 
-If you need to permanently store databases at a certain point in time, you can perform backups manually from the web console. Unlike auto backups, manual backups are not deleted, unless you explicitly delete the backup, as they are when DB instance is deleted Manual backups require you to enter a name for the backup and have the following limitations.
+If you need to permanently store databases at a certain point in time, you can perform backups manually from the web console. Unlike automatic backups, manual backups are not deleted, unless you explicitly delete the backup, as they are when DB instance is deleted. 웹 콘솔에서 수동 백업을 수행하려면
+
+![db-instance-backup-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-en.png)
+
+❶ 백업하고자 하는 DB 인스턴스를 선택한 후 **백업** 버튼을 클릭하면 팝업 창이 나타납니다.
+
+![db-instance-backup-popup-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-popup-en.png)
+
+❷ 원한다면 백업을 수행할 DB 인스턴스를 변경합니다.
+❸ 백업의 이름을 입력합니다. 아래와 같은 제약 사항이 있습니다.
 
 * Backup name has to be unique for each region.
 * Backup names are alphabetic, numeric, and - _ between 1 and 100 Only, and the first character has to be an alphabet.
+
+혹은 백업 탭에서
+
+![manual-backup-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/manual-backup-en.png)
+
+❶ **백업 생성** 버튼을 클릭하면 팝업 창이 나타납니다.
+
+![db-instance-backup-popup-en](https://static.toastoven.net/prod_rds/24.03.12/db-instance-backup-popup-en.png)
+
+❷ 백업을 수행할 DB 인스턴스를 선택합니다.
+❸ 백업의 이름을 입력한 후 확인 버튼을 클릭하면 백업 생성 요청을 할 수 있습니다.
 
 ### Auto Backup
 
@@ -67,7 +87,32 @@ stored, and when you need backup file, you can export the backup file to the obj
 
 ### Export Backup
 
-You can export backup files stored on internal object storage to user object storage on NHN Cloud. You can also export a manual or automatic backup file, or export the backup file to user object storage at the same time as you perform the backup. While exporting backups, network performance of the source DB instance may degrade.
+#### 백업을 수행하면서 파일 내보내기
+
+백업을 수행함과 동시에 백업 파일을 사용자 오브젝트 스토리지로 내보낼 수 있습니다.
+
+![db-instance-list-export-obs-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-list-export-obs-en.png)
+
+![db-instance-list-export-obs-modal-en](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-en.png)
+
+❶ 백업하고자 하는 DB 인스턴스를 선택한 후 드롭다운 메뉴에서 **오브젝트 스토리지로 백업 내보내기** 메뉴를 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
+❷ 백업이 저장될 오브젝트 스토리지의 테넌트 ID를 입력합니다. 테넌트 ID는 API 엔드포인트 설정에서 확인할 수 있습니다.
+❸ 백업이 저장될 오브젝트 스토리지의 NHN Cloud 계정 혹은 IAM 회원 ID를 입력합니다.
+❹ 백업이 저장될 오브젝트 스토리지의 API 비밀번호를 입력합니다.
+❺ 백업이 저장될 오브젝트 스토리지의 컨테이너를 입력합니다.
+❻ 컨테이너에 저장될 백업의 경로를 입력합니다. 폴더 이름은 최대 255바이트이고, 전체 경로는 최대 1024바이트입니다. 특정 형태(. 또는 ..)는 사용할 수 없으며 특수문자(' " < > ;)와 공백은 입력할 수 없습니다.
+
+#### 백업 파일 내보내기
+
+내부 백업 스토리지에 저장된 백업 파일을 NHN Cloud의 사용자 오브젝트 스토리지로 내보낼 수 있습니다.
+
+![db-instance-detail-backup-export-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-detail-backup-export-en.png)
+
+❶ 백업을 수행한 원본 DB 인스턴스의 상세 탭에서 내보내고자 하는 백업 파일을 선택한 후 **오브젝트 스토리지로 백업 내보내기** 버튼을 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
+
+![backup-export-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-en.png)
+
+❷ 혹은 백업 탭에서 내보내고자 하는 백업 파일을 선택한 후 **오브젝트 스토리지로 백업 내보내기** 버튼을 클릭하면 백업을 내보내기 위한 팝업 창이 나타납니다.
 
 > [Note]
 > For manual backups, if the source DB instance that performed the backup was deleted, you cannot export the backup.
@@ -84,6 +129,18 @@ MariaDB.
 
 Restoring a backup to a point in time is called snapshot restoration. Restoration is done with only backup files, you do not need the source DB instance from which you performed the backup.
 
+스냅샷 복원은 백업을 수행한 시점으로 복원합니다. 백업 파일만으로 복원을 진행하여, 백업을 수행한 원본 DB 인스턴스가 필요하지 않습니다. 웹 콘솔에서 스냅샷 복원을 하려면
+
+![db-instance-snapshot-restoration-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-en.png)
+
+❶ DB 인스턴스의 상세 탭에서 복원하려는 백업 파일을 선택한 후 **스냅샷 복원** 버튼을 클릭하면 DB 인스턴스 복원 화면으로 이동합니다.
+
+혹은
+
+![snapshot-restoration-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/snapshot-restoration-en.png)
+
+❶ 백업 탭에서 복원하려는 백업 파일을 선택한 후 **스냅샷 복원** 버튼을 클릭하면 DB 인스턴스 복원 화면으로 이동합니다.
+
 ### Point-in-time Restoration
 
 Restoring to a particular point in time is called point-in-time restoration. You can restore to a specific position in the binary log, as well as to restore to a specific time. Point-in-time restoration requires backup file and binary log from the time you performed the backup to the time you wanted the restore. Binary logs are stored in the storage of the source DB instance where the backup is performed. Shorter binary log retention period allows you to use more storage capacity, but it may be
@@ -93,6 +150,39 @@ difficult to restore to the desired point in time. For the cases listed below, y
 * When the binary log is automatically deleted by MariaDB based on the Binary log retention period
 * When a binary log is deleted due to a failover of a high availability DB instance
 * When binary logs are corrupted or deleted for various other reasons
+
+웹 콘솔에서 시점 복원을 하려면
+
+![point-in-time-restoration-list-en](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-en.png)
+
+❶ 시점 복원을 하려는 DB 인스턴스를 선택 후 **시점 복원** 버튼을 클릭하면 시점 복원을 할 수 있는 페이지로 이동합니다.
+
+#### Timestamp를 이용한 복원
+
+Timestamp를 사용한 복원 시에는 선택한 시점과 가장 가까운 백업 파일을 기준으로 복원을 진행한 뒤, 원하는 시점까지의 바이너리 로그(binary log)를 적용합니다.
+
+![point-in-time-restoration-01-en](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-en.png)
+
+❶ 복원 방법을 선택합니다.
+
+![point-in-time-restoration-02-en](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-en.png)
+
+❷ 복원 시각을 선택합니다. 가장 최근 시점으로 복원하거나, 원하는 특정 시점을 직접 입력할 수 있습니다.
+
+![point-in-time-restoration-03-en](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-en.png)
+
+❸ **복원될 마지막 쿼리 확인** 버튼을 클릭하면 마지막으로 복원될 쿼리를 확인할 수 있는 팝업 창이 표시됩니다.
+
+
+#### 바이너리 로그(binary log)를 이용한 복원
+
+바이너리 로그(binary log)를 활용한 복원 과정에서는 선택한 백업 파일로 먼저 복원을 진행한 후, 원하는 위치까지의 바이너리 로그(binary log)를 적용합니다.
+
+![point-in-time-restoration-04-en](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-en.png)
+
+❹ 바이너리 로그(binary log)로 복원을 하기 위해서는 먼저 백업 파일을 선택해야 합니다.
+❺ 바이너리 로그(binary log)파일을 선택합니다.
+❻ 바이너리 로그(binary log)의 특정 위치를 입력합니다.
 
 ### Restoration with External MariaDB Backup
 
