@@ -150,6 +150,11 @@
 | INSTC_67_01 | INSTANCE          | はい        | OSバージョンアップグレード終了                      |
 | INSTC_67_04 | INSTANCE          | はい        | OSバージョンアップグレード失敗                      |
 | INSTC_68_01 | INSTANCE          | はい        | ネットワーク通信失敗                          |
+| INSTC_69_00 | INSTANCE          | 예        | 장애 조치 수동 제어 대기                       |
+| INSTC_69_01 | INSTANCE          | 예        | 장애 조치 수동 제어 성공                       |
+| INSTC_69_04 | INSTANCE          | 예        | 장애 조치 수동 제어 타임아웃                     |
+| INSTC_70_01 | INSTANCE          | 예        | 고가용성 정상화                             |
+| INSTC_71_01 | INSTANCE          | 예        | 고가용성 중단                              |
 | JOB_01_04   | JOB               | はい   | Job実行失敗                               |
 | TENAT_01_04 | TENANT            | はい   | CPUコア数制限                              |
 | TENAT_02_04 | TENANT            | はい   | RAM容量制限	                              |
@@ -269,24 +274,3 @@
 
 * ❶ ボタンをクリックすると、追加した監視設定を変更できます。
 * ❷ ボタンをクリックすると、追加した監視設定を削除できます。
-
-## Processlist
-
-RDS for MySQLは、データベースで発生するさまざまな問題を分析するためのデータベースで実行されたクエリとInnoDBエンジンの状態を収集します。1秒に1回`information_schema.processlist`の結果と、`SHOW ENGINE INNODB STATUS`の結果を収集し、過去4日間のデータをWebコンソールのProcesslistタブで照会できます。
-
-> [参考]収集されたデータは内部バックアップストレージに保存され、別途請求されません。
-
-収集する項目は次のとおりです。
-
-| 項目           | 説明                                               |
-|---------------|---------------------------------------------------|
-| LogTime       | 収集時刻                                            |
-| PID           | プロセスID                                           |
-| DB            | 使用中のDB                                          |
-| User          | ユーザー                                              |
-| Host          | ユーザーが接続しているホスト名、IPアドレス                         |
-| Command       | Thread実行中のコマンドタイプ(Sleep、Query、Quit、Killなど)    |
-| State         | Threadの状態(Starting、Rolling back、System lockなど) |
-| ExecTime      | Threadが現在の状態を維持した時間(秒)                          |
-| Query         | 実行中のクエリ                                         |
-| InnoDB Status | InnoDBの状態情報                                     |

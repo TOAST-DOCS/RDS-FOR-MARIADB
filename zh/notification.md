@@ -150,6 +150,11 @@ Event refers to an important event that occurs either by RDS for MariaDB or by u
 | INSTC_67_01 | INSTANCE          | Yes        | OS version upgrade ended                       |
 | INSTC_67_04 | INSTANCE          | Yes        | OS version upgrade failed                       |
 | INSTC_68_01 | INSTANCE          | Yes        | Network communication failed                           |
+| INSTC_69_00 | INSTANCE          | Yes            | Waiting for manual control of failover                                                            |
+| INSTC_69_01 | INSTANCE          | Yes            | Manual control of failover succeeded                                                                |
+| INSTC_69_04 | INSTANCE          | Yes            | Manual control of failover timeout                                                              |
+| INSTC_70_01 | INSTANCE          | Yes            | High availability normalized                                                                      |
+| INSTC_71_01 | INSTANCE          | Yes            | High availability stopped                                                                       |
 | JOB_01_04   | JOB               | Yes          | Job execution failed                                                          |
 | TENAT_01_04 | TENANT            | Yes          | CPU cores limit                                                               |
 | TENAT_02_04 | TENANT            | Yes          | RAM capacity limit	                                                           |
@@ -228,24 +233,3 @@ Performance metrics items that can be monitored are as follows.
 
 * ❶ Click the button to change the added monitoring settings.
 * ❷ Click the button to delete the added monitoring settings.
-
-## Processlist
-
-RDS for MySQL collects queries executed on the database and the status of the InnoDB engine to analyze various issues occurring in the database. It collects the results of `information_schema.processlist`and `SHOW ENGINE INNODB STATUS`once every second, and you can view the last four days of data in the Processlist tab of the console.
-
-> [Note] The collected data is stored in internal backup storage and is not charged separately.
-
-The following items are collected
-
-| Item            | Description                                                |
-|---------------|---------------------------------------------------|
-| LogTime       | Collected time                                             |
-| PID           | Process ID                                           |
-| DB            | DB in use                                          |
-| User          | User                                               |
-| Host          | The hostname and IP address the user is connecting from                          |
-| Command       | Command type running thread (Sleep, Query, Quit, Kill, etc.)    |
-| State         | State of thread (Starting, Rolling back, System lock, etc.) |
-| ExecTime      | The seconds the thread has been in its current state.                          |
-| Query         | Running queries                                          |
-| InnoDB Status | InnoDB status information                                      |

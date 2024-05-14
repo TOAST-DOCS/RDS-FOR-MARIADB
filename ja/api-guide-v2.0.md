@@ -2,7 +2,7 @@
 
 | リージョン         | エンドポイント                                     |
 |---------------|---------------------------------------------|
-| 韓国(パンギョ)リージョン | https://kr1-mariadb.api.nhncloudservice.com |
+| 韓国(パンギョ)リージョン | https://kr1-rds-mariadb.api.nhncloudservice.com |
 
 ## Monitoring
 
@@ -11,7 +11,7 @@
 - 統計情報照会に必要な統計項目(metric)を照会します。
 
 ```
-GET /rds/api/v2.0/metrics
+GET /v2.0/metrics
 ```
 
 #### リクエストヘッダ
