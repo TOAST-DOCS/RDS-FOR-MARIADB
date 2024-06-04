@@ -150,11 +150,11 @@
 | INSTC_67_01 | INSTANCE          | はい        | OSバージョンアップグレード終了                      |
 | INSTC_67_04 | INSTANCE          | はい        | OSバージョンアップグレード失敗                      |
 | INSTC_68_01 | INSTANCE          | はい        | ネットワーク通信失敗                          |
-| INSTC_69_00 | INSTANCE          | 예        | 장애 조치 수동 제어 대기                       |
-| INSTC_69_01 | INSTANCE          | 예        | 장애 조치 수동 제어 성공                       |
-| INSTC_69_04 | INSTANCE          | 예        | 장애 조치 수동 제어 타임아웃                     |
-| INSTC_70_01 | INSTANCE          | 예        | 고가용성 정상화                             |
-| INSTC_71_01 | INSTANCE          | 예        | 고가용성 중단                              |
+| INSTC_69_00 | INSTANCE          | はい    | フェイルオーバーの手動制御待機                       |
+| INSTC_69_01 | INSTANCE          | はい    | フェイルオーバーの手動制御成功                       |
+| INSTC_69_04 | INSTANCE          | はい    | フェイルオーバーの手動制御タイムアウト                     |
+| INSTC_70_01 | INSTANCE          | はい    | 高可用性正常化                             |
+| INSTC_71_01 | INSTANCE          | はい    | 高可用性中断                              |
 | JOB_01_04   | JOB               | はい   | Job実行失敗                               |
 | TENAT_01_04 | TENANT            | はい   | CPUコア数制限                              |
 | TENAT_02_04 | TENANT            | はい   | RAM容量制限	                              |
