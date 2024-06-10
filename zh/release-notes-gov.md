@@ -1,5 +1,11 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### June 12, 2024
+
+#### Added Features
+
+* Added the feature to upgrade DB instance OS
+
 ### May 16, 2024
 
 #### Added Features
@@ -31,7 +37,7 @@
 
 * Added DB schema & user-directed control settings
 * Improved to better identify connected notification groups
-    * Exposed connected notification group information on the DB instance view details screen
+  * Exposed connected notification group information on the DB instance view details screen
 
 ### January 11, 2024
 
