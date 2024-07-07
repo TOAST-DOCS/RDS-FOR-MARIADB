@@ -799,6 +799,14 @@ CALL mysql.tcrds_innodb_monitor_reset('module_dml');
 mariadb> CALL mysql.tcrds_innodb_monitor_reset_all('{counter-name|module_name|pattern|all}');
 ```
 
+### tcrds_foreign_key_checks
+* A procedure that controls the 'foreign_key_checks' variable that checks for foreign key constraints.
+* Run the following query: `SET GLOBAL foreign_key_checks ='ON|OFF';`.
+
+```
+mysql> CALL mysql.tcrds_foreign_key_checks('{0|1|'OFF'|'ON'}');
+```
+
 ## Data Migration
 
 * RDS can be exported as data to or imported from NHN Cloud RDS using mysqldump.
