@@ -1,5 +1,15 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### July 11, 2024
+
+#### Added Features
+
+* Add the procedure that controls foreign_key_checks
+
+#### Bug Fixes
+
+* Fixed an issue where snapshot restoration with a backup of a deleted DB instance was not possible
+
 ### June 12, 2024
 
 #### Added Features
