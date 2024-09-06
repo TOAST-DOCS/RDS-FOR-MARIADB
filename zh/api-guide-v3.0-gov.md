@@ -61,6 +61,9 @@ The API responds with "200 OK" to all API requests. For more information on the 
 | MARIADB_V10330 | O | O |
 | MARIADB_V10611 | O | O |
 | MARIADB_V10612 | O | O |
+| MARIADB_V10616  | O | O |
+| MARIADB_V101107 | O | O |
+| MARIADB_V101108 | O | O |
 
 
 * You can use the value for the dbVersion field of ENUM type.

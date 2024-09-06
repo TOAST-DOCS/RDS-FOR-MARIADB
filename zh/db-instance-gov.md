@@ -31,6 +31,8 @@ The versions specified below are available.
 | Version              | Note                                                        |
 |----------------------|-----------------------------------------------------------|
 |-----------------|----|
+| MariaDB 10.11.8 |    |
+| MariaDB 10.11.7 |    |
 | MariaDB 10.6.16 |    |
 | MariaDB 10.6.12 |    |
 | MariaDB 10.6.11 |    |

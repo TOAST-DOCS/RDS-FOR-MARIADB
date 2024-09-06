@@ -60,6 +60,9 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 | MARIADB_V10330 | O | O |
 | MARIADB_V10611 | O | O |
 | MARIADB_V10612 | O | O |
+| MARIADB_V10616  | O | O |
+| MARIADB_V101107 | O | O |
+| MARIADB_V101108 | O | O |
 
 * ENUMタイプのdbVersionフィールドに対して該当値を使用できます。
 * バージョンによって作成または復元が不可能な場合があります。
