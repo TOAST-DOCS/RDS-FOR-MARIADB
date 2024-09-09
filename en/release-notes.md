@@ -123,7 +123,7 @@
     * Applicable to multiple instances
     * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
 * Provided a screen to view DB instances grouped by replication arrangements
-* Displayed candidate master to web console
+* Displayed candidate master to console
     * Available to secure storage by deleting the binary log of candidate master
     * Various logs of candidate master can be checked and downloaded
 * Rebuilding read replica is available
@@ -250,8 +250,8 @@
 
 * Changed the error log storage location to the data volume
 * Made changes so that error logs are rotated up to 10 logs with a size of 100 MB
-* Made modifications so that, when a forced restart is executed, the web console cannot be operated until it can be used again
-* Made modifications so that, after failover starts, the target instance cannot be manipulated in the web console
+* Made modifications so that, when a forced restart is executed, the console cannot be operated until it can be used again
+* Made modifications so that, after failover starts, the target instance cannot be manipulated in the console
 * Improved usability so that you can view the innodb status in the processlist
 * Made improvements so that you can move to other pages by numbers in the processlist
 * Made improvements so that you can zoom in the chart in the processlist to view only the corresponding section
@@ -298,7 +298,7 @@
 
 #### Feature Updates
 
-* Changed the minimum length of the name that can be entered when creating a DB schema in the web console to 1 character, which is the same as that of MariaDB
+* Changed the minimum length of the name that can be entered when creating a DB schema in the console to 1 character, which is the same as that of MariaDB
 
 ### December 14, 2021
 
