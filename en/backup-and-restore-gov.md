@@ -1,295 +1,297 @@
-## Database > RDS for MariaDB > 백업 및 복원
+## Database > RDS for MariaDB > Backup and Restoration
 
-## 백업 개요
+## Backup Overview
 
-장애 상황에 대비하여 DB 인스턴스의 데이터베이스를 복구할 수 있도록 미리 준비할 수 있습니다. 필요할 때마다 콘솔에서 백업을 수행하거나, 주기적으로 백업이 수행되도록 설정할 수 있습니다. 백업이 수행되는 동안에는 해당 DB 인스턴스의 스토리지의 성능 저하가 발생할 수 있습니다. 서비스에 영향을 주지 않기 위해 서비스의 부하가 적은 시간에 백업할 것을 권장합니다. 백업으로 인한 성능 저하를 원치 않을 경우 고가용성 구성을 사용하거나, 이전 백업 이후 데이터의 증분만 백업하거나, 읽기 복제본에서 백업을 수행할 수도 있습니다.
+You can prepare in advance to recover the database of DB instance in case of failure. You can perform backups through the console whenever necessary, and you can configure to perform backups periodically. During backup, storage performance of the DB instance on which the backup is performed can be degraded. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a
+high-availability configuration or back up only increments of data since the previous backup, or perform backups from read replica.
 
-> [참고]
-> 고가용성 DB 인스턴스는 예비 마스터에서 백업이 수행되어 마스터의 스토리지 성능 저하가 발생하지 않습니다.
-> 단, 다음의 경우 고가용성 DB 인스턴스이더라도 마스터에서 백업이 수행될 수 있습니다.
-> * 예비 마스터 장애로 인해 백업 수행이 불가능한 상태인 경우
-> * 예비 마스터 재구축을 위해 예비 마스터가 아닌 다른 DB 인스턴스에서 수행한 백업이 필요한 상황에서 읽기 복제본이 없는 경우
+> [Note]
+> High availability DB instances perform backups on the redundant master so that the storage performance of the master is not degraded.
+> However, backups can be performed on the master even if it is a high availability DB instance in the following cases.
+> * If a backup cannot be performed due to a candidate master failure.
+> * If you do not have a read replica in a situation where you need a backup taken from a DB instance other than the candidate master for rebuilding the candidate master and you do not have a read replica
 
-## 백업 종류
+## Backup Type
 
-백업은 수동 백업과 자동 백업으로 구분할 수 있습니다.
+Backups can be categorized into manual and automa backups.
 
-### 수동 백업
+### Manual Backup
 
-콘솔에서 수동으로 백업을 수행해 특정 시점의 데이터베이스를 영구히 저장할 수 있습니다. 수동 백업은 자동 백업과 달리 명시적으로 백업을 삭제하지 않는 한 DB 인스턴스가 삭제될 때 같이 삭제되지 않습니다.
-수동 백업 생성 시에는 백업 이름을 지정해야 하며, 다음과 같은 제약 사항이 있습니다.
-* 백업 이름은 리전별로 고유해야 합니다.
-* 백업 이름은 1~100자 사이의 영문자, 숫자, 일부 기호(-, _, .)만 입력할 수 있으며, 첫 번째 글자는 영문자만 사용할 수 있습니다.
+You can perform a manual backup from the console to permanently save a database at a specific point in time. Unlike auto backups, manual backups are not deleted when the DB instance is deleted, unless you explicitly delete the backup.
+When creating a manual backup, you must specify a name for the backup, with the following limitations.
+* Backup name has to be unique for each region.
+* Backup names are alphabetic, numeric, and - _ between 1 and 100 Only, and the first character has to be an alphabet.
 
 ![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ko.png)
 ![backup-list-1-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/backup-list-1-ko.png)
 
-**수동 전체 백업 생성하기**
+**Create a manual full backup**
 
-❶ DB 인스턴스 목록에서 백업할 DB 인스턴스 선택 후 **백업**을 클릭하여 수동으로 전체 백업을 생성할 수 있습니다.
-❷ 백업 목록에서 **전체 백업 생성**을 클릭하고 백업할 DB 인스턴스를 지정하여 수동으로 전체 백업을 생성할 수 있습니다.
+❶ You can create a full backup manually by selecting the DB instance to back up from the DB instances list and clicking **Backup**.
+❷ You can create a full backup manually by clicking **Create Full Backup** in the backup list and specifying the DB instances to back up.
 
-**수동 증분 백업 생성하기**
+**Create a Manual Incremental Backup**
 
-❸ 백업 목록에서 기준 백업을 선택 후 **증분 백업 생성**을 클릭하여 증분 백업을 생성할 수 있습니다. 일부 백업은 기준 백업으로 선택할 수 없습니다. 기준 백업에 대한 자세한 설명은 [기준 백업](#기준-백업)을 참고합니다.
+❸ You can create an incremental backup by selecting a baseline backup from the backup list and then clicking **Create incremental backup**. Some backups cannot be selected as a baseline backup; for a detailed description of baseline [backups](#기준-백업), see [Baseline backups](#기준-백업).
 
 
-### 자동 백업
+### Auto Backup
 
-수동으로 백업을 수행하는 경우 외에도 복원 작업을 위해 필요한 경우 또는 자동 백업 스케줄 설정에 따라 자동 백업이 수행될 수 있습니다.
-자동 백업 시에 적용되는 설정 항목은 [자동 백업 설정](#자동-백업-설정)을 참고합니다.
+In addition to performing backups manually, auto backups can occur when required for restore operations or based on auto backup schedule settings.
+For settings that apply during auto backups, see [Auto Backup Settings](#자동-백업-설정).
 
-## 백업 방식
+## Backup Method
 
-전체 백업 방식과 증분 백업 방식이 제공됩니다.
+Full and incremental backups are available.
 
-### 전체 백업
+### Full Backup
 
-DB 인스턴스의 모든 데이터를 백업합니다.
+Backs up all data in the DB instance.
 
-### 증분 백업
+### Incremental Backup
 
-기준 백업이 수행된 이후의 데이터 변경분만을 증분 방식으로 백업합니다. 변경이 잘 일어나지 않는 데이터가 대부분인 경우 추천합니다.
-증분 백업은 항상 기준 백업을 수행했던 DB 인스턴스에서 수행됩니다.
-증분 백업으로 복원 시 최초 생성된 전체 백업 복원을 진행하고, 선택한 증분 백업에 도달할 때까지의 모든 증분이 순차적으로 반영됩니다.
+Incremental backups only back up data changes since the baseline backup was performed. Recommended if your data is mostly immutable.
+Incremental backups are always performed on the DB instance that performed the baseline backup.
+When restoring to an incremental backup, the restore proceeds from the first full backup created, and all increments are reflected sequentially until the selected incremental backup is reached.
 
-> [주의]
-> 증분 백업으로 복원 시에는 전체 백업으로 복원할 때보다 더 많은 시간이 소요될 수 있으며 이는 복원에 필요한 증분 백업들의 용량의 합에 비례합니다.
+> [Caution]
+> Restoring from incremental backups may take more time than restoring from a full backup, which is proportional to the sum of the capacity of the incremental backups required for the restore.
 
-#### 기준 백업
+#### Baseline Backup
 
-증분 백업에는 데이터 변경 사항의 기준이 될 백업이 필요합니다. 증분 백업도 새로운 증분 백업의 기준 백업이 될 수 있습니다.
+Incremental backups require a backup to baseline data changes on. An incremental backup can also be the baseline backup for a new incremental backup.
 
-증분 백업의 기준이 되는 백업에는 다음 제약 사항이 존재합니다. 수동 및 자동으로 증분 백업 시에 공통으로 적용됩니다.
-* 에러 상태의 백업은 기준 백업이 될 수 없습니다.
-* 마지막 장애 조치 이전에 생성된 백업은 기준 백업이 될 수 없습니다.
-* 마지막 DB 엔진 버전 업그레이드 이전에 생성된 백업은 기준 백업이 될 수 없습니다.
-* 이미 해당 백업을 기준으로 한 증분 백업이 존재하는 경우 기준 백업이 될 수 없습니다. 단, 이전 증분이 실패한 경우에는 동일한 백업을 기준으로 증분이 가능합니다.
-* 해당 백업을 수행했던 DB 인스턴스가 삭제되었거나 장애로 인해 백업을 수행할 수 없는 상태라면 기준 백업이 될 수 없습니다.
-* 2024년 9월 정기 배포 이전에 생성된 백업은 기준 백업이 될 수 없습니다.
+The following limitations exist for backups that are the basis for incremental backups. They are common to both manual and auto incremental backups.
+* A backup in an error state cannot be a baseline backup.
+* A backup created before the last failover cannot be the baseline backup.
+* A backup created before the last DB Engine version upgrade cannot be a baseline backup.
+* If an incremental backup already exists that is based on that backup, it cannot be the baseline backup. However, if the previous increment failed, you can increment based on the same backup.
+* If the DB instance that took that backup has been deleted or is unable to take a backup due to failure, it cannot be the baseline backup.
+* Backups created before the September 2024 scheduled release cannot be baseline backups.
 
-[자동 백업 스케줄 전략](#자동-백업-설정)에 따라 증분 백업이 스케줄 되는 경우 위 제약 사항과 함께 다음 추가 제약 사항을 만족하는 기준 백업이 자동으로 선택됩니다. 제약 사항을 만족하는 기준 백업이 없는 경우 자동 백업 스케줄 전략과 관계없이 전체 백업을 수행합니다.
-* 복제 중단 상태인 예비 마스터, 읽기 복제본에서 수행된 백업은 기준 백업이 될 수 없습니다.
-* 테이블 잠금을 사용하지 않은 상태에서 수행된 백업은 기준 백업이 될 수 없습니다.
-* 해당 백업 생성 이후에 새로운 전체 백업이 생성된 경우 기준 백업이 될 수 없습니다.
+When incremental backups are scheduled according to [Auto Backup Schedule Strategy](#자동-백업-설정), a baseline backup that satisfies the above constraints, plus the following additional constraints, is automatically selected. If no baseline backup satisfies the constraints, a full backup is performed regardless of the auto backup schedule strategy.
+* A backup performed on a candidate master, read replica that is in a replication down state cannot be a baseline backup.
+* A backup performed without table locks enabled cannot be a baseline backup.
+* If a new full backup was created after that backup was created, it cannot be the baseline backup.
 
-## 백업 설정
+## Backup Settings
 
-DB 인스턴스 생성 및 수정 시 백업에 적용될 설정 항목들을 지정할 수 있습니다.
+When creating and modifying DB instances, you can specify settings that will be applied to backups.
 
 ![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/db-instance-backup-ko.png)
 
-### 공통 설정
+### Common Settings
+The following topics are common to both auto and manual backups.
 
-다음 항목들은 자동 백업 및 수동 백업 시에 공통적으로 적용됩니다.
+**Use Table Lock**
 
-**테이블 잠금 사용**
+* `FLUSH TABLES WITH READ LOCK` ets whether the syntax is enabled or disabled.
+* Table lock enables the `FLUSH TABLES WITH READ LOCK` syntax periodically during backups to ensure consistency in backup data. If `FLUSH TABLES WITH READ LOCK` syntax fails to run, the backup will fail.
+* You can disable table locking if the DML query load is high during a backup. If you do not use table lock, `FLUSH TABLES WITH READ LOCK` syntax will not run, so a high DML load does not cause the backup to fail. However, backups without table lock may not ensure consistency of backup data, and as a result, some operations, including restore and replication processes, are not supported for backups created without table lock and for DB instances with table locking disabled.
 
-* `FLUSH TABLES WITH READ LOCK` 구문의 실행 여부를 설정합니다.
-* 테이블 잠금을 사용하면 백업 데이터의 일관성을 보장하기 위해 백업 시 주기적으로 `FLUSH TABLES WITH READ LOCK` 구문을 실행합니다. `FLUSH TABLES WITH READ LOCK` 구문의 실행에 실패할 경우 백업에 실패하게 됩니다.
-* 백업이 수행되는 동안 DML 쿼리 부하가 많은 경우 테이블 잠금을 사용하지 않도록 설정할 수 있습니다. 테이블 잠금을 사용하지 않으면 `FLUSH TABLES WITH READ LOCK` 구문을 실행하지 않기 때문에 DML 부하가 많아도 백업이 실패하지 않습니다. 하지만 테이블 잠금을 사용하지 않은 백업은 백업 데이터의 일관성이 보장되지 않을 수 있으며, 이에 따라 테이블 잠금을 사용하지 않고 생성된 백업 및 테이블 잠금을 사용하지 않도록 설정된 DB 인스턴스에 대해 복원 및 복제 과정을 포함한 일부 작업을 지원하지 않습니다.
+**Query Latency Dash Time (second)**
 
-**쿼리 지연 대기 시간(초)**
+* When using table lock, set the wait time for `FLUSH TABLES WITH READ LOCK` syntax. `FLUSH TABLES WITH READ LOCK` syntax will wait for the query latency dash time. It can be set from 0 to 21,600 seconds. Longer settings reduce the likelihood of backup failures due to DML query load, but may result in longer overall backup times.
 
-* 테이블 잠금 사용 시 `FLUSH TABLES WITH READ LOCK` 구문의 대기 시간을 설정합니다. 쿼리 지연 대기 시간만큼 `FLUSH TABLES WITH READ LOCK` 구문이 대기하게 됩니다. 0~21,600초까지 설정 가능합니다. 길게 설정할 수록 DML 쿼리 부하로 인한 백업 실패 가능성을 줄일 수 있으나, 전체 백업 시간이 길어질 수 있습니다.
 
-# 자동 백업 설정
+### Set Auto Backup
 
-다음 항목은 자동 백업 시에만 적용됩니다.
+The following items apply only to auto backups.
 
-**자동 백업 허용**
+**Allow Auto Backup**
 
-* 자동 백업을 허용하지 않을 시 모든 자동 백업의 수행이 차단되며, 필요에 의해 백업이 수행될 가능성이 있는 복원, 복제 과정을 포함한 일부 작업을 지원하지 않습니다. 또한 아래의 자동 백업 관련 항목들에 대해 설정이 불가능합니다.
+* If you don't allow auto backups, all auto backups will be blocked from taking place, and some operations, including restore and replication processes, that might otherwise take place on demand, will not be supported. In addition, you won't be able to set the following auto backup-related items
 
-**자동 백업 보관 기간**
+**Auto Backup Retention Period**
 
-* 자동 백업을 백업 스토리지에 저장하는 기간을 설정합니다. 최대 730일까지 보관할 수 있으며, 자동 백업 보관 기간이 변경되면 보관 기간이 지난 자동 백업 파일은 바로 삭제됩니다.
+* Sets the time period for storing auto backups on storage. It can be kept for up to 730 days, and if the auto backup archive period changes, the expired auto backup files will be deleted immediately.
 
-  > [주의]
-  > 증분 방식으로 생성된 백업은 자동 백업 보관 기간이 지나지 않았더라도 기준 백업이 삭제될 때 함께 삭제됩니다.
+> [Caution]
+> Incrementally created backups are deleted when the baseline backup is deleted, even if the auto backup retention period has not passed.
 
-**자동 백업 복제 리전**
+**Auto Backup Replication Region**
 
-* 자동 백업 파일을 다른 리전의 백업 스토리지로 복제되도록 설정합니다. 자동 백업 복제 리전은 재해 복구(disaster recovery)를 위한 기능으로 원본 리전의 자동 백업 파일을 대상 리전으로 동일하게 복제하고 관리합니다. 복제는 백그라운드에서 일정 주기마다 진행됩니다. 자동 백업 복제 리전을 설정하면 리전 간 복제 트래픽 비용이 청구되며, 대상 리전에 백업 스토리지 사용량에 대한 비용이 추가로 청구됩니다.
+* Set the auto backup file to be replicated to backup storage in another region. Auto Backup replication regions are features for disaster recovery that replicate and manage auto backup files from the original region equally to the destination region. Replication occurs in the background at regular intervals. When you set up an auto backup replication region, you are charged with inter-regional replication traffic, and the destination region is charged additionally for backup storage usage.
 
-**자동 백업 재시도 횟수**
+**Number of Auto Backup Retries**
 
-* DML 쿼리 부하 또는 여러 다양한 이유로 자동 백업이 실패한 경우 재시도하도록 설정할 수 있습니다. 최대 10회까지 재시도할 수 있습니다. 재시도 횟수가 남아 있더라도 자동 백업 수행 시간 설정에 따라 재시도하지 않을 수 있습니다.
+* You can set the auto backup to retry if it fails due to DML query load or for other various reasons. You can retry maximum 10 times. Depending on the auto backup run time setting, you might not try again even if there are still more retries.
 
-**자동 백업 스케줄 사용**
+**Use Auto Backup Schedule**
 
-* 자동 백업 스케줄 사용 시 설정한 자동 백업 수행 시간에 자동으로 백업이 수행됩니다.
+* When using an auto backup schedule, backups are performed automatically at the auto backup performance time you set.
 
-**자동 백업 스케줄 전략**
+**Auto Backup Schedule Strategy**
 
-* 자동 백업을 수행할 전략을 지정할 수 있습니다.
-    * 매일 전체 백업: 매일 전체 데이터를 백업합니다.
-    * 매일 전체 및 증분 백업: 매일 전체 데이터를 1회 백업하고, 수 회 증분을 백업합니다.
-    * 주간 전체 백업 및 일일 증분 백업: 특정 요일에 전체 데이터를 1회 백업하고, 나머지 요일에는 증분을 1회 백업합니다.
+* You can specify a strategy for performing auto backups.
+  * Daily full backup: Back up your entire data every day.
+  * Daily full and incremental backups: One full backup of your data each day, and multiple incremental backups.
+  * Weekly full backups and daily incremental backups: One full backup of your data on certain days of the week, and one incremental backup on the remaining days of the week.
 
-**전체 데이터 백업 요일**
+**All Data Backup Days**
 
-* 주간 전체 백업 및 일일 증분 백업 전략 사용 시에만 지정 가능합니다. 최소 1개~최대 6개의 요일을 선택해야 하며, 선택한 요일에는 전체 백업이 진행되고 선택하지 않은 요일에는 증분 백업이 진행됩니다.
+* Can only be specified when using the weekly full backup and daily incremental backup strategies. You must select a minimum of one and a maximum of six days, and full backups will occur on the selected days and incremental backups will occur on the unselected days.
 
-**자동 백업 수행 시간**
+**Auto Backup Run Time**
 
-* 백업이 자동으로 수행되는 시간을 설정할 수 있습니다. 백업 시작 시각과 백업 윈도우, 백업 재시도 만료 시각으로 구성됩니다. 백업 수행 시간은 겹치지 않게 여러 번 설정할 수 있습니다. 백업 시작 시각을 기준으로 백업 윈도우 안의 어느 시점에서 백업을 수행합니다. 백업 윈도우는 백업의 총 수행 시간과는 관련이 없습니다. 백업에 걸리는 시간은 데이터베이스 크기에 비례하며, 서비스 부하에 따라 달라집니다. 백업이 실패할 경우 백업 재시도 만료 시각을 넘지 않았다면 백업 재시도 횟수에 따라 백업을 다시 시도합니다.
+* Allows you set the time that the backup automatically takes place. It consists of the backup start time, the backup window, and the backup retry expiration time. You can set the backup run time multiple times so that it does not overlap. Performs backup at any point in the backup window based on the start time of the backup. The backup window is not related to the total running time of the backup. Backup time is proportional to the size of the database and the service load. If the backup fails, retry the backup based on the number of backups retries if it does not exceed the backup retries times.
 
-  > [주의]
-  > 앞선 백업이 종료되지 않는 등의 상황에서는 백업이 수행되지 않을 수 있습니다.
-  > 스케줄상 증분 백업을 수행할 차례이더라도 증분이 가능한 기준 백업이 존재하지 않는 경우 전체 백업이 수행될 수 있습니다.
-  > 증분 가능한 기준 백업에 대한 자세한 설명은 [기준 백업](#기준-백업) 항목을 참고합니다.
+> [Caution]
+> A backup might not be performed in some situations, such as when a previous backup does not terminate.
+> If no incremental baseline backup exists, a full backup might be performed even though it is the scheduled turn to perform an incremental backup.
+> For a detailed description of incremental baseline backups, see [Baseline Backup](#기준-백업).
 
-### 백업 스토리지 및 과금
+### Backup Storage and Pricing
 
-모든 백업 파일은 내부 백업 스토리지에 업로드하여 저장합니다. 수동 백업의 경우 별도로 삭제하기 전까지 영구히 저장되며 백업 용량에 따라 백업 스토리지 과금이 발생합니다. 자동 백업의 경우 설정한 보관 기간만큼 저장되며 자동 백업 파일의 전체 크기 중 DB 인스턴스의 스토리지 크기를 초과한 용량에 대해서 과금합니다. 백업 파일이 저장된 내부 백업 스토리지에 직접 접근할 수 없으며, 백업 파일이 필요한 경우 NHN Cloud의 오브젝트 스토리지로 백업 파일을 내보낼 수 있습니다.
+All backup files are uploaded to the internal backup storage and stored. For manual backups, they are stored permanently until you delete them separately, and backup storage charges are incurred depending on the backup capacity. For auto backups, it is stored for the set retention period and charges for the full size of the auto backup file, which exceeds the storage size of the DB instance. If you do not have direct access to the internal backup storage where the backup file is stored, and when you need backup file, you can export the backup file to the object storage in NHN Cloud.
 
-### 백업 내보내기
+### Export Backup
 
-#### 백업을 수행하면서 파일 내보내기
+#### Export Files While Performing Backup
 
-백업을 수행함과 동시에 백업 파일을 사용자 오브젝트 스토리지로 내보낼 수 있습니다. 증분 백업에 대해서는 지원되지 않습니다.
+After a backup, you can export the backup file to user object storage. This is not supported for incremental backups.
 
 ![db-instance-list-export-obs-ko](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-ko.png)
 
 ![db-instance-list-export-obs-modal-ko](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-ko.png)
 
-❶ 백업할 DB 인스턴스를 선택한 뒤 드롭다운 메뉴에서 **오브젝트 스토리지로 백업 내보내기**를 클릭하면 설정 팝업 화면이 나타납니다.
-❷ 백업이 저장될 오브젝트 스토리지의 테넌트 ID를 입력합니다. 테넌트 ID는 API 엔드포인트 설정에서 확인할 수 있습니다.
-❸ 백업이 저장될 오브젝트 스토리지의 NHN Cloud 회원 또는 IAM 멤버를 입력합니다.
-❹ 백업이 저장될 오브젝트 스토리지의 API 비밀번호를 입력합니다.
-❺ 백업이 저장될 오브젝트 스토리지의 컨테이너를 입력합니다.
-❻ 컨테이너에 저장될 백업의 경로를 입력합니다. 폴더 이름은 최대 255바이트이고, 전체 경로는 최대 1024바이트입니다. 특정 형태(. 또는 ..)는 사용할 수 없으며 특수문자(' " < > ;)와 공백은 입력할 수 없습니다.
+❶ Select the DB instance to back up and click **Export backup files to object storage** after backup from the drop-down menu, and the settings pop-up screen will appear.
+❷ Enter the tenant ID of the object storage where the backup will be saved. You can find the tenant ID in the API endpoint settings.
+❸ Enter the NHN Cloud member or IAM member of the object storage where the backup will be saved.
+❹ Enter the API password of the object storage where the backup will be saved.
+❺ Enter the container of the object storage where the backup will be saved.
+❻ Enter the path to the backup that will be stored in the container. The folder name can be up to 255 bytes, and the full path can be up to 1024 bytes. Certain forms (. or ..) are not allowed, and special characters (' " < > ;) and spaces are not allowed.
 
-#### 백업 파일 내보내기
+#### Export Backup Files
 
-내부 백업 스토리지에 저장된 백업 파일을 NHN Cloud의 사용자 오브젝트 스토리지로 내보낼 수 있습니다. 증분 백업에 대해서는 지원되지 않습니다.
+You can export backup files stored in internal backup storage to user object storage. Not supported for incremental backups.
 
 ![db-instance-detail-backup-export-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-detail-backup-export-ko.png)
 
-❶ 백업을 수행한 원본 DB 인스턴스의 상세 탭에서 내보낼 백업 파일을 선택한 뒤 **오브젝트 스토리지로 백업 내보내기**를 클릭하면 백업을 내보내기 위한 팝업 화면이 나타납니다.
+❶ On the Details tab of the source DB instance from which the backup was taken, select the backup file to export and click **Export Backup to Object Storage**, and a pop-up screen will appear to export the backup.
 
 ![backup-export-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-ko.png)
 
-❷ 또는 **백업** 탭에서 내보낼 백업 파일을 선택한 뒤 **오브젝트 스토리지로 백업 내보내기**를 클릭합니다.
+❷ Select the backup file to export from the **Backup** tab and click **Export to Object Storage**.
 
-> [참고]
-> 수동 백업의 경우 백업을 수행한 원본 DB 인스턴스가 삭제되었다면 백업을 내보낼 수 없습니다.
+> [Note]
+> For manual backups, if the source DB instance that performed the backup was deleted, you cannot export the backup.
 
-## 복원
+## Restoration
 
-백업을 이용하여 원하는 시점으로 데이터를 복원할 수 있습니다. 복원 시 항상 새로운 DB 인스턴스가 생성되며, 기존 DB 인스턴스에 복원할 수 없습니다. 백업을 수행한 원본 DB 인스턴스와 동일한 DB 엔진 버전으로만 복원할 수 있습니다. 백업이 생성된 시점으로 복원하는 스냅숏 복원, 원하는 특정 시점으로 복원하는 시점 복원을 지원합니다. RDS for MariaDB에서 생성한 백업뿐만 아니라 외부 MariaDB의 백업으로도 복원할 수 있습니다.
+Backups allow you to restore data to any point in time. Restoration always creates new DB instance and cannot be restored to the existing DB instance. You can restore only to the same DB engine version as the source DB instance from which you performed the backup. Supports restoring snapshots to the point in time when the backup was created, and restoring point in time to a specific point in time. You can restore it as backup of external MariaDB as well as backup that you created in RDS for MariaDB.
 
-> [주의]
-> 복원할 DB 인스턴스의 데이터 스토리지 크기가 백업을 수행한 원본 DB 인스턴스의 데이터 스토리지 크기보다 작거나, 원본 DB 인스턴스의 파라미터 그룹과 다른 파라미터 그룹을 사용할 경우 복원에 실패할 수 있습니다.
+> [Caution]
+> Restoration might fail if the data storage size of the DB instance that you want to restore is smaller than the data storage size of the source DB instance that you backed up, or if you use a different parameter group than the parameter group of the source DB instance.
 
-### 스냅샷 복원
+### Snapshot Restoration
 
-백업 파일만으로 복원을 진행해 백업을 수행한 원본 DB 인스턴스가 필요하지 않습니다. 콘솔에서 스냅샷을 복원하려면
+You can restore using only the backup file, so you don't need the original DB instance from which the backup was taken. To restore a snapshot from the console,
 
 ![db-instance-snapshot-restoration-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-ko.png)
 
-❶ DB 인스턴스의 상세 탭에서 복원할 백업 파일을 선택한 뒤 **스냅샷 복원**을 클릭하면 DB 인스턴스 복원 화면으로 이동합니다.
+❶ Select the backup file you want to restore On the details tab of the dB instance, and then click **Restore Snapshot**to go to the Restore DB instance screen.
 
-또는
+Or
 
 ![snapshot-restoration-ko](https://static.toastoven.net/prod_rds/24.03.12/snapshot-restoration-ko.png)
 
-❶ 백업 탭에서 복원할 백업 파일을 선택한 뒤 **스냅샷 복원**을 클릭합니다.
+❶ On the Backup tab, select the backup file you want to restore, and then click **Restore Snapshot**.
 
-### 시점 복원
+### Point-in-time Restoration
 
-시점 복원을 이용하여 원하는 특정 시점 또는 바이너리 로그(binary log)의 특정 포지션으로 복원할 수 있습니다. 시점 복원을 하기 위해서는 백업 파일과 백업을 수행한 시점으로부터 복원을 원하는 시점까지의 바이너리 로그(binary log)가 필요합니다. 바이너리 로그(binary log)는 백업이 수행되는 원본 DB 인스턴스의 스토리지에 저장됩니다. 바이너리 로그(binary log) 보관 기간이 짧으면 스토리지 용량을 더 많이 사용할 수 있지만, 원하는 시점으로 복원이 어려울 수 있습니다. 아래 나열된 경우 시점 복원에 필요한 바이너리 로그(binary log)가 없기 때문에 원하는 시점으로 복원하지 못할 수 있습니다.
+Restoring to a particular point in time is called point-in-time restoration. You can restore to a specific position in the binary log, as well as to restore to a specific time. Point-in-time restoration requires backup file and binary log from the time you performed the backup to the time you wanted the restore. Binary logs are stored in the storage of the source DB instance where the backup is performed. Shorter binary log retention period allows you to use more storage capacity, but it may be
+difficult to restore to the desired point in time. For the cases listed below, you may not be able to restore to the desired point in time because there is no binary log required for point-in-time restoration.
 
-* 용량 확보를 위해 원본 DB 인스턴스의 바이너리 로그(binary log)를 삭제한 경우
-* 바이너리 로그(binary log) 보관 기간에 따라 MariaDB에 의해 자동으로 바이너리 로그(binary log)가 삭제된 경우
-* 고가용성 DB 인스턴스의 장애 조치로 인해 바이너리 로그(binary log)가 삭제된 경우
-* 기타 다양한 이유로 바이너리 로그(binary log)가 손상되거나 삭제된 경우
+* When you have deleted the binary log of the source DB instance for securing capacity
+* When the binary log is automatically deleted by MariaDB based on the Binary log retention period
+* When a binary log is deleted due to a failover of a high availability DB instance
+* When binary logs are corrupted or deleted for various other reasons
 
-콘솔에서 시점 복원을 하려면
+To restore a point in time from the console
 
 ![point-in-time-restoration-list-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-ko.png)
 
-❶ 시점 복원할 DB 인스턴스를 선택한 뒤 **+ 시점 복원**을 클릭하면 시점 복원을 설정할 수 있는 페이지로 이동합니다.
+❶ Select the DB instance you want to restore to a point in time and click **\+ Restore Point-In-Time** to go to the page where you can set up a point in time restore.
 
-#### Timestamp를 이용한 복원
+#### Restore with Timestamp
 
-Timestamp를 사용한 복원 시에는 선택한 시점과 가장 가까운 백업 파일을 기준으로 복원을 진행한 뒤, 원하는 시점까지의 바이너리 로그(binary log)를 적용합니다.
+When restoring with a timestamp, proceed with the restoration based on the backup file closest to the selected point in time, and then applies a binary log up to the desired point in time.
 
 ![point-in-time-restoration-01-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-ko.png)
 
-❶ 복원 방법을 선택합니다.
+❶ Select a restore method.
 
 ![point-in-time-restoration-02-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-ko.png)
 
-❷ 복원 시각을 선택합니다. 가장 최근 시점으로 복원하거나, 원하는 특정 시점을 직접 입력할 수 있습니다.
+❷ Select a restore time. You can restore to the most recent point in time, or you can enter a specific point in time.
 
 ![point-in-time-restoration-03-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-ko.png)
 
-❸ **복원될 마지막 쿼리 확인**을 클릭하면 마지막으로 복원될 쿼리를 확인할 수 있는 팝업 화면이 표시됩니다.
+❸ Click **Confirm the last query to be restored** to display a pop-up screen where you can confirm the last query to be restored.
 
 
-#### 바이너리 로그(binary log)를 이용한 복원
+#### Restore using binary logs
 
-바이너리 로그(binary log)를 활용한 복원 과정에서는 선택한 백업 파일로 먼저 복원을 진행한 후, 원하는 위치까지의 바이너리 로그(binary log)를 적용합니다.
+The restore with binary log process first restores to the selected backup file and then applies the binary log to the desired location.
 
 ![point-in-time-restoration-04-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-ko.png)
 
-❹ 바이너리 로그(binary log)로 복원을 하기 위해서는 먼저 백업 파일을 선택해야 합니다.
-❺ 바이너리 로그(binary log)파일을 선택합니다.
-❻ 바이너리 로그(binary log)의 특정 위치를 입력합니다.
+❹ To restore to a binary log, you must first select a backup file.
+❺ Select a binary log file.
+❻ Enter a specific location for the binary log.
 
-### 외부 MariaDB 백업을 이용한 복원
+### Restoration with External MariaDB Backup
 
-외부 MariaDB 백업 파일을 이용하여 DB 인스턴스를 생성할 수 있습니다.
+You can use an external MariaDB backup file to create a DB instance.
 
-> [주의]
-> innodb_data_file_path의 설정값이 ibdata1:12M:autoextend가 아니면 RDS for MariaDB의 DB 인스턴스로 복원할 수 없습니다.
+> [Caution]
+> If the setting value of innodb\_data\_file\_path is not ibdata1:12M:autoextend, it is unable to restore to DB instance of RDS for MariaDB.
 
-(1) MariaDB가 설치된 서버에서 아래의 명령어를 이용하여 백업을 수행합니다.
-
-```
-mariabackup --defaults-file={my.cnf 경로} --user {사용자} --password '{비밀번호}' --socket {MariaDB 소켓 파일 경로} --compress --compress-threads=1 --stream=xbstream {백업 파일이 생성될 디렉터리} 2>>{백업 로그 파일 경로} > {백업 파일 경로}
-```
-
-(2) 백업 로그 파일의 마지막 줄에 `completed OK!`가 있는지 확인합니다. `completed OK!`가 없다면 백업이 정상적으로 종료되지 않은 것이므로 로그 파일에 있는 에러 메시지를 참고하여 백업을 다시 진행합니다.
-
-(3) 완료된 백업 파일을 오브젝트 스토리지에 업로드합니다.
-
-* 한 번에 업로드할 수 있는 최대 파일 크기는 5GB입니다.
-* 백업 파일의 크기가 5GB보다 클 경우 split과 같은 유틸리티를 이용해 백업 파일을 5GB 이하로 자른 뒤 멀티 파트로 업로드해야 합니다.
-* 자세한 사항은 [멀티파트 업로드](/Storage/Object%20Storage/ko/api-guide/#_44)를 참고합니다.
-
-(4) 복원할 프로젝트의 콘솔에 접속한 뒤 DB 인스턴스 탭에서 **오브젝트 스토리지에 있는 백업으로 복원** 버튼을 클릭합니다.
-
-### RDS for MariaDB 백업을 이용한 복원
-
-RDS for MariaDB의 백업 파일을 이용하여 직접 MariaDB의 데이터베이스를 복원할 수 있습니다. 전체 백업에 대해서만 복원이 가능하며, 증분 백업 반영은 지원되지 않습니다.
-
-(1) [백업 내보내기](backup-and-restore/#_5) 항목을 참고하여 RDS for MariaDB의 백업을 오브젝트 스토리지로 내보냅니다.
-
-(2) 오브젝트 스토리지의 백업을 복원하고자 하는 서버에 다운로드합니다.
-
-(3) MariaDB 서비스를 정지합니다.
-
-(4) MariaDB 데이터 저장 경로의 모든 파일을 삭제합니다.
+(1) Use the command below to perform a backup on the server where MariaDB is installed.
 
 ```
-rm -rf {MariaDB 데이터 저장 경로}/*
+mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' --socket {MariaDB socket file path} --compress --compress-threads=1 --stream=xbstream {directory where create backup file} 2>>{backup log file path} > {backup file path}
 ```
 
-(5) 다운로드한 백업 파일의 압축을 해제하고 복원합니다.
+(2) Check that `completed OK!` is in the last line of the backup log file. If there is no `completed OK!`, the backup did not end successfully, so refer to the error message in the log file to proceed with the backup again.
+
+(3) Upload the completed backup file to the object storage.
+
+* The maximum file size that can be uploaded at a time is 5GB.
+* If the backup file is larger than 5GB, you have to use a utility such as split to cut the backup file to less than 5GB and upload it in multi-part.
+* For detailed information, refer to [Multipart Upload](/Storage/Object%20Storage/ko/api-guide/#_44).
+
+(4) After accessing the console of the project you want to restore, on the DB Instances tab, click the **Restore to Backup in Object Storage** button.
+
+### Restoration by Using RDS for MariaDB Backup
+
+You can use the backup file in RDS for MariaDB to restore the database in MariaDB directly. Only full backups can be restored; incremental backup reflection is not supported. When restoring a RDS for MariaDB backup file, refer to the [Backup](backup-and-restore/#_1) and use the same version as Percona XtraBackup used by RDS for MariaDB.
+
+(1) Export backup of RDS for MariaDB to object storage with reference to the [Export Backup](backup-and-restore/#_5).
+
+(2) Download the backup of the object storage to the server on which you want to restore it.
+
+(3) Stop the MariaDB service.
+
+(4) Delete all files in the MariaDB data storage path.
 
 ```
-cat {백업 파일 저장 경로} | xbstream -x -C {MariaDB 데이터 저장 경로}
-mariabackup --decompress {MariaDB 데이터 저장 경로}
-mariabackup --defaults-file={my.cnf 경로} --apply-log {MariaDB 데이터 저장 경로}
+rm -rf {MariaDB data storage path}/* 
 ```
 
-(6) 압축 해제 후 불필요한 파일을 제거합니다.
+(5) Unzip and restore the downloaded backup files.
 
 ```
-find {MariaDB 데이터 저장 경로} -name "*.qp" -print0 | xargs -0 rm
+cat {backup file storage path} | xbstream -x -C {MariaDB data storage  path} 
+mariabackup --decompress {MariaDB data storage  path}
+innobackupex --defaults-file={my.cnf path} --apply-log {MariaDB data storage path} 
 ```
 
-(7) MariaDB 서비스를 시작합니다.
+(6) Delete unnecessary files after unzipping files.
+
+``` 
+find {MariaDB data storage  path } -name "*.qp" -print0 | xargs -0 rm 
+```
+
+(7) Start MariaDB service. 
