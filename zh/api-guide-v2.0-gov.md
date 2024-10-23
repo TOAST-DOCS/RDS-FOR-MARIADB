@@ -3,7 +3,6 @@
 | Region                    | Endpoint                                            |
 |---------------------------|-----------------------------------------------------|
 | Korea (Pangyo) region     | https://kr1-rds-mariadb.api.gov-nhncloudservice.com |
-| Korea (Pyeongchon) region | https://kr2-rds-mariadb.api.gov-nhncloudservice.com |
 
 ## Monitoring
 
