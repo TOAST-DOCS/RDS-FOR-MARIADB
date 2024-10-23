@@ -3,7 +3,6 @@
 | リージョン         | エンドポイント                                         |
 |---------------|-------------------------------------------------|
 | 韓国(パンギョ)リージョン | https://kr1-rds-mariadb.api.gov-nhncloudservice.com |
-| 韓国(ピョンチョン)リージョン | https://kr2-rds-mariadb.api.gov-nhncloudservice.com |
 
 ## Monitoring
 
