@@ -60,6 +60,9 @@ API 요청 시 인증에 실패하거나 권한이 없을 경우 다음과 같�
 | MARIADB_V10330 | O | O |
 | MARIADB_V10611 | O | O |
 | MARIADB_V10612 | O | O |
+| MARIADB_V10616  | O | O |
+| MARIADB_V101107 | O | O |
+| MARIADB_V101108 | O | O |
 
 * ENUM 타입의 dbVersion 필드에 대해 해당 값을 사용할 수 있습니다.
 * 버전에 따라 생성이 불가능하거나, 복원이 불가능한 경우가 있을 수 있습니다.
