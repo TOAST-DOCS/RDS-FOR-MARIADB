@@ -60,6 +60,9 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 | MARIADB_V10330 | O | O |
 | MARIADB_V10611 | O | O |
 | MARIADB_V10612 | O | O |
+| MARIADB_V10616  | O | O |
+| MARIADB_V101107 | O | O |
+| MARIADB_V101108 | O | O |
 
 * ENUMタイプのdbVersionフィールドに対して該当値を使用できます。
 * バージョンによって作成または復元が不可能な場合があります。
@@ -775,7 +778,6 @@ POST /v3.0/db-instances
 | backup.backupSchedules                       | Body | Array   | O  | バックアップスケジュールリスト                                                                                                                                                                                                                |
 | backup.backupSchedules.backupWndBgnTime      | Body | String  | O  | バックアップ開始時刻<br/>- 例: `00:00:00`                                                                                                                                                                                                 |
 | backup.backupSchedules.backupWndDuration     | Body | Enum    | O  | バックアップDuration<br/>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
-| backup.backupSchedules.backupRetryExpireTime | Body | String  | O  | バックアップ再試行期限<br/>- バックアップ再試行期限時刻はバックアップ開始時刻より前または後でなければなりません。<br/>- 例: `01:30:00`                                                                                                                                               |
 
 <details><summary>例</summary>
 <p>
@@ -807,8 +809,7 @@ POST /v3.0/db-instances
         "backupSchedules": [
             {
                 "backupWndBgnTime": "00:00:00",
-                "backupWndDuration": "ONE_HOUR",
-                "backupRetryExpireTime": "01:30:00"
+                "backupWndDuration": "ONE_HOUR"
             }
         ]
     }
@@ -1088,7 +1089,6 @@ POST /v3.0/db-instances/{dbInstanceId}/replicate
 | backup.backupSchedules                       | Body | Array   | X  | バックアップスケジュールリスト                                                                                                                                                                                                                                         |
 | backup.backupSchedules.backupWndBgnTime      | Body | String  | X  | バックアップ開始時刻<br/>- 例: `00:00:00`<br/>- デフォルト値:原本DBインスタンス値                                                                                                                                                                                                 |
 | backup.backupSchedules.backupWndDuration     | Body | Enum    | X  | バックアップDuration<br/>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間<br/>- デフォルト値:原本DBインスタンス値 |
-| backup.backupSchedules.backupRetryExpireTime | Body | String  | X  |                                                                                                                                                                                                                                                         |バックアップ再試行期限<br/>- バックアップ再試行期限時刻はバックアップ開始時刻より前または後でなければなりません。<br/>- 例: `01:30:00`<br/>- デフォルト値:原本DBインスタンス値|
 
 <details><summary>例</summary>
 <p>
@@ -1313,7 +1313,6 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 | backup.backupSchedules                              | Body | Array   | O  | バックアップスケジュールリスト                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | backup.backupSchedules.backupWndBgnTime             | Body | String  | O  | バックアップ開始時刻<br><ul><li>例: `00:00:00`</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | backup.backupSchedules.backupWndDuration            | Body | Enum    | O  | バックアップDuration<br>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br><ul><li>`HALF_AN_HOUR`<span style="color:#313338">: 30分</span></li><li>`ONE_HOUR`<span style="color:#313338">: 1時間</span></li><li>`ONE_HOUR_AND_HALF`<span style="color:#313338">: 1時間30分</span></li><li>`TWO_HOURS`<span style="color:#313338">: 2時間</span></li><li>`TWO_HOURS_AND_HALF`<span style="color:#313338">: 2時間30分</span></li><li>`THREE_HOURS`<span style="color:#313338">: 3時間</span></li></ul> |
-| backup.backupSchedules.backupRetryExpireTime        | Body | String  | O  | バックアップ再試行期限時刻<br><ul><li>バックアップ再試行期限時刻はバックアップ開始時刻より前か後にする必要があります。</li><li>例: `01:30:00`</li></ul>                                                                                                                                                                                                                                                                                                                                                                        |
 | useDeletionProtection                               | Body | Boolean | X  | 削除保護を行うかどうか<br>デフォルト値: `false`                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 #### Timestampを利用した時点復元時、リクエスト(restoreTypeが`TIMESTAMP`の場合)
@@ -1355,8 +1354,7 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 		"backupSchedules": [
 			{
 				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF",
-				"backupRetryExpireTime": "01:30:00"
+				"backupWndDuration": "ONE_HOUR_AND_HALF"
 			}
 		]
 	}
@@ -1412,8 +1410,7 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 		"backupSchedules": [
 			{
 				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF",
-				"backupRetryExpireTime": "01:30:00"
+				"backupWndDuration": "ONE_HOUR_AND_HALF"
 			}
 		]
 	}
@@ -1462,8 +1459,7 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 		"backupSchedules": [
 			{
 				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF",
-				"backupRetryExpireTime": "01:30:00"
+				"backupWndDuration": "ONE_HOUR_AND_HALF"
 			}
 		]
 	}
@@ -1524,7 +1520,6 @@ POST /v3.0/db-instances/restore-from-obs
 | backup.backupSchedules                              | Body | Array   | O  | バックアップスケジュールリスト                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | backup.backupSchedules.backupWndBgnTime             | Body | String  | O  | バックアップ開始時刻<br><ul><li>例: `00:00:00`</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | backup.backupSchedules.backupWndDuration            | Body | Enum    | O  | バックアップDuration<br>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br><ul><li>`HALF_AN_HOUR`<span style="color:#313338">: 30分</span></li><li>`ONE_HOUR`<span style="color:#313338">: 1時間</span></li><li>`ONE_HOUR_AND_HALF`<span style="color:#313338">: 1時間30分</span></li><li>`TWO_HOURS`<span style="color:#313338">: 2時間</span></li><li>`TWO_HOURS_AND_HALF`<span style="color:#313338">: 2時間30分</span></li><li>`THREE_HOURS`<span style="color:#313338">: 3時間</span></li></ul> |
-| backup.backupSchedules.backupRetryExpireTime        | Body | String  | O  | バックアップ再試行期限時刻<br><ul><li>バックアップ再試行期限時刻はバックアップ開始時刻より前か後にする必要があります。</li><li>例: `01:30:00`</li></ul>                                                                                                                                                                                                                                                                                                                                                                        |
 
 <details><summary>例</summary>
 <p>
@@ -1563,8 +1558,7 @@ POST /v3.0/db-instances/restore-from-obs
 		"backupSchedules": [
 			{
 				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF",
-				"backupRetryExpireTime": "01:30:00"
+				"backupWndDuration": "ONE_HOUR_AND_HALF"
 			}
 		]
 	}
@@ -1821,7 +1815,6 @@ GET /v3.0/db-instances/{dbInstanceId}/backup-info
 | backupSchedules                       | Body | Array   | バックアップスケジュールリスト  |
 | backupSchedules.backupWndBgnTime      | Body | String  | バックアップ開始時刻       |
 | backupSchedules.backupWndDuration     | Body | Enum    | バックアップDuration   |
-| backupSchedules.backupRetryExpireTime | Body | String  | バックアップ再試行期限時刻    |
 
 <details><summary>例</summary>
 <p>
@@ -1841,8 +1834,7 @@ GET /v3.0/db-instances/{dbInstanceId}/backup-info
     "backupSchedules": [
         {
             "backupWndBgnTime": "00:00:00",
-            "backupWndDuration": "ONE_HOUR_AND_HALF",
-            "backupRetryExpireTime": "01:30:00"
+            "backupWndDuration": "ONE_HOUR_AND_HALF"
         }
     ]
 }
@@ -1872,7 +1864,6 @@ PUT /v3.0/db-instances/{dbInstanceId}/backup-info
 | backupSchedules                       | Body | Array   | X  | バックアップスケジュールリスト                                                                                                                                                                                                                |
 | backupSchedules.backupWndBgnTime      | Body | String  | O  | バックアップ開始時刻<br/>- 例: `00:00:00`                                                                                                                                                                                                 |
 | backupSchedules.backupWndDuration     | Body | Enum    | O  | バックアップDuration<br/>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
-| backupSchedules.backupRetryExpireTime | Body | String  | O  | バックアップ再試行期限<br/>- バックアップ再試行期限時刻はバックアップ開始時刻より前または後でなければなりません。<br/>- 例: `01:30:00`                                                                                                                                               |
 
 <details><summary>例</summary>
 <p>
@@ -1884,8 +1875,7 @@ PUT /v3.0/db-instances/{dbInstanceId}/backup-info
 "backupSchedules": [
     {
         "backupWndBgnTime": "01:00:00",
-        "backupWndDuration": "TWO_HOURS",
-        "backupRetryExpireTime": "03:00:00"
+        "backupWndDuration": "TWO_HOURS"
     }
 ]
 }
@@ -2388,7 +2378,6 @@ POST /v3.0/backups/{backupId}/restore
 | backup.backupSchedules                       | Body | Array   | O  | バックアップスケジュールリスト                                                                                                                                                                                                                |
 | backup.backupSchedules.backupWndBgnTime      | Body | String  | O  | バックアップ開始時刻<br/>- 例: `00:00:00`                                                                                                                                                                                                 |
 | backup.backupSchedules.backupWndDuration     | Body | Enum    | O  | バックアップDuration<br/>バックアップ開始時刻からDuration内に自動バックアップが実行されます。<br/>- `HALF_AN_HOUR`: 30分<br/>- `ONE_HOUR`: 1時間<br/>- `ONE_HOUR_AND_HALF`: 1時間30分<br/>- `TWO_HOURS`: 2時間<br/>- `TWO_HOURS_AND_HALF`: 2時間30分<br/>- `THREE_HOURS`: 3時間 |
-| backup.backupSchedules.backupRetryExpireTime | Body | String  | O  | バックアップ再試行期限<br/>- バックアップ再試行期限時刻はバックアップ開始時刻より前または後でなければなりません。<br/>- 例: `01:30:00`                                                                                                                                               |
 
 <details><summary>例</summary>
 <p>
@@ -2412,8 +2401,7 @@ POST /v3.0/backups/{backupId}/restore
     "backupPeriod": 1,
     "backupSchedules": [{
         "backupWndBgnTime": "00:00:00",
-        "backupWndDuration": "HALF_AN_HOUR",
-        "backupRetryExpireTime": "01:30:00"
+        "backupWndDuration": "HALF_AN_HOUR"
     }
     ]
 }
