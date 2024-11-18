@@ -308,7 +308,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 고가용성 DB 인스턴스의 경우 재시작이 필요한 항목의 변경이 있으면 안정성을 높이고 순단 시간을 줄이기 위하여 장애 조치를 이용한 재시작 기능을 제공합니다.
 
-![db-instance-modify-ha-ko.png](https://static.toastoven.net/prod_rds/24.03.12/db-instance-modify-ha-ko.png)
+![modify-ha-popup-ko](https://static.toastoven.net/prod_rds/24.11.12/modify-ha-popup-ko.png)
 
 장애 조치를 이용한 재시작을 사용하지 않으면 마스터와 예비 마스터에 변경 사항을 순차적으로 적용한 후 DB 인스턴스를 재시작합니다. 자세한 사항은 고가용성 DB 인스턴스의 [수동 장애 조치 항목](backup-and-restore/#mysql)을 참고합니다.
 
