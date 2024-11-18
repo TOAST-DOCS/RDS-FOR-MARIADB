@@ -315,7 +315,7 @@ You can easily change various items in DB instances created through console. Cha
 
 For high availability DB instances, if there are any changes to items that need to be restarted, it provides a restart capability using failover to increase stability and reduce disconnected time.
 
-![db-instance-modify-ha-en.png](https://static.toastoven.net/prod_rds/24.03.12/db-instance-modify-ha-en.png)
+![modify-ha-popup-en](https://static.toastoven.net/prod_rds/24.11.12/modify-ha-popup-en.png)
 
 If restart with failover is not enabled, the DB instance is restarted after the changes are sequentially applied to the master and candidate master. For more information, refer to [Manual failover item](backup-and-restore/#mysql) in a high availability DB instance.
 
@@ -348,7 +348,7 @@ When you click the OS Version Upgrade button for a single DB instance, the follo
 ![db-instance-os-upgrade-single-popup-en.png](https://static.toastoven.net/prod_rds/24.06.11/db-instance-os-upgrade-simple-popup-en.png)
 
 When you click the Upgrade Operating System Version for High Availability DB Instance button, the pop-up screen shown below appears. For more information, see [Manual Failover](backup-and-restore/#mysql) of High Availability DB Instances.
-![db-instance-os-upgrade-ha-popup-en.png](https://static.toastoven.net/prod_rds/24.06.11/db-instance-os-upgrade-ha-popup-en.png)
+![os-upgrade-ha-popup-en.png](https://static.toastoven.net/prod_rds/24.11.12/os-upgrade-ha-popup-en.png)
 
 ## Delete DB Instance
 

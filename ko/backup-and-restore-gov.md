@@ -22,7 +22,7 @@
 * 백업 이름은 1~100자 사이의 영문자, 숫자, 일부 기호(-, _, .)만 입력할 수 있으며, 첫 번째 글자는 영문자만 사용할 수 있습니다.
 
 ![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ko.png)
-![backup-list-1-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/backup-list-1-ko.png)
+![backup-list-ko](https://static.toastoven.net/prod_rds/24.11.12/mariadb/backup-list-ko.png)
 
 **수동 전체 백업 생성하기**
 
@@ -77,7 +77,7 @@ DB 인스턴스의 모든 데이터를 백업합니다.
 
 DB 인스턴스 생성 및 수정 시 백업에 적용될 설정 항목들을 지정할 수 있습니다.
 
-![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/db-instance-backup-ko.png)
+![db-instance-backup-form-ko](https://static.toastoven.net/prod_rds/24.11.12/db-instance-backup-form-ko.png)
 
 ### 공통 설정
 

@@ -21,8 +21,8 @@
 * バックアップ名は、リージョンごとに一意でなければなりません。
 * バックアップ名は1～100文字の英字、数字、一部の記号(-, _, .)のみ入力することができ、最初の文字は英字のみ使用できます。
 
-![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ko.png)
-![backup-list-1-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/backup-list-1-ko.png)
+![db-instance-backup-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ja.png)
+![backup-list-ja](https://static.toastoven.net/prod_rds/24.11.12/mariadb/backup-list-ja.png)
 
 **手動で全体バックアップを作成する**
 
@@ -76,7 +76,7 @@ DBインスタンスの全てのデータをバックアップします。
 
 DBインスタンスの作成及び修正時、バックアップに適用される設定項目を指定できます。
 
-![db-instance-backup-ko](https://static.toastoven.net/prod_rds/24.09.10/mariadb/db-instance-backup-ko.png)
+![db-instance-backup-form-ja](https://static.toastoven.net/prod_rds/24.11.12/db-instance-backup-form-ja.png)
 
 ### 共通設定
 
@@ -149,9 +149,9 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 バックアップ後、バックアップファイルをユーザーオブジェクトストレージにエクスポートできます。増分バックアップについてはサポートされません。
 
-![db-instance-list-export-obs-ko](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-ko.png)
+![db-instance-list-export-obs-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-ja.png)
 
-![db-instance-list-export-obs-modal-ko](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-ko.png)
+![db-instance-list-export-obs-modal-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-ja.png)
 
 ❶バックアップするDBインスタンスを選択した後、ドロップダウンメニューから**バックアップ後オブジェクトストレージにバックアップファイルをエクスポート**をクリックすると、設定ポップアップ画面が表示されます。
 ❷バックアップが保存されるオブジェクトストレージのテナントIDを入力します。テナントIDはAPIエンドポイント設定で確認できます。
@@ -164,11 +164,11 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 内部バックアップストレージに保存されたバックアップファイルをユーザーオブジェクトストレージにエクスポートできます。増分バックアップについてはサポートされません。
 
-![db-instance-detail-backup-export-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-detail-backup-export-ko.png)
+![db-instance-detail-backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-detail-backup-export-ja.png)
 
 ❶バックアップを実行した原本DBインスタンスの詳細タブでエクスポートするバックアップファイルを選択した後、**オブジェクトストレージにバックアップをエクスポート**をクリックすると、バックアップをエクスポートするためのポップアップ画面が表示されます。
 
-![backup-export-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-ko.png)
+![backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-ja.png)
 
 ❷または**バックアップ**タブでエクスポートするバックアップファイルを選択した後、**オブジェクトストレージにバックアップをエクスポート**をクリックします。
 
@@ -186,13 +186,13 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 バックアップファイルだけで復元を行うため、バックアップを実行した原本DBインスタンスが必要ありません。 コンソールでスナップショットを復元するには
 
-![db-instance-snapshot-restoration-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-ko.png)
+![db-instance-snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-ja.png)
 
 ❶ DBインスタンスの詳細タブで復元するバックアップファイルを選択した後、**スナップショット復元**をクリックすると、DBインスタンスの復元画面に移動します。
 
 または
 
-![snapshot-restoration-ko](https://static.toastoven.net/prod_rds/24.03.12/snapshot-restoration-ko.png)
+![snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/snapshot-restoration-ja.png)
 
 ❶バックアップタブで復元するバックアップファイルを選択した後、**スナップショット復元**をクリックします。
 
@@ -207,7 +207,7 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 コンソールで時点復元を行うには
 
-![point-in-time-restoration-list-ko](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-ko.png)
+![point-in-time-restoration-list-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-ja.png)
 
 ❶時点復元するDBインスタンスを選択した後、**+時点復元**をクリックすると、時点復元を設定できるページに移動します。
 
@@ -215,15 +215,15 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 Timestampを使用した復元の場合は、選択した時点と最も近いバックアップファイルを基準に復元を行い、希望する時点までのバイナリログ(binary log)を適用します。
 
-![point-in-time-restoration-01-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-ko.png)
+![point-in-time-restoration-01-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-ja.png)
 
 ❶復元方法を選択します。
 
-![point-in-time-restoration-02-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-ko.png)
+![point-in-time-restoration-02-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-ja.png)
 
 ❷復元時刻を選択します。直近の時点に復元するか、希望する特定の時点を直接入力できます。
 
-![point-in-time-restoration-03-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-ko.png)
+![point-in-time-restoration-03-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-ja.png)
 
 ❸ **復元される最後のクエリを確認**をクリックすると、最後に復元されるクエリを確認できるポップアップ画面が表示されます。
 
@@ -231,7 +231,7 @@ Timestampを使用した復元の場合は、選択した時点と最も近い�
 
 バイナリログ(binary log)を活用した復元過程では、選択したバックアップファイルで先に復元を行った後、希望する位置までのバイナリログ(binary log)を適用します。
 
-![point-in-time-restoration-04-ko](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-ko.png)
+![point-in-time-restoration-04-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-ja.png)
 
 ❹バイナリログ(binary log)で復元するためには、まず、バックアップファイルを選択する必要があります。
 ❺バイナリログ(binary log)ファイルを選択します。
