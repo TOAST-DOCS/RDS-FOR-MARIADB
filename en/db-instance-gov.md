@@ -300,7 +300,6 @@ You can easily change various items in DB instances created through console. Cha
 | DB Engine        | Yes        | Yes                       |
 | DB Instance Type   | Yes        | Yes                       |
 | Data Storage Type  | No      |                         |
-| Data Storage Size  | Yes        | Yes                       |
 | Whether high availability or not      | Yes        | No                     |
 | PING interval      | Yes        | No                     | 
 | Name           | Yes        | No                     |
@@ -311,11 +310,12 @@ You can easily change various items in DB instances created through console. Cha
 | Parameter group      | Yes        | Determined by whether or not to restart changed parameters |
 | DB Security Group     | Yes        | No                     |
 | Backup Settings        | Yes        | No                     |
+| Storage Auto Scale | Yes        | No                     | 
 | Schema & User Control | Yes        | No                     |
 
 For high availability DB instances, if there are any changes to items that need to be restarted, it provides a restart capability using failover to increase stability and reduce disconnected time.
 
-![db-instance-modify-ha-en.png](https://static.toastoven.net/prod_rds/24.03.12/db-instance-modify-ha-en.png)
+![modify-ha-popup-en](https://static.toastoven.net/prod_rds/24.11.12/modify-ha-popup-en.png)
 
 If restart with failover is not enabled, the DB instance is restarted after the changes are sequentially applied to the master and candidate master. For more information, refer to [Manual failover item](backup-and-restore/#mysql) in a high availability DB instance.
 
@@ -348,7 +348,7 @@ When you click the OS Version Upgrade button for a single DB instance, the follo
 ![db-instance-os-upgrade-single-popup-en.png](https://static.toastoven.net/prod_rds/24.06.11/db-instance-os-upgrade-simple-popup-en.png)
 
 When you click the Upgrade Operating System Version for High Availability DB Instance button, the pop-up screen shown below appears. For more information, see [Manual Failover](backup-and-restore/#mysql) of High Availability DB Instances.
-![db-instance-os-upgrade-ha-popup-en.png](https://static.toastoven.net/prod_rds/24.06.11/db-instance-os-upgrade-ha-popup-en.png)
+![os-upgrade-ha-popup-en.png](https://static.toastoven.net/prod_rds/24.11.12/os-upgrade-ha-popup-en.png)
 
 ## Delete DB Instance
 
@@ -371,6 +371,26 @@ Select the binary log and press **Confirm** to delete all binary logs created pr
 
 > [Note]
 You can set the storage period for binary logs with the expire_logs_days in MySQL 5.7 and later and the binlog_expire_logs_seconds parameter in MySQL 5.8 and later.
+
+## Expand Storage Size
+
+You can scale up the data storage size of a DB instance. The expansion takes effect immediately without restarting the DB instance.
+
+## Auto Scale Storage
+
+You can automatically scale the data storage size of a DB instance. With auto storage expansion, you can maintain the availability of your database by automatically scaling up when data storage runs out of capacity.
+
+To use auto storage scaling, you must enable ** Auto Scale Storage** when creating and modifying DB instances.
+
+When you enable auto scale storage, you can set three options
+* Storage Auto Scale Conditions: Automatically expand storage when storage utilization is above a set value for more than 5 minutes.
+* Storage Auto Scale Max: The maximum size that storage auto-scale can grow to.
+* Storage Auto Scale Cooldown: Set the amount of time after storage auto scale cooldown runs once before the feature is enabled again.
+
+The amount of increase when the auto scale storage feature runs is set to the largest of the following values
+* 10 GB
+* 10% of storage size
+* Data storage usage growth in the last hour * cooldown (in hours)
 
 ## Apply parameter group changes
 
