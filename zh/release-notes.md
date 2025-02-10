@@ -1,22 +1,27 @@
 ## Database > RDS for MariaDB > Release Notes
 
-### 2024. 11. 12.
+### February 11, 2025
 
-#### 기능 추가 및 개선
+#### Bug Fixes
+* Fixed an issue where deleted notification group information appears on the view DB instance details screen
 
-* 스토리지 자동 확장 기능 추가
-* 스토리지 크기 확장 시 DB 인스턴스를 재시작하지 않도록 개선
-* DB 인스턴스 수정 기능에 포함되어 있던 스토리지 크기 확장 기능을 드롭다운 메뉴로 분리
-* 고가용성 일시 중지 상태에서 예비 마스터를 재구축 시 일시 중지 상태가 유지되도록 변경
-* 자동 백업 설정 중 백업 재시도 만료 시각 설정 항목을 제거하고 백업 윈도우 시간 범위 내에서 백업을 재시도하도록 개선
-* MariaDB 10.11.7, MariaDB 10.11.8 버전 추가
+### November 12, 2024
 
-### 2024. 09. 10.
+#### Added Features and Updates
 
-#### 기능 추가 및 개선
+* Added the feature to auto-scale storage
+* Improved to avoid restarting DB instances when scaling storage size
+* Separated the scale storage size feature from the modify DB instance feature into a drop-down menu
+* Changed the high availability pause status to stay when rebuilding a candidate master
+* Removed the backup retry expiration time setting during auto backup setup and improved to allow users to retry backups within the backup window time range.
+* Added the versions of MariaDB 10.11.7 and MariaDB 10.11.8
 
-* 증분 백업 기능 추가
-* DB 인스턴스 삭제 시 자동 백업 삭제 여부를 선택할 수 있도록 개선
+### September 10, 2024
+
+#### Added Features and Updates
+
+* Added the incremental backup feature
+* Improved to allow users to choose whether to delete automatic backups when deleting a DB instance
 
 ### July 9, 2024
 
@@ -44,7 +49,6 @@
 * Improved to see which parameter items actually change when applying parameter group changes
 * Improved to expose warning text and raise an event when high availability status is abnormal
 * Improved to select a storage type when creating read replicas
-* Added MySQL 8.0.36 version
 * Added and modified API v3.0
   * Added the `storage.storageType` field to DB instance replicate API request
   * Added the `notificationGroupIds` field to DB instance detail API response
@@ -100,8 +104,8 @@
 * Improved to create instances by using read replica backups when configuring high availability and adding read replicas
 * Added the versions of MariaDB 10.6.11 and MariaDB 10.6.12
 * Added and modified API v3.0
-  * Added the API to list the last query to be restored
-  * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
+    * Added the API to list the last query to be restored
+    * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
 
 
 ### July 11, 2023
@@ -115,8 +119,8 @@
 #### Added Features and Updates
 
 * Rebuilding candidate master is available when an issue occur
-  * The fixed IP does not change because DB instance of the candidate master remain unchanged
-  * All data in the database is deleted, and recovered with the data of the master
+    * The fixed IP does not change because DB instance of the candidate master remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
 * Made improvements so that, when adding a user to user groups, all users of organizatons and projects can be added
 
 ### May 16, 2023
@@ -126,27 +130,26 @@
 * Made improvements so that the user interface is consistent with NHN Cloud services
 * Made modifications so that manual backup is not deleted even when DB instances are deleted
 * Added parameter group feature
-  * The database settings of DB instance can be freely changed
-  * Applicable to multiple instances
-  * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
+    * The database settings of DB instance can be freely changed
+    * Applicable to multiple instances
+    * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
 * Added DB security group feature
-  * The access control of DB instance can be freely set
-  * Applicable to multiple instances
-  * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
+    * The access control of DB instance can be freely set
+    * Applicable to multiple instances
+    * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
 * Provided a screen to view DB instances grouped by replication arrangements
 * Displayed candidate master to console
-  * Available to secure storage by deleting the binary log of candidate master
-  * Various logs of candidate master can be checked and downloaded
+    * Available to secure storage by deleting the binary log of candidate master
+    * Various logs of candidate master can be checked and downloaded
 * Rebuilding read replica is available
-  * The fixed IP address does not change because the DB instance of the read replica remain unchanged
-  * All data in the database is deleted, and recovered with the data of the master
+    * The fixed IP address does not change because the DB instance of the read replica remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
 * Recovery of master with a completed failover
-  * High availability recovery of a new master and a master with a completed failover is available
-  * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
+    * High availability recovery of a new master and a master with a completed failover is available
+    * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
 * Rebuilding master with a completed failover
-  * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
-  * All data in the database is deleted, and recovered with the data of the master
-* Added MySQL 8.0.32 version
+    * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
+    * All data in the database is deleted, and recovered with the data of the master
 
 #### Bug Fixes
 
