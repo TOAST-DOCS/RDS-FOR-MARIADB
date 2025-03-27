@@ -10,7 +10,7 @@
 
 - 統計情報照会に必要な統計項目(metric)を照会します。
 
-```
+```http
 GET /v2.0/metrics
 ```
 
@@ -41,7 +41,7 @@ GET /v2.0/metrics
 
 - 一定周期ごとに収集された統計情報を照会します。
 
-```
+```http
 GET /rds/api/v2.0/metric-statistics
 ```
 
