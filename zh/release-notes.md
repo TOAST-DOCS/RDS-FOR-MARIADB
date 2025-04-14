@@ -1,5 +1,13 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### 2025. 04. 15.
+
+#### 기능 추가 및 개선
+
+* API v3.0 추가 및 변경
+  * 로그 파일 목록 보기 API 추가
+  * 로그 파일 내보내기 API 추가
+
 ### February 11, 2025
 
 #### Bug Fixes
@@ -104,8 +112,8 @@
 * Improved to create instances by using read replica backups when configuring high availability and adding read replicas
 * Added the versions of MariaDB 10.6.11 and MariaDB 10.6.12
 * Added and modified API v3.0
-    * Added the API to list the last query to be restored
-    * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
+  * Added the API to list the last query to be restored
+  * Added `needToApplyParameterGroup`, `needMigration`, and `supportDbVersionUpgrade` fields to the List DB Instance API response.
 
 
 ### July 11, 2023
@@ -119,8 +127,8 @@
 #### Added Features and Updates
 
 * Rebuilding candidate master is available when an issue occur
-    * The fixed IP does not change because DB instance of the candidate master remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
+  * The fixed IP does not change because DB instance of the candidate master remain unchanged
+  * All data in the database is deleted, and recovered with the data of the master
 * Made improvements so that, when adding a user to user groups, all users of organizatons and projects can be added
 
 ### May 16, 2023
@@ -130,26 +138,26 @@
 * Made improvements so that the user interface is consistent with NHN Cloud services
 * Made modifications so that manual backup is not deleted even when DB instances are deleted
 * Added parameter group feature
-    * The database settings of DB instance can be freely changed
-    * Applicable to multiple instances
-    * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
+  * The database settings of DB instance can be freely changed
+  * Applicable to multiple instances
+  * Changes to settings in an existing DB instance are migrated to a parameter group with the same name as the DB instance
 * Added DB security group feature
-    * The access control of DB instance can be freely set
-    * Applicable to multiple instances
-    * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
+  * The access control of DB instance can be freely set
+  * Applicable to multiple instances
+  * Access control rules set on existing DB instances are migrated to the DB security group named as `{DB instance name}__{DB instance ID}` rule
 * Provided a screen to view DB instances grouped by replication arrangements
 * Displayed candidate master to console
-    * Available to secure storage by deleting the binary log of candidate master
-    * Various logs of candidate master can be checked and downloaded
+  * Available to secure storage by deleting the binary log of candidate master
+  * Various logs of candidate master can be checked and downloaded
 * Rebuilding read replica is available
-    * The fixed IP address does not change because the DB instance of the read replica remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
+  * The fixed IP address does not change because the DB instance of the read replica remain unchanged
+  * All data in the database is deleted, and recovered with the data of the master
 * Recovery of master with a completed failover
-    * High availability recovery of a new master and a master with a completed failover is available
-    * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
+  * High availability recovery of a new master and a master with a completed failover is available
+  * Recovery can fail, and an unrecoverable master with a completed failover can be rebuilt
 * Rebuilding master with a completed failover
-    * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
-    * All data in the database is deleted, and recovered with the data of the master
+  * The fixed IP does not change because DB instance of the master with a completed failover remain unchanged
+  * All data in the database is deleted, and recovered with the data of the master
 
 #### Bug Fixes
 
