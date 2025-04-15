@@ -1,5 +1,13 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### 2025. 04. 16.
+
+#### 기능 추가 및 개선
+
+* API v3.0 추가 및 변경
+  * 로그 파일 목록 보기 API 추가
+  * 로그 파일 내보내기 API 추가
+
 ### February 13, 2025
 
 #### Bug Fixes
@@ -70,7 +78,7 @@
 
 * Added DB schema & user-directed control settings
 * Improved to better identify connected notification groups
-    * Exposed connected notification group information on the DB instance view details screen
+  * Exposed connected notification group information on the DB instance view details screen
 
 ### January 11, 2024
 
