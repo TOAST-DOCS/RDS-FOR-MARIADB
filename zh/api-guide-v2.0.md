@@ -10,7 +10,7 @@
 
 - View the metrics necessary for viewing statistical information.
 
-```
+```http
 GET /v2.0/metrics
 ```
 
@@ -41,7 +41,7 @@ GET /v2.0/metrics
 
 - Views the statistical information collected on a regular basis.
 
-```
+```http
 GET /rds/api/v2.0/metric-statistics
 ```
 
