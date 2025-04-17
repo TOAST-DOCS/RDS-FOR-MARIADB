@@ -80,7 +80,7 @@ API 요청 시 인증에 실패하거나 권한이 없을 경우 다음과 같�
 ### 리전 목록 보기
 
 ```http
-GET /v3.1/project/regions
+GET /v4.0/project/regions
 ```
 
 #### 필요 권한
@@ -135,7 +135,7 @@ GET /v3.1/project/regions
 ### 프로젝트 멤버 목록 보기
 
 ```http
-GET /v3.1/project/members
+GET /v4.0/project/members
 ```
 
 #### 필요 권한
@@ -189,7 +189,7 @@ GET /v3.1/project/members
 ### DB 인스턴스 사양 목록 보기
 
 ```http
-GET /v3.1/db-flavors
+GET /v4.0/db-flavors
 ```
 
 #### 필요 권한
@@ -243,7 +243,7 @@ GET /v3.1/db-flavors
 ### 서브넷 목록 보기
 
 ```http
-GET /v3.1/network/subnets
+GET /v4.0/network/subnets
 ```
 
 #### 필요 권한
@@ -299,7 +299,7 @@ GET /v3.1/network/subnets
 ### DB 엔진 목록 보기
 
 ```http
-GET /v3.1/db-versions
+GET /v4.0/db-versions
 ```
 
 #### 필요 권한
@@ -351,7 +351,7 @@ GET /v3.1/db-versions
 ### 데이터 스토리지 타입 목록 보기
 
 ```http
-GET /v3.1/storage-types
+GET /v4.0/storage-types
 ```
 
 #### 필요 권한
@@ -414,7 +414,7 @@ GET /v3.1/storage-types
 ### 작업 정보 상세 보기
 
 ```http
-GET /v3.1/jobs/{jobId}
+GET /v4.0/jobs/{jobId}
 ```
 
 #### 필요 권한
@@ -476,7 +476,7 @@ GET /v3.1/jobs/{jobId}
 ### DB 인스턴스 그룹 목록 보기
 
 ```http
-GET /v3.1/db-instance-groups
+GET /v4.0/db-instance-groups
 ```
 
 #### 필요 권한
@@ -528,7 +528,7 @@ GET /v3.1/db-instance-groups
 ### DB 인스턴스 그룹 상세 보기
 
 ```http
-GET /v3.1/db-instance-groups/{dbInstanceGroupId}
+GET /v4.0/db-instance-groups/{dbInstanceGroupId}
 ```
 
 #### 필요 권한
@@ -637,7 +637,7 @@ GET /v3.1/db-instance-groups/{dbInstanceGroupId}
 ### DB 인스턴스 목록 보기
 
 ```http
-GET /v3.1/db-instances
+GET /v4.0/db-instances
 ```
 
 #### 필요 권한
@@ -703,7 +703,7 @@ GET /v3.1/db-instances
 ### DB 인스턴스 상세 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}
+GET /v4.0/db-instances/{dbInstanceId}
 ```
 
 #### 필요 권한
@@ -786,7 +786,7 @@ GET /v3.1/db-instances/{dbInstanceId}
 ### DB 인스턴스 생성하기
 
 ```http
-POST /v3.1/db-instances
+POST /v4.0/db-instances
 ```
 
 #### 필요 권한
@@ -883,7 +883,7 @@ POST /v3.1/db-instances
 ### DB 인스턴스 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}
+PUT /v4.0/db-instances/{dbInstanceId}
 ```
 
 #### 필요 권한
@@ -935,7 +935,7 @@ PUT /v3.1/db-instances/{dbInstanceId}
 ### DB 인스턴스 삭제하기
 
 ```http
-DELETE /v3.1/db-instances/{dbInstanceId}
+DELETE /v4.0/db-instances/{dbInstanceId}
 ```
 
 #### 필요 권한
@@ -963,7 +963,7 @@ DELETE /v3.1/db-instances/{dbInstanceId}
 ### DB 인스턴스 재시작하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/restart
+POST /v4.0/db-instances/{dbInstanceId}/restart
 ```
 
 #### 필요 권한
@@ -991,7 +991,7 @@ POST /v3.1/db-instances/{dbInstanceId}/restart
 ### DB 인스턴스 강제 재시작하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/force-restart
+POST /v4.0/db-instances/{dbInstanceId}/force-restart
 ```
 
 #### 필요 권한
@@ -1033,7 +1033,7 @@ POST /v3.1/db-instances/{dbInstanceId}/force-restart
 ### DB 인스턴스 시작하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/start
+POST /v4.0/db-instances/{dbInstanceId}/start
 ```
 
 #### 필요 권한
@@ -1061,7 +1061,7 @@ POST /v3.1/db-instances/{dbInstanceId}/start
 ### DB 인스턴스 정지하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/stop
+POST /v4.0/db-instances/{dbInstanceId}/stop
 ```
 
 #### 필요 권한
@@ -1089,7 +1089,7 @@ POST /v3.1/db-instances/{dbInstanceId}/stop
 ### DB 인스턴스 백업하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/backup
+POST /v4.0/db-instances/{dbInstanceId}/backup
 ```
 
 #### 필요 권한
@@ -1116,7 +1116,7 @@ POST /v3.1/db-instances/{dbInstanceId}/backup
 ### DB 인스턴스 백업 후 내보내기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/backup-to-object-storage
+POST /v4.0/db-instances/{dbInstanceId}/backup-to-object-storage
 ```
 
 #### 필요 권한
@@ -1164,7 +1164,7 @@ POST /v3.1/db-instances/{dbInstanceId}/backup-to-object-storage
 ### DB 인스턴스 복제하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/replicate
+POST /v4.0/db-instances/{dbInstanceId}/replicate
 ```
 
 #### 필요 권한
@@ -1234,7 +1234,7 @@ POST /v3.1/db-instances/{dbInstanceId}/replicate
 ### DB 인스턴스 승격하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/promote
+POST /v4.0/db-instances/{dbInstanceId}/promote
 ```
 
 #### 필요 권한
@@ -1262,7 +1262,7 @@ POST /v3.1/db-instances/{dbInstanceId}/promote
 ### 복원 정보 조회
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/restoration-info
+GET /v4.0/db-instances/{dbInstanceId}/restoration-info
 ```
 
 #### 필요 권한
@@ -1349,7 +1349,7 @@ GET /v3.1/db-instances/{dbInstanceId}/restoration-info
 ### 복원될 마지막 쿼리 조회
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/restoration-info/last-query
+GET /v4.0/db-instances/{dbInstanceId}/restoration-info/last-query
 ```
 
 #### 필요 권한
@@ -1409,7 +1409,7 @@ GET /v3.1/db-instances/{dbInstanceId}/restoration-info/last-query
 ### 복원
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/restore
+POST /v4.0/db-instances/{dbInstanceId}/restore
 ```
 
 #### 필요 권한
@@ -1623,7 +1623,7 @@ POST /v3.1/db-instances/{dbInstanceId}/restore
 ### 오브젝트 스토리지로부터 복원
 
 ```http
-POST /v3.1/db-instances/restore-from-obs
+POST /v4.0/db-instances/restore-from-obs
 ```
 
 #### 필요 권한
@@ -1732,7 +1732,7 @@ POST /v3.1/db-instances/restore-from-obs
 ### DB 인스턴스 삭제 보호 설정 변경하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/deletion-protection
+PUT /v4.0/db-instances/{dbInstanceId}/deletion-protection
 ```
 
 #### 필요 권한
@@ -1773,7 +1773,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/deletion-protection
 ### 고가용성 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/high-availability
+PUT /v4.0/db-instances/{dbInstanceId}/high-availability
 ```
 
 #### 필요 권한
@@ -1801,7 +1801,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/high-availability
 ### 고가용성 다시 시작하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/high-availability/resume
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/resume
 ```
 
 #### 필요 권한
@@ -1829,7 +1829,7 @@ POST /v3.1/db-instances/{dbInstanceId}/high-availability/resume
 ### 고가용성 일시 중지하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/high-availability/pause
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/pause
 ```
 
 #### 필요 권한
@@ -1857,7 +1857,7 @@ POST /v3.1/db-instances/{dbInstanceId}/high-availability/pause
 ### 고가용성 복구하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/high-availability/repair
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/repair
 ```
 
 #### 필요 권한
@@ -1885,7 +1885,7 @@ POST /v3.1/db-instances/{dbInstanceId}/high-availability/repair
 ### 고가용성 분리하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/high-availability/split
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/split
 ```
 
 #### 필요 권한
@@ -1913,7 +1913,7 @@ POST /v3.1/db-instances/{dbInstanceId}/high-availability/split
 ### 데이터 스토리지 정보 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/storage-info
+GET /v4.0/db-instances/{dbInstanceId}/storage-info
 ```
 
 #### 필요 권한
@@ -1963,7 +1963,7 @@ GET /v3.1/db-instances/{dbInstanceId}/storage-info
 ### 데이터 스토리지 정보 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/storage-info
+PUT /v4.0/db-instances/{dbInstanceId}/storage-info
 ```
 
 #### 필요 권한
@@ -1991,7 +1991,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/storage-info
 ### 백업 정보 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/backup-info
+GET /v4.0/db-instances/{dbInstanceId}/backup-info
 ```
 
 #### 필요 권한
@@ -2054,7 +2054,7 @@ GET /v3.1/db-instances/{dbInstanceId}/backup-info
 ### 백업 정보 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/backup-info
+PUT /v4.0/db-instances/{dbInstanceId}/backup-info
 ```
 
 #### 필요 권한
@@ -2107,7 +2107,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/backup-info
 ### 네트워크 정보 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/network-info
+GET /v4.0/db-instances/{dbInstanceId}/network-info
 ```
 
 #### 필요 권한
@@ -2172,7 +2172,7 @@ GET /v3.1/db-instances/{dbInstanceId}/network-info
 ### 네트워크 정보 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/network-info
+PUT /v4.0/db-instances/{dbInstanceId}/network-info
 ```
 
 #### 필요 권한
@@ -2199,7 +2199,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/network-info
 ### DB 사용자 목록 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/db-users
+GET /v4.0/db-instances/{dbInstanceId}/db-users
 ```
 
 #### 필요 권한
@@ -2265,7 +2265,7 @@ GET /v3.1/db-instances/{dbInstanceId}/db-users
 ### DB 사용자 생성하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/db-users
+POST /v4.0/db-instances/{dbInstanceId}/db-users
 ```
 
 #### 필요 권한
@@ -2317,7 +2317,7 @@ POST /v3.1/db-instances/{dbInstanceId}/db-users
 ### DB 사용자 수정하기
 
 ```http
-PUT /v3.1/db-instances/{dbInstanceId}/db-users/{dbUserId}
+PUT /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ```
 
 #### 필요 권한
@@ -2364,7 +2364,7 @@ PUT /v3.1/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ### DB 사용자 삭제하기
 
 ```http
-DELETE /v3.1/db-instances/{dbInstanceId}/db-users/{dbUserId}
+DELETE /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ```
 
 #### 필요 권한
@@ -2393,7 +2393,7 @@ DELETE /v3.1/db-instances/{dbInstanceId}/db-users/{dbUserId}
 ### DB 스키마 목록 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/db-schemas
+GET /v4.0/db-instances/{dbInstanceId}/db-schemas
 ```
 
 #### 필요 권한
@@ -2449,7 +2449,7 @@ GET /v3.1/db-instances/{dbInstanceId}/db-schemas
 ### DB 스키마 생성하기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/db-schemas
+POST /v4.0/db-instances/{dbInstanceId}/db-schemas
 ```
 
 #### 필요 권한
@@ -2476,7 +2476,7 @@ POST /v3.1/db-instances/{dbInstanceId}/db-schemas
 ### DB 스키마 삭제하기
 
 ```http
-DELETE /v3.1/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
+DELETE /v4.0/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
 ```
 
 #### 필요 권한
@@ -2505,7 +2505,7 @@ DELETE /v3.1/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
 ### 로그 파일 목록 보기
 
 ```http
-GET /v3.1/db-instances/{dbInstanceId}/log-files
+GET /v4.0/db-instances/{dbInstanceId}/log-files
 ```
 
 #### 필요 권한
@@ -2566,7 +2566,7 @@ GET /v3.1/db-instances/{dbInstanceId}/log-files
 ### 로그 파일 내보내기
 
 ```http
-POST /v3.1/db-instances/{dbInstanceId}/log-files/export
+POST /v4.0/db-instances/{dbInstanceId}/log-files/export
 ```
 
 #### 필요 권한
@@ -2627,7 +2627,7 @@ POST /v3.1/db-instances/{dbInstanceId}/log-files/export
 ### 백업 목록 조회
 
 ```http
-GET /v3.1/backups
+GET /v4.0/backups
 ```
 
 #### 필요 권한
@@ -2702,7 +2702,7 @@ GET /v3.1/backups
 ### 백업 내보내기
 
 ```http
-POST /v3.1/backups/{backupId}/export
+POST /v4.0/backups/{backupId}/export
 ```
 
 #### 필요 권한
@@ -2752,7 +2752,7 @@ POST /v3.1/backups/{backupId}/export
 ### 백업 복원하기
 
 ```http
-POST /v3.1/backups/{backupId}/restore
+POST /v4.0/backups/{backupId}/restore
 ```
 
 #### 필요 권한
@@ -2838,7 +2838,7 @@ POST /v3.1/backups/{backupId}/restore
 ### 백업 삭제하기
 
 ```http
-DELETE /v3.1/backups/{backupId}
+DELETE /v4.0/backups/{backupId}
 ```
 
 #### 필요 권한
@@ -2877,7 +2877,7 @@ DELETE /v3.1/backups/{backupId}
 ### DB 보안 그룹 목록 보기
 
 ```http
-GET /v3.1/db-security-groups
+GET /v4.0/db-security-groups
 ```
 
 #### 필요 권한
@@ -2933,7 +2933,7 @@ GET /v3.1/db-security-groups
 ### DB 보안 그룹 상세 보기
 
 ```http
-GET /v3.1/db-security-groups/{dbSecurityGroupId}
+GET /v4.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 필요 권한
@@ -3018,7 +3018,7 @@ GET /v3.1/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 생성하기
 
 ```http
-POST /v3.1/db-security-groups
+POST /v4.0/db-security-groups
 ```
 
 #### 필요 권한
@@ -3079,7 +3079,7 @@ POST /v3.1/db-security-groups
 ### DB 보안 그룹 수정하기
 
 ```http
-PUT /v3.1/db-security-groups/{dbSecurityGroupId}
+PUT /v4.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 필요 권한
@@ -3135,7 +3135,7 @@ PUT /v3.1/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 삭제하기
 
 ```http
-DELETE /v3.1/db-security-groups/{dbSecurityGroupId}
+DELETE /v4.0/db-security-groups/{dbSecurityGroupId}
 ```
 
 #### 필요 권한
@@ -3177,7 +3177,7 @@ DELETE /v3.1/db-security-groups/{dbSecurityGroupId}
 ### DB 보안 그룹 규칙 생성하기
 
 ```http
-POST /v3.1/db-security-groups/{dbSecurityGroupId}/rules
+POST /v4.0/db-security-groups/{dbSecurityGroupId}/rules
 ```
 
 #### 필요 권한
@@ -3230,7 +3230,7 @@ POST /v3.1/db-security-groups/{dbSecurityGroupId}/rules
 ### DB 보안 그룹 규칙 수정하기
 
 ```http
-PUT /v3.1/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
+PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 ```
 
 #### 필요 권한
@@ -3282,7 +3282,7 @@ PUT /v3.1/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 ### DB 보안 그룹 규칙 삭제하기
 
 ```http
-DELETE /v3.1/db-security-groups/{dbSecurityGroupId}/rules
+DELETE /v4.0/db-security-groups/{dbSecurityGroupId}/rules
 ```
 
 #### 필요 권한
@@ -3313,7 +3313,7 @@ DELETE /v3.1/db-security-groups/{dbSecurityGroupId}/rules
 ### 파라미터 그룹 목록 보기
 
 ```http
-GET /v3.1/parameter-groups
+GET /v4.0/parameter-groups
 ```
 
 #### 필요 권한
@@ -3376,7 +3376,7 @@ GET /v3.1/parameter-groups
 ### 파라미터 그룹 상세 보기
 
 ```http
-GET /v3.1/parameter-groups/{parameterGroupId}
+GET /v4.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 필요 권한
@@ -3457,7 +3457,7 @@ GET /v3.1/parameter-groups/{parameterGroupId}
 ### 파라미터 그룹 생성하기
 
 ```http
-POST /v3.1/parameter-groups
+POST /v4.0/parameter-groups
 ```
 
 #### 필요 권한
@@ -3498,7 +3498,7 @@ POST /v3.1/parameter-groups
 ### 파라미터 그룹 복사하기
 
 ```http
-POST /v3.1/parameter-groups/{parameterGroupId}/copy
+POST /v4.0/parameter-groups/{parameterGroupId}/copy
 ```
 
 #### 필요 권한
@@ -3539,7 +3539,7 @@ POST /v3.1/parameter-groups/{parameterGroupId}/copy
 ### 파라미터 그룹 수정하기
 
 ```http
-PUT /v3.1/parameter-groups/{parameterGroupId}
+PUT /v4.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 필요 권한
@@ -3593,7 +3593,7 @@ PUT /v3.1/parameter-groups/{parameterGroupId}
 ### 파라미터 수정하기
 
 ```http
-PUT /v3.1/parameter-groups/{parameterGroupId}/parameters
+PUT /v4.0/parameter-groups/{parameterGroupId}/parameters
 ```
 
 #### 필요 권한
@@ -3653,7 +3653,7 @@ PUT /v3.1/parameter-groups/{parameterGroupId}/parameters
 ### 파라미터 그룹 재설정하기
 
 ```http
-PUT /v3.1/parameter-groups/{parameterGroupId}/reset
+PUT /v4.0/parameter-groups/{parameterGroupId}/reset
 ```
 
 #### 필요 권한
@@ -3693,7 +3693,7 @@ PUT /v3.1/parameter-groups/{parameterGroupId}/reset
 ### 파라미터 그룹 삭제하기
 
 ```http
-DELETE /v3.1/parameter-groups/{parameterGroupId}
+DELETE /v4.0/parameter-groups/{parameterGroupId}
 ```
 
 #### 필요 권한
@@ -3737,7 +3737,7 @@ DELETE /v3.1/parameter-groups/{parameterGroupId}
 ### 사용자 그룹 목록 보기
 
 ```http
-GET /v3.1/user-groups
+GET /v4.0/user-groups
 ```
 
 #### 필요 권한
@@ -3789,7 +3789,7 @@ GET /v3.1/user-groups
 ### 사용자 그룹 상세 보기
 
 ```http
-GET /v3.1/user-groups/{userGroupId}
+GET /v4.0/user-groups/{userGroupId}
 ```
 
 #### 필요 권한
@@ -3849,7 +3849,7 @@ GET /v3.1/user-groups/{userGroupId}
 ### 사용자 그룹 생성하기
 
 ```http
-POST /v3.1/user-groups
+POST /v4.0/user-groups
 ```
 
 #### 필요 권한
@@ -3899,7 +3899,7 @@ POST /v3.1/user-groups
 ### 사용자 그룹 수정하기
 
 ```http
-PUT /v3.1/user-groups/{userGroupId}
+PUT /v4.0/user-groups/{userGroupId}
 ```
 
 #### 필요 권한
@@ -3958,7 +3958,7 @@ PUT /v3.1/user-groups/{userGroupId}
 ### 사용자 그룹 삭제하기
 
 ```http
-DELETE /v3.1/user-groups/{userGroupId}
+DELETE /v4.0/user-groups/{userGroupId}
 ```
 
 #### 필요 권한
@@ -4000,7 +4000,7 @@ DELETE /v3.1/user-groups/{userGroupId}
 ### 알림 그룹 목록 보기
 
 ```http
-GET /v3.1/notification-groups
+GET /v4.0/notification-groups
 ```
 
 #### 필요 권한
@@ -4059,7 +4059,7 @@ GET /v3.1/notification-groups
 ### 알림 그룹 상세 보기
 
 ```http
-GET /v3.1/notification-groups/{notificationGroupId}
+GET /v4.0/notification-groups/{notificationGroupId}
 ```
 
 #### 필요 권한
@@ -4134,7 +4134,7 @@ GET /v3.1/notification-groups/{notificationGroupId}
 ### 알림 그룹 생성하기
 
 ```http
-POST /v3.1/notification-groups
+POST /v4.0/notification-groups
 ```
 
 #### 필요 권한
@@ -4185,7 +4185,7 @@ POST /v3.1/notification-groups
 ### 알림 그룹 수정하기
 
 ```http
-PUT /v3.1/notification-groups/{notificationGroupId}
+PUT /v4.0/notification-groups/{notificationGroupId}
 ```
 
 #### 필요 권한
@@ -4247,7 +4247,7 @@ PUT /v3.1/notification-groups/{notificationGroupId}
 ### 알림 그룹 삭제하기
 
 ```http
-DELETE /v3.1/notification-groups/{notificationGroupId}
+DELETE /v4.0/notification-groups/{notificationGroupId}
 ```
 
 #### 필요 권한
@@ -4291,7 +4291,7 @@ DELETE /v3.1/notification-groups/{notificationGroupId}
 ### Metric 목록 보기
 
 ```http
-GET /v3.1/metrics
+GET /v4.0/metrics
 ```
 
 #### 필요 권한
@@ -4339,7 +4339,7 @@ GET /v3.1/metrics
 ### 통계 정보 조회
 
 ```http
-GET /v3.1/metric-statistics
+GET /v4.0/metric-statistics
 ```
 
 #### 필요 권한
@@ -4420,7 +4420,7 @@ GET /v3.1/metric-statistics
 ### 이벤트 목록 조회
 
 ```http
-GET /v3.1/events
+GET /v4.0/events
 ```
 
 #### 필요 권한
@@ -4508,7 +4508,7 @@ GET /v3.1/events
 ### 구독 가능한 이벤트 코드 목록 보기
 
 ```http
-GET /v3.1/event-codes
+GET /v4.0/event-codes
 ```
 
 #### 필요 권한
