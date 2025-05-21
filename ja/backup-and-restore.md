@@ -1,5 +1,6 @@
 ## Database > RDS for MariaDB > バックアップおよび復元
 
+<a id="overview"></a>
 ## バックアップ概要
 
 障害状況に備えて、DBインスタンスのデータベースを復旧できるように事前に準備することができます。必要な時にコンソールでバックアップを実行したり、定期的にバックアップが実行されるように設定できます。バックアップが実行されている間は当該DBインスタンスのストレージのパフォーマンス低下が発生する可能性があります。サービスに影響を与えないように、サービスの負荷が少ない時間にバックアップすることを推奨します。バックアップによるパフォーマンス低下を望まない場合は、高可用性構成を使用したり、以前のバックアップ以降のデータの増分のみをバックアップすることができ、リードレプリカでバックアップを実行することもできます。
@@ -9,6 +10,7 @@
 > ただし、以下の場合、高可用性DBインスタンスであっても、マスターでバックアップが実行されることがあります。
 > * 予備マスターの障害により、バックアップ実行が不可能な状態である場合。
 > * 予備マスターの再構築のため、予備マスターではない他のDBインスタンスで行ったバックアップが必要な状況で、リードレプリカがない場合
+
 
 ## バックアップの種類
 
@@ -21,8 +23,8 @@
 * バックアップ名は、リージョンごとに一意でなければなりません。
 * バックアップ名は1～100文字の英字、数字、一部の記号(-, _, .)のみ入力することができ、最初の文字は英字のみ使用できます。
 
-![db-instance-backup-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-backup-ja.png)
-![backup-list-ja](https://static.toastoven.net/prod_rds/24.11.12/mariadb/backup-list-ja.png)
+![db-instance-backup-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-backup-ja.png)
+![backup-list-ja](https://static.toastoven.net/prod_rds/mariadb/24.11.12/backup-list-ja.png)
 
 **手動で全体バックアップを作成する**
 
@@ -54,7 +56,6 @@ DBインスタンスの全てのデータをバックアップします。
 
 > [注意]
 > 増分バックアップで復元する場合は、全体バックアップで復元する時より多くの時間がかかる場合があり、これは復元に必要な増分バックアップの容量の合計に比例します。
-
 #### 基準バックアップ
 
 増分バックアップには、データ変更の基準となるバックアップが必要です。増分バックアップも新しい増分バックアップの基準バックアップになることができます。
@@ -76,7 +77,7 @@ DBインスタンスの全てのデータをバックアップします。
 
 DBインスタンスの作成及び修正時、バックアップに適用される設定項目を指定できます。
 
-![db-instance-backup-form-ja](https://static.toastoven.net/prod_rds/24.11.12/db-instance-backup-form-ja.png)
+![db-instance-backup-form-ja](https://static.toastoven.net/prod_rds/mariadb/24.11.12/db-instance-backup-form-ja.png)
 
 ### 共通設定
 
@@ -132,7 +133,7 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 **バックアップ実行時間**
 
-* バックアップが自動的に実行される時間を設定できます。백업 시작 시각과 백업 윈도우로 구성됩니다。バックアップ実行時間は重複しないように複数回設定できます。バックアップ開始時刻を基準に、バックアップウィンドウ内のある時点でバックアップを実行します。バックアップウィンドウはバックアップの総実行時間とは関係ありません。バックアップにかかる時間はデータベースのサイズに比例し、サービス負荷によって異なります。백업이 실패할 경우 백업 윈도우를 넘지 않았다면 백업 재시도 횟수에 따라 백업을 다시 시도합니다
+* バックアップが自動的に実行される時間を設定できます。バックアップ開始時刻とバックアップウィンドウで構成されます。バックアップ実行時間は重複しないように複数回設定できます。バックアップ開始時刻を基準に、バックアップウィンドウ内のある時点でバックアップを実行します。バックアップウィンドウはバックアップの総実行時間とは関係ありません。バックアップにかかる時間はデータベースのサイズに比例し、サービス負荷によって異なります。バックアップが失敗した場合、バックアップウィンドウを超えなければ、バックアップ再試行回数に基づいてバックアップを再試行します。
 
   > [注意]
   > 前のバックアップが終了しないなどの状況では、バックアップが実行されない場合があります。
@@ -143,15 +144,16 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 すべてのバックアップファイルは、内部バックアップストレージにアップロードして保存します。手動バックアップの場合、別途削除するまで永続的に保存され、バックアップ容量に応じてバックアップストレージの料金が発生します。自動バックアップの場合、設定した保管期間だけ保存され、自動バックアップファイルの全体サイズのうち、DBインスタンスのストレージサイズを超過した容量に対して課金されます。バックアップファイルが保存されている内部バックアップストレージに直接アクセスすることはできず、バックアップファイルが必要な場合は、NHN Cloudのオブジェクトストレージにバックアップファイルをエクスポートできます。
 
+<a id="export"></a>
 ### バックアップのエクスポート
 
 #### バックアップを実行しながらファイルをエクスポート
 
 バックアップ後、バックアップファイルをユーザーオブジェクトストレージにエクスポートできます。増分バックアップについてはサポートされません。
 
-![db-instance-list-export-obs-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-ja.png)
+![db-instance-list-export-obs-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-list-export-obs-ja.png)
 
-![db-instance-list-export-obs-modal-ja](https://static.toastoven.net/prod_rds/24.03.12/db-instance-list-export-obs-modal-ja.png)
+![db-instance-list-export-obs-modal-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-list-export-obs-modal-ja.png)
 
 ❶バックアップするDBインスタンスを選択した後、ドロップダウンメニューから**バックアップ後オブジェクトストレージにバックアップファイルをエクスポート**をクリックすると、設定ポップアップ画面が表示されます。
 ❷バックアップが保存されるオブジェクトストレージのテナントIDを入力します。テナントIDはAPIエンドポイント設定で確認できます。
@@ -164,20 +166,21 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 内部バックアップストレージに保存されたバックアップファイルをユーザーオブジェクトストレージにエクスポートできます。増分バックアップについてはサポートされません。
 
-![db-instance-detail-backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-detail-backup-export-ja.png)
+![db-instance-detail-backup-export-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-backup-export-ja.png)
 
 ❶バックアップを実行した原本DBインスタンスの詳細タブでエクスポートするバックアップファイルを選択した後、**オブジェクトストレージにバックアップをエクスポート**をクリックすると、バックアップをエクスポートするためのポップアップ画面が表示されます。
 
-![backup-export-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/backup-export-ja.png)
+![backup-export-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/backup-export-ja.png)
 
 ❷または**バックアップ**タブでエクスポートするバックアップファイルを選択した後、**オブジェクトストレージにバックアップをエクスポート**をクリックします。
 
 > [参考]
 > 手動バックアップの場合、バックアップを実行した元DBインスタンスが削除されると、バックアップをエクスポートできません。
 
+<a id="restore"></a>
 ## 復元
 
-バックアップを利用して希望の時点にデータを復元できます。復元時には常に新しいDBインスタンスが作成され、既存のDBインスタンスに復元することはできません。バックアップを実行した元のDBインスタンスと同じDBエンジンのバージョンにのみ復元できます。バックアップが作成された時点に復元するスナップショット復元、希望する特定の時点に復元する時点復元をサポートします。RDS for MariaDBで作成したバックアップだけでなく、外部MariaDBのバックアップにも復元できます。
+バックアップを利用して希望の時点にデータを復元できます。復元時には常に新しいDBインスタンスが作成され、既存のDBインスタンスに復元することはできません。バックアップを実行した元のDBインスタンスと同じDBエンジンのバージョンにのみ復元できます。バックアップが作成された時点に復元するスナップショット復元、希望する特定の時点に復元する時点復元をサポートします。RDS for MySQLで作成したバックアップだけでなく、外部MariaDBのバックアップにも復元できます。
 
 > [注意]
 > 復元するDBインスタンスのデータストレージサイズがバックアップを実行した元のDBインスタンスのストレージサイズより小さい場合や、元のDBインスタンスのパラメータグループと異なるパラメータグループを使用する場合、復元に失敗することがあります。
@@ -186,13 +189,13 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 バックアップファイルだけで復元を行うため、バックアップを実行した原本DBインスタンスが必要ありません。 コンソールでスナップショットを復元するには
 
-![db-instance-snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/db-instance-snapshot-restoration-ja.png)
+![db-instance-snapshot-restoration-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-snapshot-restoration-ja.png)
 
 ❶ DBインスタンスの詳細タブで復元するバックアップファイルを選択した後、**スナップショット復元**をクリックすると、DBインスタンスの復元画面に移動します。
 
 または
 
-![snapshot-restoration-ja](https://static.toastoven.net/prod_rds/24.03.12/snapshot-restoration-ja.png)
+![snapshot-restoration-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/snapshot-restoration-ja.png)
 
 ❶バックアップタブで復元するバックアップファイルを選択した後、**スナップショット復元**をクリックします。
 
@@ -207,23 +210,23 @@ DBインスタンスの作成及び修正時、バックアップに適用され
 
 コンソールで時点復元を行うには
 
-![point-in-time-restoration-list-ja](https://static.toastoven.net/prod_rds/24.03.12/mariadb/point-in-time-restoration-list-ja.png)
+![point-in-time-restoration-list-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/point-in-time-restoration-list-ja.png)
 
 ❶時点復元するDBインスタンスを選択した後、**+時点復元**をクリックすると、時点復元を設定できるページに移動します。
 
-#### Timestamp를 이용한 복원
+#### Timestampを利用した復元
 
 Timestampを使用した復元の場合は、選択した時点と最も近いバックアップファイルを基準に復元を行い、希望する時点までのバイナリログ(binary log)を適用します。
 
-![point-in-time-restoration-01-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-01-ja.png)
+![point-in-time-restoration-01-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/point-in-time-restoration-01-ja.png)
 
 ❶復元方法を選択します。
 
-![point-in-time-restoration-02-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-02-ja.png)
+![point-in-time-restoration-02-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/point-in-time-restoration-02-ja.png)
 
 ❷復元時刻を選択します。直近の時点に復元するか、希望する特定の時点を直接入力できます。
 
-![point-in-time-restoration-03-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-03-ja.png)
+![point-in-time-restoration-03-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/point-in-time-restoration-03-ja.png)
 
 ❸ **復元される最後のクエリを確認**をクリックすると、最後に復元されるクエリを確認できるポップアップ画面が表示されます。
 
@@ -231,25 +234,25 @@ Timestampを使用した復元の場合は、選択した時点と最も近い�
 
 バイナリログ(binary log)を活用した復元過程では、選択したバックアップファイルで先に復元を行った後、希望する位置までのバイナリログ(binary log)を適用します。
 
-![point-in-time-restoration-04-ja](https://static.toastoven.net/prod_rds/24.03.12/point-in-time-restoration-04-ja.png)
+![point-in-time-restoration-04-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/point-in-time-restoration-04-ja.png)
 
 ❹バイナリログ(binary log)で復元するためには、まず、バックアップファイルを選択する必要があります。
 ❺バイナリログ(binary log)ファイルを選択します。
 ❻バイナリログ(binary log)の特定位置を入力します。
 
+<a id="restore-from-external"></a>
 ### 外部MariaDBバックアップを利用した復元
 
-外部MariaDBバックアップファイルを利用してDBインスタンスを作成できます。外部MariaDBバックアップファイルを作成する時、[バックアップ](backup-and-restore/#_1)項目を参照してRDS for MariaDBで使用するPercona XtraBackupと同じバージョンを使用する必要があります。
+外部MariaDBバックアップファイルを利用してDBインスタンスを作成できます。
 
 > [注意]
-> innodb_data_file_pathの設定値がibdata1:12M:autoextendでない場合、RDS for MariaDBのDBインスタンスに復元できません。
+> innodb_data_file_pathの設定値がibdata1:12M:autoextendでない場合、RDS for MySQLのDBインスタンスに復元できません。
 
 (1) MariaDBがインストールされたサーバーで下記のコマンドを利用してバックアップを実行します。
 
 ```
 mariabackup --defaults-file={my.cnfパス} --user {ユーザー} --password '{パスワード}' --socket {MariaDBソケットファイルのパス} --compress --compress-threads=1 --stream=xbstream {バックアップファイルが作成されるディレクトリ} 2>>{バックアップログファイルのパス} > {バックアップファイルのパス}
 ```
-
 (2)バックアップログファイルの最後の行に`completed OK!があるか確認します。`completed OK!`がない場合は、バックアップが正常に終了していないため、ログファイルにあるエラーメッセージを参照してバックアップを再度行います。
 
 (3)完了したバックアップファイルをオブジェクトストレージにアップロードします。
@@ -260,11 +263,12 @@ mariabackup --defaults-file={my.cnfパス} --user {ユーザー} --password '{�
 
 (4)復元するプロジェクトのコンソールに接続した後、DBインスタンスタブで**オブジェクトストレージにあるバックアップで復元**ボタンをクリックします。
 
+
 ### RDS for MariaDBのバックアップを利用した復元
 
-RDS for MariaDBのバックアップファイルを利用して直接MariaDBのデータベースを復元することができますが、全体バックアップに対してのみ復元が可能で、増分バックアップの反映はサポートされません。RDS for MariaDBのバックアップファイルを復元する時、[バックアップ](backup-and-restore/#_1)項目を参照してRDS for MariaDBで使用するPercona XtraBackupと同じバージョンを使用する必要があります。
+RDS for MariaDBのバックアップファイルを利用して直接MariaDBのデータベースを復元することができますが、全体バックアップに対してのみ復元が可能で、増分バックアップの反映はサポートされません。
 
-(1) [バックアップのエクスポート](backup-and-restore/#_5)の項目を参照して、RDS for MariaDBのバックアップをオブジェクトストレージにエクスポートします。
+(1) [バックアップのエクスポート](backup-and-restore/#export)の項目を参照して、RDS for MariaDBのバックアップをオブジェクトストレージにエクスポートします。
 
 (2)オブジェクトストレージのバックアップを復元したいサーバーにダウンロードします。
 
