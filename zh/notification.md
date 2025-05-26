@@ -132,29 +132,29 @@ Event refers to an important event that occurs either by RDS for MariaDB or by u
 | INSTC_60_00 | INSTANCE          | Yes          | DB instance migration started                                                 |
 | INSTC_60_01 | INSTANCE          | Yes          | DB instance migration completed                                               |
 | INSTC_60_04 | INSTANCE          | Yes          | DB instance migration failed                                                  |
-| INSTC_61_00 | INSTANCE          | Yes        | Candidate master rebuilding started                        |
-| INSTC_61_01 | INSTANCE          | Yes        | Candidate master rebuilding completed                        |
-| INSTC_61_04 | INSTANCE          | Yes        | Candidate master rebuilding failed                        |
-| INSTC_62_00 | INSTANCE          | Yes        | DB engine version upgrade started                    |
-| INSTC_62_01 | INSTANCE          | Yes        | DB engine version upgrade completed                    |
-| INSTC_62_04 | INSTANCE          | Yes        | DB engine version upgrade failed                    |
-| INSTC_63_01 | INSTANCE          | Yes        | Decrypt DB instance binary logs                   |
-| INSTC_64_04 | INSTANCE          | Yes        | DB engine version upgrade pre-check failed              |
-| INSTC_65_00 | INSTANCE          | Yes        | Authentication plugin activation started                       |
-| INSTC_65_01 | INSTANCE          | Yes        | Authentication plugin activation completed                       |
-| INSTC_65_04 | INSTANCE          | Yes        | Authentication plugin activation failed                       |
-| INSTC_66_00 | INSTANCE          | Yes        | Force promoting DB instance started                     |
-| INSTC_66_01 | INSTANCE          | Yes        | Force promoting DB instance completed                     |
-| INSTC_66_04 | INSTANCE          | Yes        | Force promoting DB instance failed                     |
-| INSTC_67_00 | INSTANCE          | Yes        | OS version upgrade started                       |
-| INSTC_67_01 | INSTANCE          | Yes        | OS version upgrade ended                       |
-| INSTC_67_04 | INSTANCE          | Yes        | OS version upgrade failed                       |
-| INSTC_68_01 | INSTANCE          | Yes        | Network communication failed                           |
-| INSTC_69_00 | INSTANCE          | Yes            | Waiting for manual control of failover                                                            |
-| INSTC_69_01 | INSTANCE          | Yes            | Manual control of failover succeeded                                                                |
-| INSTC_69_04 | INSTANCE          | Yes            | Manual control of failover timeout                                                              |
-| INSTC_70_01 | INSTANCE          | Yes            | High availability normalized                                                                      |
-| INSTC_71_01 | INSTANCE          | Yes            | High availability stopped                                                                       |
+| INSTC_61_00 | INSTANCE          | Yes          | Candidate master rebuilding started                                           |
+| INSTC_61_01 | INSTANCE          | Yes          | Candidate master rebuilding completed                                         |
+| INSTC_61_04 | INSTANCE          | Yes          | Candidate master rebuilding failed                                            |
+| INSTC_62_00 | INSTANCE          | Yes          | DB engine version upgrade started                                             |
+| INSTC_62_01 | INSTANCE          | Yes          | DB engine version upgrade completed                                           |
+| INSTC_62_04 | INSTANCE          | Yes          | DB engine version upgrade failed                                              |
+| INSTC_63_01 | INSTANCE          | Yes          | Decrypt DB instance binary logs                                               |
+| INSTC_64_04 | INSTANCE          | Yes          | DB engine version upgrade pre-check failed                                    |
+| INSTC_65_00 | INSTANCE          | Yes          | Authentication plugin activation started                                      |
+| INSTC_65_01 | INSTANCE          | Yes          | Authentication plugin activation completed                                    |
+| INSTC_65_04 | INSTANCE          | Yes          | Authentication plugin activation failed                                       |
+| INSTC_66_00 | INSTANCE          | Yes          | Force promoting DB instance started                                           |
+| INSTC_66_01 | INSTANCE          | Yes          | Force promoting DB instance completed                                         |
+| INSTC_66_04 | INSTANCE          | Yes          | Force promoting DB instance failed                                            |
+| INSTC_67_00 | INSTANCE          | Yes          | OS version upgrade started                                                    |
+| INSTC_67_01 | INSTANCE          | Yes          | OS version upgrade ended                                                      |
+| INSTC_67_04 | INSTANCE          | Yes          | OS version upgrade failed                                                     |
+| INSTC_68_01 | INSTANCE          | Yes          | Network communication failed                                                  |
+| INSTC_69_00 | INSTANCE          | Yes          | Waiting for manual control of failover                                        |
+| INSTC_69_01 | INSTANCE          | Yes          | Manual control of failover succeeded                                          |
+| INSTC_69_04 | INSTANCE          | Yes          | Manual control of failover timeout                                            |
+| INSTC_70_01 | INSTANCE          | Yes          | High availability normalized                                                  |
+| INSTC_71_01 | INSTANCE          | Yes          | High availability stopped                                                     |
 | INSTC_73_00 | INSTANCE          | Yes          | Auto scale storage started                                                    |
 | INSTC_73_01 | INSTANCE          | Yes          | Auto scale storage completed                                                  |
 | INSTC_73_04 | INSTANCE          | Yes          | Auto scale storage failed                                                     |
@@ -169,9 +169,9 @@ Event refers to an important event that occurs either by RDS for MariaDB or by u
 
 You can subscribe to events by event type, code, and source. When you subscribe by event type, you will be notified of all the event codes included in the event type. If the notification is too broad, you can subscribe by event code and source. You can select only project members as the users to receive notifications. By default, event notifications are sent by email, and additional event notifications are sent by SMS only if mobile phone number with real name authentication is registered.
 
-![event_subscription_01_en](https://static.toastoven.net/prod_rds/23.04.11/event_subscription_01_en.png)
+![event_subscription_01_en](https://static.toastoven.net/prod_rds/mariadb/23.04.11/event_subscription_01_en.png)
 
-* ❶ When you click**Register Event Subscription**, a pop-up window appears to subscribe to events.
+* ❶ When you click **Register Event Subscription**, a pop-up window appears to subscribe to events.
 * ❷ Select the event type you want to subscribe to. Event code that you can select can be changed depending on the event type.
 * ❸ Select the event code you want to subscribe to.
 * ❹ Select the event source you want to subscribe to.
@@ -186,7 +186,7 @@ You can manage users as groups to receive notifications. Notification target mus
 
 ### Create User Group
 
-![user_group_01_en](https://static.toastoven.net/prod_rds/23.06.13/user_group_01_en.png)
+![user_group_01_en](https://static.toastoven.net/prod_rds/mariadb/23.06.13/user_group_01_en.png)
 
 * ❶ When you click**Create user group**, a pop-up screen appears where you can create user groups.
 * ❷ Users added to the user group appear.
@@ -195,7 +195,6 @@ You can manage users as groups to receive notifications. Notification target mus
 * ❺ Add **all project members** to the notified users.
   * You cannot add individual users. If you do, it is canceled.
   * When sending an alrm using the user group, the alarm is sent to all project members at the time.
-
 * ❻ Click **Add** to add a user to the user group.
 
 ## Notification Group
@@ -205,7 +204,7 @@ notification group.
 
 ### Create Notification Group
 
-![notification_group_01_en.png](https://static.toastoven.net/prod_rds/23.04.11/notification_group_01_en.png)
+![notification_group_01_en.png](https://static.toastoven.net/prod_rds/mariadb/23.04.11/notification_group_01_en.png)
 
 * ❶ When you click **Create Group**, a pop-up appears where you can create an notification group.
 * ❷ Select how you want to be notified.
@@ -224,7 +223,7 @@ Performance metrics items that can be monitored are as follows.
 
 ### Add Monitoring Setting
 
-![notification_group_02_en.png](https://static.toastoven.net/prod_rds/23.04.11/notification_group_02_en.png)
+![notification_group_02_en.png](https://static.toastoven.net/prod_rds/mariadb/23.04.11/notification_group_02_en.png)
 
 * ❶ When you click **Monitoring Settings**, a pop-up appears where you can change the monitoring settings.
 * ❷ Click **Add Monitoring Settings** to add new monitoring settings.
@@ -232,7 +231,7 @@ Performance metrics items that can be monitored are as follows.
 
 ### Change and Delete Monitoring Settings
 
-![notification_group_03_en.png](https://static.toastoven.net/prod_rds/23.04.11/notification_group_03_en.png)
+![notification_group_03_en.png](https://static.toastoven.net/prod_rds/mariadb/23.04.11/notification_group_03_en.png)
 
 * ❶ Click the button to change the added monitoring settings.
-* ❷ Click the button to delete the added monitoring settings.
+* ❷ Click the button to delete the added monitoring settings. 
