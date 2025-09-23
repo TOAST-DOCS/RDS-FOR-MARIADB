@@ -181,9 +181,9 @@ Floating IPを作成した場合、外部ドメインを追加で発行します
 
 2025年5月以前に作成したDBインスタンスの場合、Webコンソールの`VIP追加`メニューをクリックしてVIPを追加できます。VIPを追加すると、既存の内部ドメインと内部(VIP)ドメインが併せて提供されます。ただし、フェイルオーバーが発生した場合、VIPはスタンバイマスターを指すようになりますが、内部ドメインは状況によってはスタンバイマスターを指さないことがあります。そのため、VIPを追加した場合は、必ずアプリケーションの接続情報をVIPまたは内部(VIP)ドメインを使用するよう修正する必要があります。
 
-> [참고]
-> 2025년 9월 점검 이후 일본(도쿄) 리전 및 공공 일부 프로젝트에서는 더 이상 VIP를 지원하지 않습니다. (다른 서브넷에 속한 인스턴스 또는 DB 인스턴스에서 VIP로 접속할 수 없습니다.)
-> VIP를 지원하지 않는 환경에서는 2025년 5월 점검 이후 생성된 VIP는 삭제되지 않지만, 더 이상 콘솔에서 확인할 수 없습니다.
+> [参考]
+> 2025年9月のメンテナンス以降、日本(東京)リージョン及び一部の公共プロジェクトでは、今後VIPをサポートしません。(他のサブネットに属するインスタンスまたはDBインスタンスからVIPへ接続できなくなります。)
+> VIPをサポートしない環境では、2025年5月のメンテナンス以降に作成されたVIPは削除されませんが、今後コンソールでは確認できなくなります。
 
 ### ログ
 
@@ -343,7 +343,7 @@ GRANT CREATE,DROP,LOCK TABLES,REFERENCES,EVENT,ALTER,INDEX,INSERT,SELECT,UPDATE,
 > * ユーザーに付与された権限と関係なく、データベースに存在するすべてのユーザーはCUSTOM権限で表現されます。
 
 ## DBインスタンスOSアップグレード
-DBインスタンスOSアップグレードをサポートします。OSのアップグレードにより、セキュリティ脆弱性の解決やOSのEOL(end of life)に対応できます。 
+DBインスタンスOSアップグレードをサポートします。OSのアップグレードにより、セキュリティ脆弱性の解決やOSのEOL(end of life)に対応できます。
 OSアップグレードはサービス瞬断が発生するため注意が必要です。高可用性DBインスタンスはフェイルオーバーにより、サービス瞬断を最小限に抑えることができます。
 
 現在のDBインスタンスのOS情報は、DBインスタンスの詳細画面で確認できます。
@@ -736,12 +736,12 @@ mariadb> CALL mysql.tcrds_repl_changemaster (master_instance_ip, master_instance
 ```
 
 * パラメータの説明
-  * master_instance_ip:複製対象(Master)サーバーのIP
-  * master_instance_port:複製対象(Master)サーバーのMariaDBポート
-  * user_id_for_replication:複製対象(Master)サーバーのMariaDBに接続する複製用アカウント
-  * password_for_replication_user:複製用アカウントパスワード
-  * MASTER_LOG_FILE:複製対象(Master)のbinary logファイル名
-  * MASTER_LOG_POS:複製対象(Master)のbinary logポジション
+    * master_instance_ip:複製対象(Master)サーバーのIP
+    * master_instance_port:複製対象(Master)サーバーのMariaDBポート
+    * user_id_for_replication:複製対象(Master)サーバーのMariaDBに接続する複製用アカウント
+    * password_for_replication_user:複製用アカウントパスワード
+    * MASTER_LOG_FILE:複製対象(Master)のbinary logファイル名
+    * MASTER_LOG_POS:複製対象(Master)のbinary logポジション
 
 ```
 ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4);
@@ -920,7 +920,7 @@ mysqldump -h{external_db_host} -u{external_db_id} -p{external_db_password} --por
 #### データのインポート中に`ERROR 1418`エラーが発生する場合
 
 * `ERROR 1418`エラーはmysqldumpファイルの関数宣言にNO SQL、READS SQL DATA, DETERMINISTICがなく、バイナリログが有効な状態の時に発生します。
-  * 詳細については[The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MySQL文書を参照してください。
+    * 詳細については[The Binary Log](https://dev.mysql.com/doc/refman/8.0/en/binary-log.html) MySQL文書を参照してください。
 * これを解決するためには、mysqldumpファイルを適用するDBインスタンスの`log_bin_trust_function_creators`パラメータの値を`1`に変更する必要があります。
 
 ### 複製を利用してエクスポート
@@ -1130,15 +1130,15 @@ Federated Storage Engineを使用する場合、次を考慮する必要があ�
 #### ローカルノードとしてRDSを利用する構成の場合
 
 * リモートノードへの送信を許可する設定が必要です。
-  * DBセキュリティグループでルールを追加できます。
-  * 詳細については、 [DBセキュリティグループ](db-security-group/)項目を参照してください。
+    * DBセキュリティグループでルールを追加できます。
+    * 詳細については、 [DBセキュリティグループ](db-security-group/)項目を参照してください。
 * ローカルノード役割のRDSにRead Only Slaveを追加した構成で使用する場合は、パラメータのreplicate-ignore-tableにfederated設定されたテーブル名を指定する必要があります。
-  * Read Only Slaveを構成する場合、 federatedテーブルも複製され、MasterとRead Only Slaveがリモートノードを一緒に見ます。
-  * この場合、Masterに行ったデータ入力がfederated設定によってリモートノードにも行われ、Read Only Slaveでも同様に同じ入力が行われ、重複キーエラーなどによるレプリケーション中断が発生することがあります。
-  * Read Only Slaveがfederatedテーブルを複製しないようにreplicate-ignore-tableに設定する必要があります。
+    * Read Only Slaveを構成する場合、 federatedテーブルも複製され、MasterとRead Only Slaveがリモートノードを一緒に見ます。
+    * この場合、Masterに行ったデータ入力がfederated設定によってリモートノードにも行われ、Read Only Slaveでも同様に同じ入力が行われ、重複キーエラーなどによるレプリケーション中断が発生することがあります。
+    * Read Only Slaveがfederatedテーブルを複製しないようにreplicate-ignore-tableに設定する必要があります。
 
 #### リモートノードとしてRDSを利用する構成の場合
 
 * ローカルノードでの受信を許可する設定が必要です。
-  * DBセキュリティグループでルールを追加できます。
-  * 詳細については、 [DBセキュリティグループ](db-security-group/)項目を参照してください。
+    * DBセキュリティグループでルールを追加できます。
+    * 詳細については、 [DBセキュリティグループ](db-security-group/)項目を参照してください。
