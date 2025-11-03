@@ -1,4 +1,4 @@
-## Database > RDS for MySQL > DB Security Group
+## Database > RDS for MariaDB > DB Security Group
 
 ## DB Security Group
 
