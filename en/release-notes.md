@@ -1,5 +1,18 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### November 11, 2025
+
+#### Feature Updates
+
+- Improved to record the cause of backup failure due to Lock acquisition failure in the event log.
+
+#### Bug Fixes
+
+- Fixed an issue where the failover status persisted when failover failed.
+- Fixed an issue where DB instances stopped before the July deployment could not be started.
+- Fixed an issue where the latest parameter group would not be applied after selecting multiple DB instances when using a different parameter group for read replicas.
+- Fixed an issue where unchangeable values would be changed when resetting a parameter group.
+
 ### September 09, 2025
 
 #### Feature Updates
