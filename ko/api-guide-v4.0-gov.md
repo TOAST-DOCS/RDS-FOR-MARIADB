@@ -6,7 +6,7 @@
 
 ## 인증 및 권한
 
-API를 사용하려면 [Public API > API 호출 및 인증](/nhncloud/ko/public-api/api-authentication/)을 통해 발급 받은 Bearer 유형의 토큰이 필요합니다.
+API를 사용하려면 [Public API > API 호출 및 인증](/nhncloud/ko/public-api/api-authentication-gov/)을 통해 발급 받은 Bearer 유형의 토큰이 필요합니다.
 발급 받은 토큰은 Appkey와 함께 요청 Header에 포함해야 합니다.
 
 | 이름                  | 종류     | 형식     | 필수 | 설명                                                          |

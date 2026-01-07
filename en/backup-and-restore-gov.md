@@ -264,16 +264,16 @@ mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' 
 
 * The maximum file size that can be uploaded at a time is 5GB.
 * If the backup file is larger than 5GB, you have to use a utility such as split to cut the backup file to less than 5GB and upload it in multi-part.
-* For detailed information, refer to [Multipart Upload](/Storage/Object%20Storage/ko/api-guide/#_44).
+* For detailed information, refer to [Multipart Upload](/Storage/Object%20Storage/ko/api-guide-gov/#_44).
 
 (4) After accessing the console of the project you want to restore, on the DB Instances tab, click the **Restore to Backup in Object Storage** button.
 
 
 ### Restoration by Using RDS for MariaDB Backup
 
-You can use the backup file in RDS for MariaDB to restore the database in MariaDB directly. Only full backups can be restored; incremental backup reflection is not supported. When restoring a RDS for MariaDB backup file, refer to the [Backup](backup-and-restore/#_1) and use the same version as Percona XtraBackup used by RDS for MariaDB.
+You can use the backup file in RDS for MariaDB to restore the database in MariaDB directly. Only full backups can be restored; incremental backup reflection is not supported. When restoring a RDS for MariaDB backup file, refer to the [Backup](backup-and-restore-gov/#_1) and use the same version as Percona XtraBackup used by RDS for MariaDB.
 
-(1) Export backup of RDS for MariaDB to object storage with reference to the [Export Backup](backup-and-restore/#export).
+(1) Export backup of RDS for MariaDB to object storage with reference to the [Export Backup](backup-and-restore-gov/#export).
 
 (2) Download the backup of the object storage to the server on which you want to restore it.
 

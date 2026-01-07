@@ -158,6 +158,14 @@
 | INSTC_73_00 | INSTANCE          | 예        | 스토리지 자동 확장 시작                        |
 | INSTC_73_01 | INSTANCE          | 예        | 스토리지 자동 확장 완료                        |
 | INSTC_73_04 | INSTANCE          | 예        | 스토리지 자동 확장 실패                        |
+| INSTC_75_00 | INSTANCE          | 예        | VIP 추가 시작                            |  
+| INSTC_75_01 | INSTANCE          | 예        | VIP 추가 완료                            |
+| INSTC_75_04 | INSTANCE          | 예        | VIP 추가 실패                            |
+| INSTC_76_00 | INSTANCE          | 예        | 유지 관리 시작                             |
+| INSTC_76_01 | INSTANCE          | 예        | 유지 관리 완료                             |
+| INSTC_76_02 | INSTANCE          | 예        | 유지 관리 스킵                             |
+| INSTC_76_04 | INSTANCE          | 예        | 유지 관리 실패                             |
+| INSTC_76_05 | INSTANCE          | 예        | 유지 관리 등록 실패                          |
 | JOB_01_04   | JOB               | 예        | Job 실행 실패                            |
 | TENAT_01_04 | TENANT            | 예        | CPU 코어 수 제한                          |
 | TENAT_02_04 | TENANT            | 예        | RAM 용량 제한	                           |
