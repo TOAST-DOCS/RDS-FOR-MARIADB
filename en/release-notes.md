@@ -1,5 +1,13 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### January 13, 2026
+
+#### Feature Updates
+
+- Added maintenance feature
+  - Applied various DB instance modifications during your scheduled maintenance duration
+- Updated to grant ROLE_ADMIN privileges when the Direct Control for DB Schemas & Users setting is enabled
+
 ### November 11, 2025
 
 #### Feature Updates
