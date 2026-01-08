@@ -758,7 +758,7 @@ POST /v3.0/db-instances
 | dbVersion               | Body | Enum    | O  | DB 엔진 유형                                                            |
 | dbPort                  | Body | Number  | O  | DB 포트<br/>- 최솟값: `3306`<br/>- 최댓값: `43306`                          |
 | dbUserName              | Body | String  | O  | DB 사용자 계정명                                                          |
-| dbPassword              | Body | String  | O  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `16`                     |
+| dbPassword              | Body | String  | O  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `256`                    |
 | parameterGroupId        | Body | UUID    | O  | 파라미터 그룹의 식별자                                                        |
 | dbSecurityGroupIds      | Body | Array   | X  | DB 보안 그룹의 식별자 목록                                                    ||network|Body|Object|O|네트워크 정보 객체|
 | userGroupIds            | Body | Array   | X  | 사용자 그룹의 식별자 목록                                                      |
@@ -2051,13 +2051,13 @@ POST /v3.0/db-instances/{dbInstanceId}/db-users
 
 #### 요청
 
-| 이름                   | 종류   | 형식     | 필수 | 설명                                                                                                                      |
-|----------------------|------|--------|----|-------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O  | DB 인스턴스의 식별자                                                                                                            |
-| dbUserName           | Body | String | O  | DB 사용자 계정 이름<br/>- 최소 길이: `1`<br/>- 최대 길이: `32`                                                                         |
-| dbPassword           | Body | String | O  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `16`                                                                         |
-| host                 | Body | String | O  | DB 사용자 계정의 호스트명<br/>- 예시: `1.1.1.%`                                                                                     |
-| authorityType        | Body | Enum   | O  | DB 사용자 권한 타입<br/>- `READ`: SELECT 쿼리 수행 가능한 권한<br/>- `CRUD`: DML 쿼리 수행 가능한 권한<br/>- `DDL`: DDL 쿼리 수행 가능한 권한<br/>        |
+| 이름                   | 종류   | 형식     | 필수 | 설명                                                                                                               |
+|----------------------|------|--------|----|------------------------------------------------------------------------------------------------------------------|
+| dbInstanceId         | URL  | UUID   | O  | DB 인스턴스의 식별자                                                                                                     |
+| dbUserName           | Body | String | O  | DB 사용자 계정 이름<br/>- 최소 길이: `1`<br/>- 최대 길이: `32`                                                                  |
+| dbPassword           | Body | String | O  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `256`                                                                 |
+| host                 | Body | String | O  | DB 사용자 계정의 호스트명<br/>- 예시: `1.1.1.%`                                                                              |
+| authorityType        | Body | Enum   | O  | DB 사용자 권한 타입<br/>- `READ`: SELECT 쿼리 수행 가능한 권한<br/>- `CRUD`: DML 쿼리 수행 가능한 권한<br/>- `DDL`: DDL 쿼리 수행 가능한 권한<br/> |
 | authenticationPlugin | Body | Enum    | X  | 인증 플러그인<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 
 <details><summary>예시</summary>
@@ -2091,12 +2091,12 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 
 #### 요청
 
-| 이름                   | 종류   | 형식     | 필수 | 설명                                                                                                                      |
-|----------------------|------|--------|----|-------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O  | DB 인스턴스의 식별자                                                                                                            |
-| dbUserId             | URL  | UUID   | O  | DB 사용자의 식별자                                                                                                             |
-| dbPassword           | Body | String | X  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `16`                                                                         |
-| authorityType        | Body | Enum   | X  | DB 사용자 권한 타입<br/>- `READ`: SELECT 쿼리 수행 가능한 권한<br/>- `CRUD`: DML 쿼리 수행 가능한 권한<br/>- `DDL`: DDL 쿼리 수행 가능한 권한<br/>        |
+| 이름                   | 종류   | 형식     | 필수 | 설명                                                                                                               |
+|----------------------|------|--------|----|------------------------------------------------------------------------------------------------------------------|
+| dbInstanceId         | URL  | UUID   | O  | DB 인스턴스의 식별자                                                                                                     |
+| dbUserId             | URL  | UUID   | O  | DB 사용자의 식별자                                                                                                      |
+| dbPassword           | Body | String | X  | DB 사용자 계정 암호<br/>- 최소 길이: `4`<br/>- 최대 길이: `256`                                                                 |
+| authorityType        | Body | Enum   | X  | DB 사용자 권한 타입<br/>- `READ`: SELECT 쿼리 수행 가능한 권한<br/>- `CRUD`: DML 쿼리 수행 가능한 권한<br/>- `DDL`: DDL 쿼리 수행 가능한 권한<br/> |
 | authenticationPlugin | Body | Enum    | X  | 인증 플러그인<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
 
 <details><summary>예시</summary>
