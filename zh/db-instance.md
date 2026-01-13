@@ -29,23 +29,24 @@ NHN Cloud has divided the entire system into several availability zones to prepa
 
 ### DB Engine
 
-The versions specified below are available.
-| Version               | Note |
-|------------------|----|
-| MariaDB 11.4.7   |    |
-| MariaDB 10.11.13 |    |
-| MariaDB 10.11.8  |    |
-| MariaDB 10.11.7  |    |
-| MariaDB 10.6.22  |    |
-| MariaDB 10.6.16  |    |
-| MariaDB 10.6.12  |    |
-| MariaDB 10.6.11  |    |
-| MariaDB 10.3.30  |    |
+The versions specified below are available. New DB instance creation and read replica additions are supported only for the seven most recent minor versions of each major version.
+
+| Version          | Note |
+|------------------|------|
+| MariaDB 11.4.7   |      |
+| MariaDB 10.11.13 |      |
+| MariaDB 10.11.8  |      |
+| MariaDB 10.11.7  |      |
+| MariaDB 10.6.22  |      |
+| MariaDB 10.6.16  |      |
+| MariaDB 10.6.12  |      |
+| MariaDB 10.6.11  |      |
+| MariaDB 10.3.30  |      |
 
 ### DB Instance Type
 
 DB instances have different CPU cores and memory capacity depending on the type.
-When creating DB instance, you must select appropriate DB instance type according to database workload.
+When creating a DB instance, you must select an appropriate DB instance type according to the database workload.
 
 | Type | Description                                                                                                                    | 
 |------|--------------------------------------------------------------------------------------------------------------------------------| 
@@ -61,7 +62,7 @@ The type of DB instance that you have already created can be easily changed thro
 
 ### Data Storage
 
-It stores the database's data files on data storage. DB instances support two types of data storage HDD and SSD. Performance and price vary depending on the type of data storage, so you need to choose the right type depending on the database workload. Data storage can be created from 20GB to 2TB.
+It stores the database's data files in data storage. DB instances support two types of data storage: HDD and SSD. Performance and price vary depending on the type of data storage, so you need to choose the right type depending on the database workload. Data storage can range from 20GB to 2TB.
 
 > [Caution]
 You cannot change the data storage type for DB instance that you have already created.
@@ -104,23 +105,92 @@ DB security groups are used to restrict access in case of external intrusion. Yo
 
 ### Backup
 
-You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration or perform backups from read replica. Backup files are stored on internal object storage and are charged based on the
-size of backup storage. You can export to user object storage in NHN Cloud if necessary. To prepare for unexpected failures, we recommend that you set up backups to conduct periodically. For more details on backup, see [Backup and Restore](backup-and-restore/).
+You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration or perform backups from a read replica. Backup files are stored on internal object storage and are charged based on the
+size of backup storage. You can export to user object storage in NHN Cloud if necessary. To prepare for unexpected failures, we recommend that you set up backups to be conducted periodically. For more details on backup, see [Backup and Restore](backup-and-restore/).
+
+### Maintenance
+
+The Maintenance feature allows you to schedule various changes to your DB instance at your preferred time. Since tasks such as modifying instances or upgrading the DB engine and operating system require a restart, downtime may occur. By scheduling a maintenance duration, you can ensure these operations occur during periods of low service load.
+
+#### Maintenance Duration
+
+You can set a maintenance duration when creating or modifying a DB instance. If no duration is specified, a 30-minute slot will be automatically assigned at random between 10 PM and 6 AM. Note that the maintenance duration cannot overlap with the automated backup duration.
+
+> [Note]
+> A maintenance duration consists of a start day, a start time, and a duration (in 30-minute increments).
+#### Maintenance Task
+
+Maintenance tasks are categorized into User Maintenance and Provider Maintenance.
+
+**User Maintenance Task**
+
+A task that users manually schedule and execute.
+
+* DB instance modifications (e.g., changing instance specs, port updates, parameter group changes)
+* DB engine version upgrade
+* DB instance OS upgrade
+
+**Provider Maintenance Task**
+
+A maintenance task provided by NHN Cloud.
+
+* Apply parameter group changes
+* Migration for hypervisor maintenance
+
+#### Maintenance Execution Time
+
+You can choose when to apply maintenance tasks.
+
+* **Apply Immediately**: apply immediately upon request.
+* **Apply in the Next Maintenance Duration**: apply during the next maintenance duration.
+
+#### Maintenance Status
+
+You can check the maintenance status of each instance in the DB instance list.
+
+| Status      | Description                                    |
+|---------|---------------------------------------|
+| None | There are no scheduled or pending maintenance tasks. |
+| Next Applied | A user maintenance task is scheduled to run in the next maintenance duration. |
+| Applying | A maintenance task is in progress. |
+| Required | A required provider maintenance task is pending. |
+| Available | A non-required provider maintenance task is pending/in preparation. |
+
+> [Note]
+> The maintenance status is not displayed for the standby instance of High Availability (HA) DB instances.
+#### Maintenance Tab
+
+You can find the following information on the Maintenance tab of the DB instance details page:
+
+* Maintenance start day and duration
+* Next maintenance duration
+* Maintenance status
+* Upcoming maintenance tasks (Scheduled for the next duration)
+* Pending maintenance tasks
+
+Upcoming maintenance tasks can be excluded from the maintenance duration using the Hold or Delete buttons. For pending Provider maintenance tasks, you can manually apply them by selecting either **Apply Immediately** or **Apply in the Next Maintenance Duration**.
+
+#### Execution Order
+
+All tasks within the maintenance duration are executed sequentially in the order they were registered. However, mandatory maintenance tasks that have expired will be prioritized and executed first. Any tasks not completed within the current duration will be rescheduled to the next maintenance duration.
+
+> [Note]
+> If a maintenance task is repeatedly deferred because the maintenance duration starts while an automated backup is in progress or the DB instance is in a 'Busy' state, that task will be skipped and rescheduled for the next duration. An event will be generated if a maintenance task is skipped.
 
 ### Default Notification
 
-When you create a DB instance, you can set default notifications. If setting default notifications, it will create a new notification group with the name `{DB instance name}-default` and will automatically set the notification items below. You can freely modify and delete alert groups that are created as default notification. For more details on notification group, see the [ notification group ](notification/).
+When you create a DB instance, you can set default notifications. If setting default notifications, it will create a new notification group with the name `{DB instance name}-default` and will automatically set the notification items below. You can freely modify and delete alert groups that are created as default notifications. For more details on the notification group, see the [ notification group ](notification/).
 
-| Item                         | Comparison Method | Threshold value           | Duration |
-|----------------------------|-------|---------------|-------|
-| CPU Usage                    | >= | 80%           | 5 minutes    |
-| Storage Remaining Usage             | <= | 5,120MB       | 5 minutes    |
-| Database Connection Status | <= | 0             | 0 minute    |
-| Storage usage                | >= | 95%           | 5 minutes    |
-| Data Storage Defects                | <= | 0             | 0 minute    |
-| Connection Ratio           | >= | 85%           | 5 minutes    |
-| Memory Usage                    | >= | 90%           | 5 minutes    |
-| Slow Query                 | >= | 60 counts/min | 5 minutes    |
+| Item                       | Comparison Method | Threshold value | Duration  |
+|----------------------------|-------------------|-----------------|-----------|
+| CPU Usage                  | >=                | 80%             | 5 minutes |
+| Storage Remaining Usage    | <=                | 5,120MB         | 5 minutes |
+| Database Connection Status | <=                | 0               | 0 minute  |
+| Storage usage              | >=                | 95%             | 5 minutes |
+| Data Storage Defects       | <=                | 0               | 0 minute  |
+| Connection Ratio           | >=                | 85%             | 5 minutes |
+| Memory Usage               | >=                | 90%             | 5 minutes |
+| Slow Query                 | >=                | 60 counts/min   | 5 minutes |
 
 ### Deletion Protection
 
@@ -201,7 +271,7 @@ You can view and download various log files from Log tab of DB instance. Log fil
 
 ![db-instance-detail-log_en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-log_en.png)
 
-❶ Click on **View Logs** and you will see a pop-up window where you can check the contents of the log file. You can check logs up to 65,535 Bytes.
+❶ Click on **View Logs**, and you will see a pop-up window where you can check the contents of the log file. You can check logs up to 65,535 Bytes.
 ❷ When **Import** is clicked, the request is made to download the log file for DB instance.
 ❸ When download is ready, **Download** button will be exposed. Click to download the log.
 
@@ -214,6 +284,67 @@ Click on **Download** to charge Internet traffic as the size of the log file.
 ![db-instance-detail-log-bin_en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-log-bin_en.png)
 
 ❺ Select to use the mysqlbinlog utility to convert the binary log into SQL file and then download it.
+
+### Maintenance
+
+The Maintenance tab allows you to monitor settings and status, and manage maintenance operations for your DB instance.
+
+![db-instance-detail-maintenance_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance_ko.png)
+
+#### Maintenance Information
+
+At the top of the Maintenance tab, you can view the maintenance configuration details for the current DB instance.
+
+| Item | Description |
+|------------------|-------------------------------------------------------------|
+| Maintenance Start Day | The maintenance start day set for the DB instance. |
+| Maintenance Duration | The maintenance duration range set for the DB instance. |
+| Next Maintenance Duration | The date and time when the maintenance task is next scheduled to run. |
+| Maintenance Status | Indicates the current maintenance status. This can be one of **None**, **Next Apply**, **Applying**, **Required**, or **Available**. |
+
+> [Note]
+> Even if you haven't set a maintenance duration, you can view the randomly assigned duration here.
+#### Upcoming Maintenance
+
+Upcoming Maintenance is a list of tasks scheduled to be executed during the next maintenance duration. When you perform actions such as modifying a DB instance or upgrading the DB engine version and select **Apply in the Next Maintenance Duration**, the task is added to this list.
+
+| Item | Description |
+|------------|----------------------------------|
+| Description | A description of the maintenance task. |
+| Type | The type of maintenance task. |
+| Status | The current status of the maintenance task. |
+| Required | Indicates whether the maintenance task is required. |
+| Registration Date | The date the maintenance task was registered. |
+| Mandatory Date | If the task is required, it will be automatically applied after this date. |
+
+Upcoming maintenance tasks can be excluded from the maintenance duration by selecting them and clicking **Delete** or **Hold**.
+If deleted, these tasks are canceled. To apply them again in a future duration, you must perform the original action once more.
+Provider maintenance tasks will be moved to the Pending Maintenance list. You can move them back to the Upcoming Maintenance list at any time from the Pending Maintenance list.
+
+#### Pending Maintenance
+
+Pending Maintenance is a list of Provider maintenance tasks provided by NHN Cloud. This includes operations such as applying parameter group changes and migrations for hypervisor maintenance.
+
+| Item        | Description                                                                 |
+|-------------|-----------------------------------------------------------------------------|
+| Description | A description of the maintenance task.                                      |
+| Type        | The type of maintenance task.                                               |
+| Status      | The current status of the maintenance task.                                 |
+| Mandatory   | Indicates whether the maintenance task is mandatory.                        |
+| Forced Date | If the task is mandatory, it will be applied automatically after this date. |
+
+You can select a pending maintenance task and then click **Next** to select the execution time.
+
+**Apply Immediately**: apply immediately upon request. Click **Confirm** to execute immediately.
+![db-instance-detail-maintenance-immediately_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance-immediately_ko.png)
+
+**Apply in the Next Maintenance Duration**: apply during the next maintenance duration. Click **Confirm** to move this task to the Upcoming Maintenance list.
+![db-instance-detail-maintenance-schedule_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance-schedule_ko.png)
+
+> [Caution]
+> Required maintenance tasks can be applied at any time up to the mandatory application date. However, after the mandatory application date, they will automatically be performed during the next maintenance period.
+> [Note]
+> If a maintenance task requires a restart, a pop-up screen will appear, allowing you to select additional options, such as failover or backup. For high-availability DB instances, you can minimize service downtime by using a restart with failover.
 
 ### DB Schema and Users
 
@@ -231,7 +362,7 @@ DB schema name has the following restrictions.
 * You can only use alphabets, numbers, and _ from 1 to 64 characters and the first letter can only contain alphabetic characters.
 * `information_schema`, `performance_schema`, `db_helper`, `sys`, `mysql`, `rds_maintenance` are not allowed to be used as DB schema name.
 
-You cannot modify the name of DB schema that has created.
+You cannot modify the name of the DB schema that has been created.
 
 #### DB schema deleted
 
@@ -274,7 +405,7 @@ GRANT INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE ON *
 ```
 
 **DDL**
-* Includes CRUD permissions, and has permissions to execute DDL queries.
+* Includes CRUD permissions and has permissions to execute DDL queries.
 
 ```sql
 GRANT CREATE, DROP, INDEX, ALTER, CREATE VIEW, REFERENCES, EVENT, ALTER ROUTINE, CREATE ROUTINE, TRIGGER, RELOAD ON *.* TO '{user_id}'@'{host}';
@@ -325,11 +456,13 @@ You can easily change various items in DB instances created through console. Cha
 | Storage Auto Scale | Yes        | No                     | 
 | Schema & User Control | Yes        | No                     |
 
-For high availability DB instances, if there are any changes to items that need to be restarted, it provides a restart capability using failover to increase stability and reduce disconnected time.
+For high-availability DB instances, if there are any changes to items that need to be restarted, it provides a restart capability using failover to increase stability and reduce disconnected time.
 
 ![modify-ha-popup-en](https://static.toastoven.net/prod_rds/mariadb/24.11.12/modify-ha-popup-en.png)
 
-If restart with failover is not enabled, the DB instance is restarted after the changes are sequentially applied to the master and candidate master. For more information, refer to [Manual failover item](db-instance/#manual-failover) in a high availability DB instance.
+
+❶ Modify your DB instance and schedule the update by selecting either **Apply in the Next Maintenance Duration** or **Apply Immediately**.
+❷ If you do not use 'Reboot with Failover', changes will be applied sequentially to the master and standby instances, followed by a restart of the DB instance. For more details, please refer to the [Manual Failover section](db-instance/#manual-failover) for High Availability DB instances.
 
 ### DB Schema & Direct User Control
 
@@ -352,15 +485,19 @@ You can check the operating system information of the current DB instance on the
 ![db-instance-os-upgrade-en.png](https://static.toastoven.net/prod_rds/mariadb/24.06.11/db-instance-os-upgrade-en.png)
 
 ❶ You can check the operating system information of the DB instance.
-❷ If the operating system is eligible for version upgrade, the **OS Version Upgrade** button appears.
+❷ If the operating system is eligible for a version upgrade, the **OS Version Upgrade** button appears.
 
-Operating system version upgrades behave differently depending on whether you are in a highly available configuration or not. For high availability, the operating system version upgrade is performed using failover. For non-high availability, the operating system version upgrade is performed by restarting the DB instance.
+Operating system version upgrades behave differently depending on whether you are in a highly available configuration. For high availability, the operating system version upgrade is performed using failover. For non-high availability, the operating system version upgrade is performed by restarting the DB instance.
 
 When you click the OS Version Upgrade button for a single DB instance, the following pop-up screen appears.
+The maintenance feature is also available when upgrading the operating system version of a single DB instance.
 ![db-instance-os-upgrade-single-popup-en.png](https://static.toastoven.net/prod_rds/mariadb/24.06.11/db-instance-os-upgrade-simple-popup-en.png)
 
 When you click the Upgrade Operating System Version for High Availability DB Instance button, the pop-up screen shown below appears. For more information, see [Manual failover item](db-instance/#manual-failover) of High Availability DB Instances.
 ![os-upgrade-ha-popup-en.png](https://static.toastoven.net/prod_rds/mariadb/24.11.12/os-upgrade-ha-popup-en.png)
+
+❶ You can use the maintenance feature through the Maintenance Application Method settings.
+❷ Only the With Failover method is provided.
 
 ## Delete DB Instance
 
@@ -372,7 +509,7 @@ You can prepare in advance to recover the database of your DB instance in case o
 
 ## Restoration
 
-You can use backups to restore data to any point in time. Restore always creates a new DB instance and cannot be restored to existing DB instance. Refer to [Restore](backup-and-restore/#restore) for more information.
+You can use backups to restore data to any point in time. Restore always creates a new DB instance and cannot be restored to an existing DB instance. Refer to [Restore](backup-and-restore/#restore) for more information.
 
 ## Secure Capacity
 
@@ -404,19 +541,19 @@ The amount of increase when the auto scale storage feature runs is set to the la
 
 ## Apply parameter group changes
 
-Even if the settings for a parameter group associated with DB instance change, these changes do not apply automatically to DB instance. If the settings for the parameter applied to DB instance and the parameters group associated are different, the console displays **parameter** button.
+Changes made to a parameter group linked to a DB instance are not automatically applied to that instance. If the parameters currently applied to the DB instance differ from the settings in the linked parameter group, an **Apply Parameter Changes** maintenance task is created, and the maintenance status is updated.
 
-You can apply changes in a parameter group to DB instance by using one of the following methods.
+You can apply parameter group changes to a single DB instance or multiple DB instances using the following methods:
 
 ![db-instance-list-parameter-en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-list-parameter-en.png)
 
-❶ Click on **Parameters** of the DB instance or
-❷ Select the DB instance and click on **Apply Parameter Group Changes** from the drop-down menu, or click
-❸ On **Basic Information** tab of the target DB instance, click on **Apply Parameter Group Changes**.
+❶ Select the target DB instance, then click **Apply Parameter Group Changes** from the dropdown menu.
 
-If the parameters in the parameter group that require restart are changed, the DB instance is restarted during the process of applying the changes.
+You can apply parameter group changes by choosing either **Apply in the Next Maintenance Duration** or **Apply Immediately** through the maintenance feature.
 
-High availability DB instances provide restart feature using failover to increase stability and reduce disconnected time.
+If the parameters in the parameter group that require a restart are changed, the DB instance is restarted during the process of applying the changes.
+
+High-availability DB instances provide a restart feature using failover to increase stability and reduce disconnected time.
 
 ![db-instance-parameter-ha-en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-parameter-ha-en.png)
 
@@ -714,7 +851,7 @@ RDS for MariaDB provides its own procedures for performing some of the features 
 ### tcrds_active_process
 
 * Make inquiry of Process list for ACTIVE status, not Sleep status.
-* Data output is displayed in order of longest performance time to shortest, and the query value (SQL) is displayed up to hundred digits.
+* Data output is displayed in order of longest performance time to shortest, and the query value (SQL) is displayed up to a hundred digits.
 
 ```
 mariadb> CALL mysql.tcrds_active_process();
@@ -740,7 +877,7 @@ mariadb> CALL mysql.tcrds_process_kill(processlist_id );
 mariadb> CALL mysql.tcrds_current_lock();
 ```
 
-### tcrds_repl_changemaster (8.4 이전) 
+### tcrds_repl_changemaster (prior to 8.4)
 
 * Used to import external MariaDB DBs into NHN Cloud RDS using replication.
 * Replication configuration of NHN Cloud RDS is done with **Create replication** of the console.
@@ -1116,22 +1253,26 @@ Navigate to the project where the specified DB instance to be checked.
 
 #### 1. Check the DB instance that requires maintenance.
 
-Those with the migration button next to name are the maintenance targets.
+You can check for hypervisor migration tasks by clicking **Required** in the **Maintenance** menu, or by visiting the **Maintenance** tab in the **DB Instance Details**.
 
 ![rds_planed_migration_0](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image0_en.png)
 
-You can view the detailed inspection schedule by moving the mouse pointer over the migration button.
+❶ Click the **View** button for hypervisor migration maintenance.
+❷ You can view detailed information about the hypervisor migration.
 
 ![rds_planed_migration_1](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image1_en.png)
 
-#### 2. Make sure you close any application programs that are running on the DB instance.
+#### 2. Make sure you close any running applications on the DB instance.
 
 Take appropriate measures to avoid affecting services connected to the DB.
-If it is inevitable to affect the service, please contact NHN Cloud Customer Center and we will guide you on appropriate measures.
+If it is inevitable to affect the service, please contact NHN Cloud Customer Center, and we will guide you on appropriate measures.
 
-#### 3. Select a DB instance for maintenance, click migration, and click OK on window asking of migration.
+#### 3. You can apply migration to DB instances targeted for maintenance.
 
 ![rds_planed_migration_2](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image2_en.png)
+
+❶ Click **Apply Immediately** to perform the hypervisor migration right away.
+❷ Click **Apply in the Next Maintenance Duration** to schedule the hypervisor migration for your preferred maintenance duration.
 
 #### 4. Wait for the DB instance migration to finish.
 

@@ -751,24 +751,24 @@ POST /v3.0/db-instances
 
 #### リクエスト
 
-| 名前                                       | 種類   | 形式      | 必須 | 説明                                                                                                                                                                                                                             |
-|------------------------------------------|------|---------|----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceName                           | Body | String  | O  | DBインスタンスを識別できる マスター名                                                                                                                                                                                                           |
-| dbInstanceCandidateName                  | Body | String  | O  | DBインスタンスを識別できる 予備マスター名(高可用性を使用する場合の必須値)                                                                                                                                                                                        |
-| description                              | Body | String  | X  | DBインスタンスに関する追加情報                                                                                                                                                                                                               |
-| dbFlavorId                               | Body | UUID    | O  | DBインスタンス仕様の識別子                                                                                                                                                                                                                 |
-| dbVersion                                | Body | Enum    | O  | DBエンジンタイプ                                                                                                                                                                                                                      |
-| dbPort                                   | Body | Number  | O  | DBポート<br/>- 最小値: `3306`<br/>- 最大値: `43306`                                                                                                                                                                                     |
-| dbUserName                               | Body | String  | O  | DBユーザーアカウント名                                                                                                                                                                                                                   |
-| dbPassword                               | Body | String  | O  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `16`                                                                                                                                                                             |
-| parameterGroupId                         | Body | UUID    | O  | パラメータグループの識別子                                                                                                                                                                                                                  |
-| dbSecurityGroupIds                       | Body | Array   | X  | DBセキュリティグループの識別子リスト                                                                                                                                                                                                            |
-| userGroupIds                             | Body | Array   | X  | ユーザーグループの識別子リスト                                                                                                                                                                                                                |
-| useHighAvailability                      | Body | Boolean | X  | 高可用性を使用するかどうか<br/>- デフォルト値: `false`                                                                                                                                                                                            |
-| pingInterval                             | Body | Number  | X  | 高可用性使用時のPing間隔(秒)<br/>- デフォルト値: `3`<br/>- 最小値: `1`<br/>- 最大値: `600`                                                                                                                                                            |
-| useDefaultNotification                   | Body | Boolean | X  | 基本通知の使用有無<br/>- デフォルト値: `false`                                                                                                                                                                                                |
-| useDeletionProtection                    | Body | Boolean | X  | 削除保護の有無<br/>- デフォルト値: `false`                                                                                                                                                                                                  |
-| useSlowQueryAnalysis                     | Body | Boolean | X  | スロークエリの分析有無<br/>- デフォルト値: `true`                                                                                                                                                                                               |
+| 名前                                       | 種類   | 形式      | 必須 | 説明                                                                  |
+|------------------------------------------|------|---------|----|---------------------------------------------------------------------|
+| dbInstanceName                           | Body | String  | O  | DBインスタンスを識別できる マスター名                                                |
+| dbInstanceCandidateName                  | Body | String  | O  | DBインスタンスを識別できる 予備マスター名(高可用性を使用する場合の必須値)                             |
+| description                              | Body | String  | X  | DBインスタンスに関する追加情報                                                    |
+| dbFlavorId                               | Body | UUID    | O  | DBインスタンス仕様の識別子                                                      |
+| dbVersion                                | Body | Enum    | O  | DBエンジンタイプ                                                           |
+| dbPort                                   | Body | Number  | O  | DBポート<br/>- 最小値: `3306`<br/>- 最大値: `43306`                          |
+| dbUserName                               | Body | String  | O  | DBユーザーアカウント名                                                        |
+| dbPassword                               | Body | String  | O  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `256`                 |
+| parameterGroupId                         | Body | UUID    | O  | パラメータグループの識別子                                                       |
+| dbSecurityGroupIds                       | Body | Array   | X  | DBセキュリティグループの識別子リスト                                                 |
+| userGroupIds                             | Body | Array   | X  | ユーザーグループの識別子リスト                                                     |
+| useHighAvailability                      | Body | Boolean | X  | 高可用性を使用するかどうか<br/>- デフォルト値: `false`                                 |
+| pingInterval                             | Body | Number  | X  | 高可用性使用時のPing間隔(秒)<br/>- デフォルト値: `3`<br/>- 最小値: `1`<br/>- 最大値: `600` |
+| useDefaultNotification                   | Body | Boolean | X  | 基本通知の使用有無<br/>- デフォルト値: `false`                                     |
+| useDeletionProtection                    | Body | Boolean | X  | 削除保護の有無<br/>- デフォルト値: `false`                                       |
+| useSlowQueryAnalysis                     | Body | Boolean | X  | スロークエリの分析有無<br/>- デフォルト値: `true`                                    |
 | network                                  | Body | Object  | O  | ネットワーク情報オブジェクト                                                                                                                                                                                                                 |
 | network.subnetId                         | Body | UUID    | O  | サブネットの識別子                                                                                                                                                                                                                      |
 | network.usePublicAccess                  | Body | Boolean | X  | 外部接続可否<br/>- デフォルト値: `false`                                                                                                                                                                                                   |
@@ -2042,13 +2042,13 @@ POST /v3.0/db-instances/{dbInstanceId}/db-users
 
 #### リクエスト
 
-| 名前                   | 種類   | 形式     | 必須 | 説明                                                                                                                          |
-|----------------------|------|--------|----|-----------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O  | DBインスタンスの識別子                                                                                                                |
-| dbUserName           | Body | String | O  | DBユーザーアカウント名<br/>- 最小長さ: `1`<br/>- 最大長さ: `32`                                                                               |
-| dbPassword           | Body | String | O  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `16`                                                                          |
-| host                 | Body | String | O  | DBユーザーアカウントのホスト名<br/>- 例: `1.1.1.%`                                                                                         |
-| authorityType        | Body | Enum   | O  | DBユーザー権限タイプ<br/>- `READ`: SELECTクエリ実行可能な権限<br/>- `CRUD`: DMLクエリ実行可能な権限<br/>- `DDL`: DDLクエリ実行可能な権限<br/>                      |
+| 名前                   | 種類   | 形式     | 必須 | 説明                                                                                                     |
+|----------------------|------|--------|----|--------------------------------------------------------------------------------------------------------|
+| dbInstanceId         | URL  | UUID   | O  | DBインスタンスの識別子                                                                                           |
+| dbUserName           | Body | String | O  | DBユーザーアカウント名<br/>- 最小長さ: `1`<br/>- 最大長さ: `32`                                                          |
+| dbPassword           | Body | String | O  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `256`                                                    |
+| host                 | Body | String | O  | DBユーザーアカウントのホスト名<br/>- 例: `1.1.1.%`                                                                    |
+| authorityType        | Body | Enum   | O  | DBユーザー権限タイプ<br/>- `READ`: SELECTクエリ実行可能な権限<br/>- `CRUD`: DMLクエリ実行可能な権限<br/>- `DDL`: DDLクエリ実行可能な権限<br/> |
 
 <details><summary>例</summary>
 <p>
@@ -2081,12 +2081,12 @@ PUT /v3.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
 
 #### リクエスト
 
-| 名前                   | 種類   | 形式     | 必須 | 説明                                                                                                                          |
-|----------------------|------|--------|----|-----------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O  | DBインスタンスの識別子                                                                                                                |
-| dbUserId             | URL  | UUID   | O  | DBユーザーの識別子                                                                                                                  |
-| dbPassword           | Body | String | X  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `16`                                                                          |
-| authorityType        | Body | Enum   | X  | DBユーザー権限タイプ<br/>- `READ`: SELECTクエリ実行可能な権限<br/>- `CRUD`: DMLクエリ実行可能な権限<br/>- `DDL`: DDLクエリ実行可能な権限<br/>                      |
+| 名前                   | 種類   | 形式     | 必須 | 説明                                                                                                     |
+|----------------------|------|--------|----|--------------------------------------------------------------------------------------------------------|
+| dbInstanceId         | URL  | UUID   | O  | DBインスタンスの識別子                                                                                           |
+| dbUserId             | URL  | UUID   | O  | DBユーザーの識別子                                                                                             |
+| dbPassword           | Body | String | X  | DBユーザーアカウントのパスワード<br/>- 最小長さ: `4`<br/>- 最大長さ: `256`                                                    |
+| authorityType        | Body | Enum   | X  | DBユーザー権限タイプ<br/>- `READ`: SELECTクエリ実行可能な権限<br/>- `CRUD`: DMLクエリ実行可能な権限<br/>- `DDL`: DDLクエリ実行可能な権限<br/> |
 
 <details><summary>例</summary>
 <p>
