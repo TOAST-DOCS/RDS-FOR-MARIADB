@@ -69,6 +69,14 @@
 * Fixed an issue where the status of DB instances was intermittently not updated
 * Fixed an issue where an unknown error modal window was sometimes exposed
 
+### April 15, 2025
+
+#### Added Features and Updates
+
+* Added and modified API v3.0
+  * Added the API to list Log files
+  * Added the Export Log file API
+
 ### February 11, 2025
 
 #### Bug Fixes
