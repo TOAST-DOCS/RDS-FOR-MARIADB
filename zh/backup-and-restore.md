@@ -75,6 +75,28 @@ When incremental backups are scheduled according to [Auto Backup Strategy](#Set-
 * A backup performed without table locks enabled cannot be a baseline backup.
 * If a new full backup was created after that backup was created, it cannot be the baseline backup.
 
+## Snapshot Backup
+
+While existing backup methods can degrade performance when run directly on the DB instance, our **Storage Snapshot Backup** leverages Cinder snapshots—provided HA is active and healthy—to eliminate system overhead.
+Because all heavy lifting—such as validation and file conversion—is offloaded to a separate server, your database maintains peak performance even during backups.
+
+Main Features
+* Zero performance impact: DB instance performance is maintained at 100% even during backup operations.
+* Enhanced reliability: Rigorous verification processes ensure the reliability of your backup data.
+* Temporary High Availability (HA) suspension: HA features may be briefly paused during snapshot creation to ensure strict data consistency.
+
+### Pricing
+
+Unlike existing backup methods, Snapshot Backup incurs separate charges for the resources used during the backup process.
+
+| Category | Existing backup | Snapshot backup                 |
+| --- | --- |---------------------------|
+| Billing method | Included with DB instance (free of charge) | Additional charges apply for dedicated backup resources        |
+| Billable item | OBS upload fee (billed separately) | Shared backup server + volume + snapshot + OBS |
+
+* Shared backup server fee: This fee covers the use of backup servers for data validation and file conversion.
+  * Even when using shared resources, you are billed only for the actual time used during your backup operations.
+
 ## Backup Settings
 
 When creating and modifying DB instances, you can specify settings that will be applied to backups.
@@ -110,9 +132,6 @@ The following items apply only to auto backups.
 > [Caution]
 > Incrementally created backups are deleted when the baseline backup is deleted, even if the auto backup retention period has not passed.
 
-**Auto Backup Replication Region**
-
-* Set the auto backup file to be replicated to backup storage in another region. Auto Backup replication regions are features for disaster recovery that replicate and manage auto backup files from the original region equally to the destination region. Replication occurs in the background at regular intervals. When you set up an auto backup replication region, you are charged with inter-regional replication traffic, and the destination region is charged additionally for backup storage usage.
 
 **Number of Auto Backup Retries**
 
