@@ -199,7 +199,7 @@ DBインスタンス作成時、基本通知を設定できます。基本通知
 
 コンソールで作成されたDBインスタンスを確認できます。レプリケーショングループ単位でまとめて見たり、個別DBインスタンスで見ることができます。
 
-![db-instance-list_ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-list_ja.png)
+![db-instance-list_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-list_ja.png)
 
 ❶ DBインスタンス画面モードを変更できます。
 ❷ボタンをクリックして、グループ内に属するDBインスタンスを展開したり、折りたたむことができます。
@@ -222,7 +222,7 @@ DBインスタンスの状態は下記のような値で構成され、ユーザ
 
 変更できる検索条件は次のとおりです。
 
-![db-instance-filter_ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-filter_ja.png)
+![db-instance-filter_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-filter_ja.png)
 
 ❶パラメータ変更事項適用が必要なDBインスタンスをフィルタリング条件で検索できます。
 
@@ -230,7 +230,7 @@ DBインスタンスの状態は下記のような値で構成され、ユーザ
 
 DBインスタンスを選択すると、詳細情報を見ることができます。
 
-![db-instance-detail_ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail_ja.png)
+![db-instance-detail_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail_ja.png)
 
 ❶接続情報のドメインをクリックすると、IPアドレスを確認できるポップアップが表示されます。
 ❷ DBセキュリティグループをクリックすると、DBセキュリティルールを確認できるポップアップが表示されます。
@@ -267,7 +267,7 @@ DBインスタンスのログタブでは、各種ログファイルの閲覧や
 | server_audit.log | 20MB 30個 | 変更可能 | `server_audit_logging`<br />`server_audit_file_rotations`              | 
 | mysql-bin.xxxxxx | 5日      | 変更可能 | `binlog_expire_logs_seconds` |
 
-![db-instance-detail-log_ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-log_ja.png)
+![db-instance-detail-log_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-log_ja.png)
 
 ❶ **ログ表示**をクリックすると、ログファイルの内容を確認できるポップアップ画面が表示されます。最大65,535Bytesのログを確認できます。
 ❷ **インポート**をクリックすると、DBインスタンスのログファイルをダウンロードするようにリクエストします。
@@ -287,7 +287,7 @@ DBインスタンスのログタブでは、各種ログファイルの閲覧や
 
 DBインスタンスの**メンテナンス**タブでは、メンテナンス設定及び状態を確認し、メンテナンス作業を管理できます。
 
-![db-instance-detail-maintenance_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance_ko.png)
+![db-instance-detail-maintenance_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance_ja.png)
 
 #### メンテナンス情報
 
@@ -334,10 +334,10 @@ Providerメンテナンス作業は、保留中のメンテナンスリストに
 保留中のメンテナンス作業を選択した後、**次へ**をクリックして適用時点を選択できます。
 
 **即時適用**: 選択したメンテナンス作業を即時実行します。**確認**をクリックするとすぐに実行されます。
-![db-instance-detail-maintenance-immediately_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance-immediately_ko.png)
+![db-instance-detail-maintenance-immediately_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance-immediately_ja.png)
 
 **次回のメンテナンス期間に適用**: 選択したメンテナンス作業を次回のメンテナンス期間に実行します。**確認**をクリックすると準備中のメンテナンスリストに移動します。
-![db-instance-detail-maintenance-schedule_ko](https://static.toastoven.net/prod_rds/mariadb/25.01.13/db-instance-detail-maintenance-schedule_ko.png)
+![db-instance-detail-maintenance-schedule_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance-schedule_ja.png)
 
 > [注意]
 > 必須メンテナンス作業は、強制適用日時以前までは適用時点を選択できますが、強制適用日時以降は自動的に次回のメンテナンス期間に実行されます。
@@ -350,7 +350,7 @@ DBインスタンスの**DBスキーマ＆ユーザー**タブでは、データ
 
 #### DBスキーマの作成
 
-![db-instance-detail-schema_ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-schema_ja.png)
+![db-instance-detail-schema_ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-schema_ja.png)
 
 ❶ **作成**をクリックすると、DBスキーマの名前を入力できるポップアップウィンドウが表示されます。
 ❷ DBスキーマ名を入力した後、**確認**をクリックしてDBスキーマを作成することができます。
@@ -364,14 +364,14 @@ DBスキーマ名には下記のような制約事項があります。
 
 #### DBスキーマの削除
 
-![db-instance-detail-schema-delete-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-schema-delete-ja.png)
+![db-instance-detail-schema-delete-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-schema-delete-ja.png)
 
 ❶削除するDBスキーマを選択し、ドロップダウンメニューをクリックします。
 ❷ **削除**メニューをクリックすると、削除確認ポップアップ画面が表示されます。**確認**をクリックして削除をリクエストできます。
 
 #### ユーザーの作成
 
-![db-instance-detail-user-create-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-user-create-ja.png)
+![db-instance-detail-user-create-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-user-create-ja.png)
 
 ❶ **+作成**をクリックすると、ユーザー追加ポップアップ画面が表示されます。
 ❷ユーザーIDを入力します。
@@ -418,7 +418,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 #### ユーザーの修正
 
-![db-instance-detail-user-modify-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-user-modify-ja.png)
+![db-instance-detail-user-modify-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-user-modify-ja.png)
 
 ❶修正するユーザー行の**修正**をクリックすると、ユーザー情報を修正できるポップアップ画面が表示されます。
 ❷ Passwordを入力しないと変更されません。
@@ -426,7 +426,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 #### ユーザーの削除
 
-![db-instance-detail-user-delete-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail-user-delete-ja.png)
+![db-instance-detail-user-delete-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-user-delete-ja.png)
 
 ❶削除するユーザーを選択し、ドロップダウンメニューをクリックします。
 ❷ **削除**をクリックすると、**削除確認**ポップアップ画面が表示されます。**確認**をクリックして削除をリクエストできます。
@@ -456,7 +456,7 @@ GRANT EXECUTE ON `mysql`.* TO '{user_id}'@'{host}';
 
 高可用性DBインスタンスの場合、再起動が必要な項目の変更がある場合、安定性を高め、瞬断時間を減らすためにフェイルオーバーを利用した再起動機能を提供します。
 
-![modify-ha-popup-ja](https://static.toastoven.net/prod_rds/mariadb/24.11.12/modify-ha-popup-ja.png)
+![modify-ha-popup-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/modify-ha-popup-ja.png)
 
 ❶ メンテナンス機能で**次回のメンテナンス期間に適用**または**即時適用**を通じてDBインスタンスの修正を進めることができます。
 ❷ フェイルオーバーを利用した再起動を使用しない場合、マスターとスタンバイマスターに変更事項を順次適用した後、DBインスタンスを再起動します。詳細は高可用性DBインスタンスの[手動フェイルオーバー項目](db-instance/#manual-failover)を参照してください。
@@ -479,7 +479,7 @@ DBインスタンスOSアップグレードをサポートします。OSのア�
 OSアップグレードはサービス瞬断が発生するため注意が必要です。高可用性DBインスタンスはフェイルオーバーにより、サービス瞬断を最小限に抑えることができます。
 
 現在のDBインスタンスのOS情報は、DBインスタンスの詳細画面で確認できます。
-![db-instance-os-upgrade-ja.png](https://static.toastoven.net/prod_rds/mariadb/24.06.11/db-instance-os-upgrade-ja.png)
+![db-instance-os-upgrade-ja.png](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-os-upgrade-ja.png)
 
 ❶ DBインスタンスのOS情報を確認できます。
 ❷ OSがバージョンアップグレード対象である場合、**OSバージョンアップグレード**ボタンが表示されます。
@@ -488,10 +488,10 @@ OSバージョンアップグレードは、高可用性構成であるかどう
 
 単一DBインスタンスのOSバージョンアップグレードボタンをクリックすると、次のようなポップアップ画面が表示されます。
 シングルDBインスタンスのOSバージョンアップグレード時にも、メンテナンス機能を使用できます。
-![db-instance-os-upgrade-single-popup-ja.png](https://static.toastoven.net/prod_rds/mariadb/24.06.11/db-instance-os-upgrade-simple-popup-ja.png)→
+![db-instance-os-upgrade-single-popup-ja.png](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-os-upgrade-simple-popup-ja.png)→
 
 高可用性DBインスタンスのOSバージョンアップグレードボタンをクリックすると、次のようなポップアップ画面が表示されます。詳細については、高可用性DBインスタンスの[手動フェイルオーバー項目](db-instance/#manual-failover)を参照してください。
-![os-upgrade-ha-popup-ja.png](https://static.toastoven.net/prod_rds/mariadb/24.11.12/os-upgrade-ha-popup-ja.png)→
+![os-upgrade-ha-popup-ja.png](https://static.toastoven.net/prod_rds/mariadb/26.01.13/os-upgrade-ha-popup-ja.png)→
 
 ❶ メンテナンス適用方法を通じてメンテナンス機能を使用できます。
 ❷ フェイルオーバーを使用する方法のみ提供されます。
@@ -545,7 +545,7 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 
 次の方法は、複数のDBインスタンスまたはシングルDBインスタンスに対してパラメータグループの変更事項を適用できます。
 
-![db-instance-list-parameter-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-list-parameter-ja.png)
+![db-instance-list-parameter-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-list-parameter-ja.png)
 
 ❶ 対象のDBインスタンスを選択した後、ドロップダウンメニューから**パラメータグループ変更事項の適用**メニューをクリック
 
@@ -555,7 +555,7 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 
 高可用性DBインスタンスの場合、安定性を高め、瞬断時間を減らすためにフェイルオーバーを利用した再起動機能を提供します。
 
-![db-instance-parameter-ha-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-parameter-ha-ja.png)
+![db-instance-parameter-ha-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-parameter-ha-ja.png)
 
 フェイルオーバーを利用した再起動を使用しない場合は、マスターと予備マスターに変更事項を順次適用した後、DBインスタンスを再起動します。詳細は高可用性DBインスタンスの[手動フェイルオーバー項目](db-instance/#manual-failover)を参照してください。
 
@@ -590,7 +590,7 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 
 リードレプリカを作成するには、コンソールで
 
-![db-instance-replica-create-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-replica-create-ja.png)
+![db-instance-replica-create-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-replica-create-ja.png)
 
 ❶原本DBインスタンスを選択した後、[リードレプリカ作成]をクリックすると
 
@@ -604,12 +604,6 @@ DBインスタンスに適用されたパラメータと、関連付けられた
 * データストレージの種類
 * ユーザーVPCサブネット
 
-#### リードレプリカリージョン
-
-リードレプリカを作成するリージョンを選択する際、リージョンピアリングをサポートする場合、異なるリージョンに存在するVPC間のリージョンピアリングを接続すると、他のリージョンVPCに属するサブネットにリードレプリカを作成できます。ただし、元のDBインスタンスのリージョンと異なるリージョンを選択すると、レプリケーションの遅延が発生する可能性があり、DBバージョンのアップグレードをサポートしません。
-
-> [注意]
-> リージョンピアリングが接続されていても、ルート設定が正しくない場合、リードレプリカの作成に失敗したり、レプリケーションが中断されることがあります。
 
 #### アベイラビリティゾーン
 
@@ -670,7 +664,7 @@ MariaDBを再起動したり、高可用性DBインスタンスを手動でフ�
 
 DBインスタンスを再起動するには、コンソールで
 
-![db-instance-restart-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-restart-ja.png)
+![db-instance-restart-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-restart-ja.png)
 
 ❶再起動を希望するDBインスタンスを選択した後、ドロップダウンメニューから**DBインスタンスの再起動**メニューをクリックします。
 
@@ -686,7 +680,7 @@ DBインスタンスのMariaDBが正常に動作しない場合、強制的に�
 
 DBインスタンスを強制的に再起動するには、コンソールで
 
-![db-instance-restart-force-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-restart-force-ja.png)
+![db-instance-restart-force-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-restart-force-ja.png)
 
 ❶強制再起動を希望するDBインスタンスを選択した後、ドロップダウンメニューから**DBインスタンス強制再起動**メニューをクリックします。
 
@@ -694,7 +688,7 @@ DBインスタンスを強制的に再起動するには、コンソールで
 
 削除保護を有効にすると、誤ってDBインスタンスが削除されないように保護できます。削除保護を無効化するまで、そのDBインスタンスを削除できません。削除保護設定を変更するには
 
-![db-instance-deletion-protection-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-deletion-protection-ja.png)
+![db-instance-deletion-protection-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-deletion-protection-ja.png))
 
 ❶削除保護設定を変更したいDBインスタンスを選択した後、ドロップダウンメニューから**削除保護設定変更**メニューをクリックすると、ポップアップウィンドウが表示されます。
 
@@ -744,7 +738,7 @@ recordは障害が発生したマスターから予備マスターに変更さ�
 
 フェイルオーバーされたマスターを復旧するには、コンソールで
 
-![db-instance-failover-repair-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-failover-repair-ja.png)
+![db-instance-failover-repair-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-failover-repair-ja.png)
 
 ❶復旧を希望するフェイルオーバーされたマスターを選択した後、ドロップダウンメニューから**フェイルオーバーされたマスターの復旧**メニューをクリックします。
 
@@ -766,7 +760,7 @@ recordは障害が発生したマスターから予備マスターに変更さ�
 
 フェイルオーバーされたマスターを再構築するには、コンソールで
 
-![db-instance-failover-rebuild-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-failover-rebuild-ja.png)
+![db-instance-failover-rebuild-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-failover-rebuild-ja.png)
 
 ❶再構築を希望するフェイルオーバーされたマスターを選択した後、ドロップダウンメニューから**フェイルオーバーされたマスターの再構築**メニューをクリックします。
 
@@ -776,7 +770,7 @@ recordは障害が発生したマスターから予備マスターに変更さ�
 
 フェイルオーバーされたマスターを分離するには、コンソールで
 
-![db-instance-failover-split-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-failover-split-ja.png)
+![db-instance-failover-split-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-failover-split-ja.png)
 
 ❶分離を希望するフェイルオーバーされたマスターを選択した後、ドロップダウンメニューから**フェイルオーバーされたマスター分離**メニューをクリックします。
 
@@ -809,7 +803,7 @@ recordは障害が発生したマスターから予備マスターに変更さ�
 
 予備マスターに変更事項を先に適用した後、その推移を観察したり、正確な時間にフェイルオーバーを実行したい場合、コンソールでフェイルオーバーのタイミングを直接制御できます。フェイルオーバー手動制御を選択すると、予備マスターが再起動された後、❶コンソールに**フェイルオーバー**ボタンが表示されます。このボタンをクリックするとフェイルオーバーが実行され、最大5日間実行を待機できます。5日以内にフェイルオーバーを実行しない場合、その作業は自動的にキャンセルされます。
 
-![db-instance-ha-wait-manual-failover-ja](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-ha-wait-manual-failover-ja.png)
+![db-instance-ha-wait-manual-failover-ja](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-ha-wait-manual-failover-ja.png)
 
 > [注意]
 > フェイルオーバーを待機している間は、自動フェイルオーバーは行われません。
@@ -1236,21 +1230,21 @@ DB構成に応じて特定DBインスタンスを選択してマイグレーシ�
 
 **メンテナンス**で**必須**をクリックするか、**DBインスタンス詳細**の**メンテナンス**タブでハイパーバイザーマイグレーションメンテナンス作業があるか確認できます。
 
-![rds_planed_migration_0](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image0_ja.png)
+![rds_planed_migration_0](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/26.01.13/image0_ja.png)
 
 ❶ ハイパーバイザーマイグレーションメンテナンスの**表示**ボタンをクリック
 ❷ ハイパーバイザーマイグレーションに関する詳細な点検内容を確認できます。
 
-![rds_planed_migration_1](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image1_ja.png)
+![rds_planed_migration_1](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/26.01.13/image1_ja.png)
 
 #### 2. メンテナンス対象DBインスタンスに接続中のアプリケーションソフトウェアを終了する必要があります。
 
 DBに接続しているサービスに影響を与えないように、適切な措置を取ってください。
 やむを得ずサービスに影響を与えてしまう時は、NHN Cloudサポートに連絡してくだされば、適切な措置を案内いたします。
 
-#### 3. 점검 대상의 DB 인스턴스 마이그레이션을 적용할 수 있습니다.
+#### 3. 点検対象のDBインスタンスのマイグレーションを適用できます。
 
-![rds_planed_migration_2](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image2_ja.png)
+![rds_planed_migration_2](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/26.01.13/image2_ja.png)
 
 ❶ **即時適用**をクリックして、ハイパーバイザーマイグレーションをすぐに適用できます。
 ❷ **次回のメンテナンス期間に適用**をクリックして、希望するメンテナンス期間にハイパーバイザーマイグレーションを適用できます。
@@ -1259,7 +1253,7 @@ DBに接続しているサービスに影響を与えないように、適切な
 
 DBインスタンスの状態が変更されない場合は「更新」を行ってください。
 
-![rds_planed_migration_3](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/image3_ja.png)
+![rds_planed_migration_3](https://static.toastoven.net/prod_rds/mariadb/planned_migration_alarm/26.01.13/image3_ja.png)
 
 DBインスタンスのマイグレーション中は何も操作ができません。
 DBインスタンスのマイグレーションが正常に完了しなかった場合、自動的に管理者に報告され、NHN Cloudから別途連絡いたします。
