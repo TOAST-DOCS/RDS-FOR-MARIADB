@@ -4,6 +4,15 @@
 |---------------|-----------------------------------------------|
 | 韓国(パンギョ)リージョン | https://kr1-rds-mariadb.api.nhncloudservice.com |
 
+## 認証及び権限
+
+RDS for MariaDBAPIを使用するにはAppkeyまたはプロジェクト統合Appkeyが必要です。
+
+Appkeyは、NHN Cloudの各サービスごとに発行される固有の認証キーであり、プロジェクト統合Appkeyは、NHN Cloudの1つのプロジェクト内の複数のサービスに対して共通で使用できる認証キーです。
+
+Appkeyの確認及び使用に関する詳細は、[Appkey](/nhncloud/ja/public-api/appkey)を参照してください。プロジェクト統合Appkeyの作成及び使用に関する詳細は、[プロジェクト統合Appkey](/nhncloud/ja/public-api/project-integrated-appkey)を参照してください。
+
+
 ## Monitoring
 
 ### Metric照会
@@ -18,7 +27,7 @@ GET /v2.0/metrics
 
 | 名前           | 種類  | 形式     | 必須 | 説明                        |
 |--------------|-----|--------|----|---------------------------|
-| X-TC-APP-KEY | URL | String | O  | 商品Appkeyまたはプロジェクト統合Appkey |
+| X-TC-APP-KEY | URL | String | O  | RDS for MariaDBサービスのAppkeyまたはプロジェクト統合Appkey |
 
 #### レスポンス
 
@@ -49,14 +58,14 @@ GET /rds/api/v2.0/metric-statistics
 
 | 名前           | 種類  | 形式     | 必須 | 説明                        |
 |--------------|-----|--------|----|---------------------------|
-| X-TC-APP-KEY | URL | String | O  | 商品Appkeyまたはプロジェクト統合Appkey |
+| X-TC-APP-KEY | URL | String | O  | RDS for MariaDBサービスのAppkeyまたはプロジェクト統合Appkey |
 
 #### リクエスト
 
 | 名前         | 種類    | 形式       | 必須 | 説明              | 制約事項                                        |
 |------------|-------|----------|----|-----------------|---------------------------------------------|
 | instanceId | Query | Array    | O  | DBインスタンスIDリスト   | Min:1, Max: 20                              |
-| metricName | Query | Array    | O  | 照会指標(metric)リスト | Min:1                                       |
+| measureName | Query | Array    | O  | 照会指標(metric)リスト | Min:1                                       |
 | from       | Query | Datetime | O  | 開始日時            | yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO Datetime) |
 | to         | Query | Datetime | O  | 終了日時            | yyyy-MM-dd'T'HH:mm:ss.SSSXXX (ISO Datetime) |
 | interval   | Query | Integer  | X  | 照会間隔            | 1、5、30、120、1440 (分)                         |

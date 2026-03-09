@@ -10,12 +10,12 @@ high-availability configuration or back up only increments of data since the pre
 > High availability DB instances perform backups on the redundant master so that the storage performance of the master is not degraded.
 > However, backups can be performed on the master even if it is a high availability DB instance in the following cases.
 > * If a backup cannot be performed due to a candidate master failure.
-> * If you do not have a read replica in a situation where you need a backup taken from a DB instance other than the candidate master for rebuilding the candidate master and you do not have a read replica
+> * If you do not have a read replica in a situation where you need a backup taken from a DB instance other than the candidate master for rebuilding the candidate master
 
 
 ## Backup Type
 
-Backups can be categorized into manual and automa backups.
+Backups can be categorized into manual and automatic backups.
 
 ### Manual Backup
 
@@ -58,6 +58,7 @@ When restoring to an incremental backup, the restore proceeds from the first ful
 
 > [Caution]
 > Restoring from incremental backups may take more time than restoring from a full backup, which is proportional to the sum of the capacity of the incremental backups required for the restore.
+
 #### Baseline Backup
 
 Incremental backups require a backup to baseline data changes on. An incremental backup can also be the baseline backup for a new incremental backup.
@@ -70,10 +71,32 @@ The following limitations exist for backups that are the basis for incremental b
 * If the DB instance that took that backup has been deleted or is unable to take a backup due to failure, it cannot be the baseline backup.
 * Backups created before the September 2024 scheduled release cannot be baseline backups.
 
-When incremental backups are scheduled according to [Auto Backup Strategy](#Set-Auto-Backup), a baseline backup that satisfies the above constraints, plus the following additional constraints, is automatically selected. If no baseline backup satisfies the constraints, a full backup is performed regardless of the auto backup strategy.
+When incremental backups are scheduled according to [Auto Backup Strategy](#set-auto-backup), a baseline backup that satisfies the above constraints, plus the following additional constraints, is automatically selected. If no baseline backup satisfies the constraints, a full backup is performed regardless of the auto backup strategy.
 * A backup performed on a candidate master, read replica that is in a replication down state cannot be a baseline backup.
 * A backup performed without table locks enabled cannot be a baseline backup.
 * If a new full backup was created after that backup was created, it cannot be the baseline backup.
+
+## Snapshot Backup
+
+While existing backup methods can degrade performance when run directly on the DB instance, our **Storage Snapshot Backup** leverages Cinder snapshots—provided HA is active and healthy—to eliminate system overhead.
+Because all heavy lifting—such as validation and file conversion—is offloaded to a separate server, your database maintains peak performance even during backups.
+
+Main Features
+* Zero performance impact: DB instance performance is maintained at 100% even during backup operations.
+* Enhanced reliability: Rigorous verification processes ensure the reliability of your backup data.
+* Temporary High Availability (HA) suspension: HA features may be briefly paused during snapshot creation to ensure strict data consistency.
+
+### Pricing
+
+Unlike existing backup methods, Snapshot Backup incurs separate charges for the resources used during the backup process.
+
+| Category | Existing backup | Snapshot backup                 |
+| --- | --- |---------------------------|
+| Billing method | Included with DB instance (free of charge) | Additional charges apply for dedicated backup resources        |
+| Billable item | OBS upload fee (billed separately) | Shared backup server + volume + snapshot + OBS |
+
+* Shared backup server fee: This fee covers the use of backup servers for data validation and file conversion.
+  * Even when using shared resources, you are billed only for the actual time used during your backup operations.
 
 ## Backup Settings
 
@@ -82,17 +105,18 @@ When creating and modifying DB instances, you can specify settings that will be 
 ![db-instance-backup-form-en](https://static.toastoven.net/prod_rds/mariadb/24.11.12/db-instance-backup-form-en.png)
 
 ### Common Settings
+
 The following topics are common to both auto and manual backups.
 
 **Use Table Lock**
 
-* `FLUSH TABLES WITH READ LOCK` ets whether the syntax is enabled or disabled.
+* `FLUSH TABLES WITH READ LOCK` Sets whether the syntax is enabled or disabled.
 * Table lock enables the `FLUSH TABLES WITH READ LOCK` syntax periodically during backups to ensure consistency in backup data. If `FLUSH TABLES WITH READ LOCK` syntax fails to run, the backup will fail.
 * You can disable table locking if the DML query load is high during a backup. If you do not use table lock, `FLUSH TABLES WITH READ LOCK` syntax will not run, so a high DML load does not cause the backup to fail. However, backups without table lock may not ensure consistency of backup data, and as a result, some operations, including restore and replication processes, are not supported for backups created without table lock and for DB instances with table locking disabled.
 
-**Query Latency Dash Time (second)**
+**Query Delay Wait Time (second)**
 
-* When using table lock, set the wait time for `FLUSH TABLES WITH READ LOCK` syntax. `FLUSH TABLES WITH READ LOCK` syntax will wait for the query latency dash time. It can be set from 0 to 21,600 seconds. Longer settings reduce the likelihood of backup failures due to DML query load, but may result in longer overall backup times.
+* When using table lock, set the wait time for `FLUSH TABLES WITH READ LOCK` syntax. `FLUSH TABLES WITH READ LOCK` syntax will wait for the query delay wait time. It can be set from 0 to 21,600 seconds. Longer settings reduce the likelihood of backup failures due to DML query load, but may result in longer overall backup times.
 
 
 ### Set Auto Backup
@@ -110,9 +134,6 @@ The following items apply only to auto backups.
 > [Caution]
 > Incrementally created backups are deleted when the baseline backup is deleted, even if the auto backup retention period has not passed.
 
-**Auto Backup Replication Region**
-
-* Set the auto backup file to be replicated to backup storage in another region. Auto Backup replication regions are features for disaster recovery that replicate and manage auto backup files from the original region equally to the destination region. Replication occurs in the background at regular intervals. When you set up an auto backup replication region, you are charged with inter-regional replication traffic, and the destination region is charged additionally for backup storage usage.
 
 **Number of Auto Backup Retries**
 
@@ -174,7 +195,7 @@ You can export backup files stored in internal backup storage to user object sto
 
 ![backup-export-en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/backup-export-en.png)
 
-Select the backup file to export from the **Backup** tab and click **Export to Object Storage**.
+❷ Select the backup file to export from the **Backup** tab and click **Export to Object Storage**.
 
 > [Note]
 > For manual backups, if the source DB instance that performed the backup was deleted, you cannot export the backup.
@@ -264,14 +285,14 @@ mariabackup --defaults-file={my.cnf path} --user {user} --password '{password}' 
 
 * The maximum file size that can be uploaded at a time is 5GB.
 * If the backup file is larger than 5GB, you have to use a utility such as split to cut the backup file to less than 5GB and upload it in multi-part.
-* For detailed information, refer to [Multipart Upload](/Storage/Object%20Storage/ko/api-guide-gov/#_44).
+* For detailed information, refer to [Multipart Upload](/Storage/Object%20Storage/en/api-guide-gov/#_45).
 
 (4) After accessing the console of the project you want to restore, on the DB Instances tab, click the **Restore to Backup in Object Storage** button.
 
 
 ### Restoration by Using RDS for MariaDB Backup
 
-You can use the backup file in RDS for MariaDB to restore the database in MariaDB directly. Only full backups can be restored; incremental backup reflection is not supported. When restoring a RDS for MariaDB backup file, refer to the [Backup](backup-and-restore-gov/#_1) and use the same version as Percona XtraBackup used by RDS for MariaDB.
+You can use the backup file in RDS for MariaDB to restore the database in MariaDB directly. Only full backups can be restored; incremental backup reflection is not supported.
 
 (1) Export backup of RDS for MariaDB to object storage with reference to the [Export Backup](backup-and-restore-gov/#export).
 
@@ -290,7 +311,7 @@ rm -rf {MariaDB data storage path}/*
 ```
 cat {backup file storage path} | xbstream -x -C {MariaDB data storage  path} 
 mariabackup --decompress {MariaDB data storage  path}
-innobackupex --defaults-file={my.cnf path} --apply-log {MariaDB data storage path} 
+mariabackup --defaults-file={my.cnf path} --apply-log {MariaDB data storage path}
 ```
 
 (6) Delete unnecessary files after unzipping files.

@@ -1,12 +1,21 @@
 ## Database > RDS for MariaDB > Release Notes
 
+### March 10, 2026
+
+#### Feature Updates
+
+* Added API v4.0
+    * For more information, see [API v4.0 guide](/Database/RDS%20for%20MariaDB/en/api-guide-v4.0/) document.
+* Added snapshot backup feature
+    * Perform backups using Cinder storage snapshots with zero impact on DB performance
+
 ### January 13, 2026
 
 #### Feature Updates
 
-- Added maintenance feature
-  - Applied various DB instance modifications during your scheduled maintenance duration
-- Updated to grant ROLE_ADMIN privileges when the Direct Control for DB Schemas & Users setting is enabled
+* Added maintenance feature
+    * Applied various DB instance modifications during your scheduled maintenance duration
+* Updated to grant ROLE_ADMIN privileges when the Direct Control for DB Schemas & Users setting is enabled
 
 ### November 11, 2025
 
