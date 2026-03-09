@@ -65,10 +65,10 @@ The type of DB instance that you have already created can be easily changed thro
 It stores the database's data files in data storage. DB instances support two types of data storage: HDD and SSD. Performance and price vary depending on the type of data storage, so you need to choose the right type depending on the database workload. Data storage can range from 20GB to 2TB.
 
 > [Caution]
-You cannot change the data storage type for DB instance that you have already created.
+> You cannot change the data storage type for DB instance that you have already created.
 
 > [Note]
-To use more than 2TB of data storage, contact NHN Cloud Customer Center.
+> To use more than 2TB of data storage, contact NHN Cloud Customer Center.
 
 Because the following tasks increase the I/O usage of data storage, the performance of DB instance may be degraded during the process.
 
@@ -105,7 +105,7 @@ DB security groups are used to restrict access in case of external intrusion. Yo
 
 ### Backup
 
-You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration or perform backups from a read replica. Backup files are stored on internal object storage and are charged based on the
+You can set up periodic backups of the databases in your DB instance, or you can create backups at any time through the console. Performance may degrade during backups. To avoid affecting service, it is better to perform back up at a time when the service is under low load. If you do not want the backup to degrade performance, you can use a high-availability configuration, back up only the incremental data since the previous backup, or perform backups from a read replica. Backup files are stored on internal backup storage and are charged based on the
 size of backup storage. You can export to user object storage in NHN Cloud if necessary. To prepare for unexpected failures, we recommend that you set up backups to be conducted periodically. For more details on backup, see [Backup and Restore](backup-and-restore-gov/).
 
 ### Maintenance
@@ -118,6 +118,7 @@ You can set a maintenance duration when creating or modifying a DB instance. If 
 
 > [Note]
 > A maintenance duration consists of a start day, a start time, and a duration (in 30-minute increments).
+
 #### Maintenance Task
 
 Maintenance tasks are categorized into User Maintenance and Provider Maintenance.
@@ -157,7 +158,8 @@ You can check the maintenance status of each instance in the DB instance list.
 | Available | A non-required provider maintenance task is pending/in preparation. |
 
 > [Note]
-> The maintenance status is not displayed for the standby instance of High Availability (HA) DB instances.
+> The maintenance status is not displayed for the candidate master of High Availability (HA) DB instances.
+
 #### Maintenance Tab
 
 You can find the following information on the Maintenance tab of the DB instance details page:
@@ -196,11 +198,11 @@ When you create a DB instance, you can set default notifications. If setting def
 
 If you activate deletion protection, you can protect DB instances from accidental deletion.
 
-## DB instances
+## DB Instance List
 
 You can view DB instances created from the console. It can be viewed as groups of DB instances or as individual DB instances.
 
-![db-instance-list_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail_en.png)
+![db-instance-list_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-list_en.png)
 
 ❶ You can change DB instance screen mode.  
 ❷ By clicking on the button, you can open or close a DB instance that belongs to a group.  
@@ -212,7 +214,7 @@ You can view DB instances created from the console. It can be viewed as groups o
 
 The status of the DB instance consists of the following values and changes depending on the behavior of the user and the current status.
 
-| **Failed Training** : Indicates the number of failed lessons.                | Description                                            |
+| Status                | Description                                            |
 |-------------------|-----------------------------------------------|
 | BEFORE_CREATE     | Before Create                                         |
 | AVAILABLE         | Available                                         |
@@ -225,7 +227,7 @@ The status of the DB instance consists of the following values and changes depen
 
 Search conditions that can be changed are as follows.
 
-![db-instance-filter_en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-filter_en.png)
+![db-instance-filter_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-filter_en.png)
 
 ❶ You can search for DB instances with filtering conditions that require parameter changes to be applied.
 
@@ -233,7 +235,7 @@ Search conditions that can be changed are as follows.
 
 You can select a DB instance to view the details.
 
-![db-instance-detail_en](https://static.toastoven.net/prod_rds/mariadb/24.03.12/db-instance-detail_en.png)
+![db-instance-detail_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail_en.png)
 
 ❶ When you click on the domain of the connection information, a pop-up window appears to confirm the IP address.
 ❷ When you click on DB Security Group, a pop-up window appears where you can check DB security rules.
@@ -276,8 +278,8 @@ You can view and download various log files from Log tab of DB instance. Log fil
 ❸ When download is ready, **Download** button will be exposed. Click to download the log.
 
 > [Caution]
-When **Import** is clicked, the log file is uploaded to backup storage for approximately 5 minutes and the backup storage capacity will be charged to the size of the log file.
-Click on **Download** to charge Internet traffic as the size of the log file.
+> When **Import** is clicked, the log file is uploaded to backup storage for approximately 5 minutes and the backup storage capacity will be charged to the size of the log file.
+> Click on **Download** to charge Internet traffic as the size of the log file.
 
 ❹ For binary logs, you can download them in two forms. Click on **Import** and you will see a pop-up window where you can select the type of binary log.
 
@@ -304,6 +306,7 @@ At the top of the Maintenance tab, you can view the maintenance configuration de
 
 > [Note]
 > Even if you haven't set a maintenance duration, you can view the randomly assigned duration here.
+
 #### Upcoming Maintenance
 
 Upcoming Maintenance is a list of tasks scheduled to be executed during the next maintenance duration. When you perform actions such as modifying a DB instance or upgrading the DB engine version and select **Apply in the Next Maintenance Duration**, the task is added to this list.
@@ -339,10 +342,11 @@ You can select a pending maintenance task and then click **Next** to select the 
 ![db-instance-detail-maintenance-immediately_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance-immediately_en.png)
 
 **Apply in the Next Maintenance Duration**: apply during the next maintenance duration. Click **Confirm** to move this task to the Upcoming Maintenance list.
-![db-instance-detail-maintenance-schedule_](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance-schedule_en.png)
+![db-instance-detail-maintenance-schedule_en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-maintenance-schedule_en.png)
 
 > [Caution]
 > Required maintenance tasks can be applied at any time up to the mandatory application date. However, after the mandatory application date, they will automatically be performed during the next maintenance period.
+
 > [Note]
 > If a maintenance task requires a restart, a pop-up screen will appear, allowing you to select additional options, such as failover or backup. For high-availability DB instances, you can minimize service downtime by using a restart with failover.
 
@@ -373,7 +377,7 @@ You cannot modify the name of the DB schema that has been created.
 
 #### Create a user
 
-![db-instance-detail-user-create-en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-user-create-en.png))
+![db-instance-detail-user-create-en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-detail-user-create-en.png)
 
 ❶ Click on **+Create** and you'll see the Add User pop-up window.
 ❷ Enter a user ID.
@@ -384,7 +388,7 @@ User ID has the following restrictions.
 * `mysql.session`, `mysql.sys`, `mysql.infoschema`, `sqlgw`, `admin`, `etladm`, `alertman`, `prom`, `rds_admin`, `rds_mha`, `rds_repl` are not allowed to be used as User ID.
 
 ❸ Enter a password.
-❹ Enter a Host IP to allow connection. Using `%` character lets you range the Host IPs you want to allow. For example, `1.1.1.1%` means all IPs between `1.1.0` and `1.1.1.255`.
+❹ Enter a Host IP to allow connection. Using `%` character lets you range the Host IPs you want to allow. For example, `1.1.1.%` means all IPs between `1.1.1.0` and `1.1.1.255`.
 ❺ Select the permissions that you want to grant to users. The permissions and descriptions that you can grant are as follows.
 
 **READ**
@@ -462,7 +466,7 @@ For high-availability DB instances, if there are any changes to items that need 
 
 
 ❶ Modify your DB instance and schedule the update by selecting either **Apply in the Next Maintenance Duration** or **Apply Immediately**.
-❷ If you do not use 'Reboot with Failover', changes will be applied sequentially to the master and standby instances, followed by a restart of the DB instance. For more details, please refer to the [Manual Failover section](db-instance-gov/#manual-failover) for High Availability DB instances.
+❷ If you do not use 'Reboot with Failover', changes will be applied sequentially to the master and candidate master, followed by a restart of the DB instance. For more details, please refer to the [Manual Failover section](db-instance-gov/#manual-failover) for High Availability DB instances.
 
 ### DB Schema & Direct User Control
 
@@ -473,7 +477,7 @@ GRANT CREATE,DROP,LOCK TABLES,REFERENCES,EVENT,ALTER,INDEX,INSERT,SELECT,UPDATE,
 ```
 
 > [Caution]
-If you change it to Disabled again after using direct control
+> If you change it to Disabled again after using direct control
 > * Already granted permissions are not revoked. If you use the command to add DB schema or users at this time, the data in the console may not match.
 > * All users that exist in the database, regardless of the permissions granted to them, are represented by CUSTOM permissions.
 
@@ -518,6 +522,9 @@ Select the binary log and press **Confirm** to delete all binary logs created pr
 
 > [Note]
 > You can set the storage period for binary logs with the `binlog_expire_logs_seconds` parameter.
+
+> [Caution]
+> Depending on the deleted binary logs, point-in-time restoration may not be possible.
 
 ## Expand Storage Size
 
@@ -565,7 +572,7 @@ You can upload an external MariaDB backup file to user object storage in NHN Clo
 
 ## Export backup files to the object storage after backup
 
-You can export backup files to user object storage in NHN Cloud at the same time as you perform a backup. Refer to [Export Backup](backup-and-restore-gov/#export) for more information.
+After backup, you can export backup files to user object storage in NHN Cloud. Refer to [Export Backup](backup-and-restore-gov/#export) for more information.
 
 ## Read Replica
 
@@ -582,11 +589,11 @@ To create read replicas, you need backup files and binary logs created with the 
 If there is no DB instance that meets the criteria, the request to create a read replica will fail.
 
 > [Caution]
-The read replica creation time may increase in proportion to the database size of the master.
-For DB instances that are backed up, there may be a drop in storage I/O performance during the read replica creation process.
+> The read replica creation time may increase in proportion to the database size of the master.
+> For DB instances that are backed up, there may be a drop in storage I/O performance during the read replica creation process.
 
 > [Note]
-Backup storage charges can be as much as the size of a binary log required for the read replica creation process.
+> Backup storage charges can be as much as the size of a binary log required for the read replica creation process.
 
 To create a read replica from the console,
 
@@ -646,10 +653,10 @@ Select whether or not to enable deletion protection. Refer to [Deletion Protecti
 The process of breaking the replication relationship with the master and converting a read replica to an independent master is called promotion. The promoted master will act as an independent DB instance. If there is a replication delay between the read replica and the master that you want to promote, the promotion will not take place until the delay is resolved. Once promoted, a DB instance cannot be reverted to the previous replication relationship.
 
 > [Caution]
-If the master DB instance is in an abnormal state, you cannot proceed with the promotion operations.
+> If the master DB instance is in an abnormal state, you cannot proceed with the promotion operations.
 
 > [Note]
-You can perform promotion operations from the same region's console as the region where the read replica is located.
+> You can perform promotion operations from the same region's console as the region where the read replica is located.
 
 ### Force Promotion of Read Replicas
 
@@ -669,7 +676,7 @@ mariadb> CALL mysql.tcrds_repl_skip_repl_error();
 If you can't resolve the replication issue of read replica, you can restore it to its normal state by rebuilding. This process deletes all databases in the read replica and rebuilds it anew based on the master database. During rebuilding, read replicas are unavailable to use. Rebuilding read replicas requires backup files and binary logs created with the Enable Table Lock option among DB instances in the replication group. If you don't have a backup file, refer to [Create Read Replica](#_22) for actions and precautions.
 
 > [Note]
-Connection information (domain, IP) does not change after rebuilding.
+> Connection information (domain, IP) does not change after rebuilding.
 
 ## Restart DB instance
 
@@ -685,10 +692,11 @@ To restart a DB instance from the console
 
 If MariaDB in the DB instance is not working properly, you can force a restart. For forced restart, issue a SIGTERM command in MariaDB and wait 10 minutes for it to shut down normally. If MariaDB shuts down normally within 10 minutes, reboot the virtual machine afterward. If it does not shut down normally within 10 minutes, force a reboot of the virtual machine. If the virtual machine is forced to reboot, some of the transactions you are working on might be lost and the data volume might be corrupted, making recovery impossible. After a forced restart, the state of the DB instance might not return to the available state. Contact Customer Center if this situation occurs.
 
-> [Caution] Because there is a possibility of data loss or data volume corruption, this feature should not be used except in urgent and unavoidable circumstances.
+> [Caution]
+> Because there is a possibility of data loss or data volume corruption, this feature should not be used except in urgent and unavoidable circumstances.
 
 > [Note]
-For high availability DB instances, you cannot force restart.
+> For high availability DB instances, you cannot force restart.
 
 To force restart a DB instance, from the console
 
@@ -711,7 +719,7 @@ Enabling Delete Protection protects DB instances from being accidentally deleted
 <a id="ha-db-instance"></a>
 ## High Availability DB Instances
 
-High availability DB instances increase availability, data durability, and provide fault tolerant databases. High availability DB instances consist of master and candidate master and are created in different availability zones. Candidate master is a DB instance for failover and is not normally available. For high availability DB instances, backups are performed on the sample master.
+High availability DB instances increase availability, data durability, and provide fault tolerant databases. High availability DB instances consist of master and candidate master and are created in different availability zones. Candidate master is a DB instance for failover and is not normally available. For high availability DB instances, backups are performed on the candidate master.
 
 > [Note]
 > For high availability DB instances, if you set to use MariaDB query statement to force replication from another DB instance or from a master in external MariaDB, high availability and some features do not work properly.
@@ -725,7 +733,7 @@ Candidate master has a process for detecting failures, which periodically detect
 
 ### Automatic Failover
 
-When the candidate master fails the master's health check four times in a row, it determines that the master is unable to provide service and automatically performs a failover. In order to prevent split brains, disconnect all user security groups assigned to the failed master to block external connections, and the preliminary master will take over the role of the master. A record in the internal domain for access are changed from the failed master to the preliminary master, so no changes to the
+When the candidate master fails the master's health check four times in a row, it determines that the master is unable to provide service and automatically performs a failover. In order to prevent split brains, disconnect all user security groups assigned to the failed master to block external connections, and the candidate master will take over the role of the master. A record in the internal domain for access are changed from the failed master to the candidate master, so no changes to the
 application are required. When failover is completed, the type of failed over master changes to the failed over master and the type of candidate master changes to the master. No failover is performed until the failed over master is recovered or rebuilt. Promoted master takes over all automatic backups of the failover master. Point-in-time restoration using existing backups is not supported because the master changes during failover and all binary logs are deleted. You can restore point-in-time
 from the time the new backup was performed on the promoted master.
 
@@ -766,11 +774,11 @@ If the failed over master fails to recover, you can re-enable the high availabil
 If there is no DB instance that meets the condition, the failover master rebuild request fails.
 
 > [Caution]
-In proportion to the size of the master's database, the time to rebuild the failover master can be increased.
-For DB instances where backups are performed, storage I/O performance may be degraded during the failover master rebuilding.
+> In proportion to the size of the master's database, the time to rebuild the failover master can be increased.
+> For DB instances where backups are performed, storage I/O performance may be degraded during the failover master rebuilding.
 
 > [Note]
-Backup storage charges can be as much as the size of the binary log required for the failover master rebuild process.
+> Backup storage charges can be as much as the size of the binary log required for the failover master rebuild process.
 
 To rebuild a failover master, from the console
 
@@ -820,15 +828,15 @@ You can apply changes to the candidate master first and then observe the trend, 
 ![db-instance-ha-wait-manual-failover-en](https://static.toastoven.net/prod_rds/mariadb/26.01.13/db-instance-ha-wait-manual-failover-en.png)
 
 > [Caution]
-While waiting for a failover, no automatic failover occurs.
+> While waiting for a failover, no automatic failover occurs.
 
 #### Waiting for Resolve Replication Delay
 
 When you enable Resolve Replication Delays option, you can wait for replication delays for the candidate master and read replicas in the Replication group to disappear.
 
-#### Block usage load
+#### Block write load
 
-You can select to further block the usage load while resolving replication delays. Blocking the usage load puts the master in read-only mode and sets all change queries to fail immediately before performing the failover.
+You can select to further block the write load while resolving replication delays. Blocking the write load puts the master in read-only mode and sets all change queries to fail immediately before performing the failover.
 
 ### High availability suspended
 
@@ -864,7 +872,7 @@ mariadb> CALL mysql.tcrds_process_kill(processlist_id );
 
 * Check the processes currently waiting for a lock and the process information occupying the lock.
 * (w) Process information that column information waits to obtain locks
-* (w) Process information that column information waits to obtain locks
+* (B) Process information that column information occupies locks
 * To force shutdown a process that occupies a lock, check the (B)PROCESS column and perform call tcrds_process_kill(process_id).
 
 ```
@@ -896,7 +904,7 @@ ex) call mysql.tcrds_repl_changemaster('10.162.1.1',10000,'db_repl','password','
 
 ### tcrds_repl_changesource (after 8.4)
 
-* Used when importing an external MySQL DB to NHN Cloud RDS using replication.
+* Used when importing an external MariaDB DB to NHN Cloud RDS using replication.
 * Replication configuration for NHN Cloud RDS can be done through **Create Replica** in the console.
 
 ```
@@ -905,8 +913,8 @@ mariadb> CALL mysql.tcrds_repl_changesource (master_instance_ip, master_instance
 
 * Parameter Details
     * master_instance_ip: IP of the replication target (Master) server
-    * master_instance_port: MySQL of the replication target (Master) server
-    * user_id_for_replication: Replication account to connect to MySQL on the replication target (Master) server
+    * master_instance_port: MariaDB port on the replication target (Master) server
+    * user_id_for_replication: Replication account to connect to MariaDB on the replication target (Master) server
     * password_for_replication_user: account passowrd for replication
     * SOURCE_LOG_FILE: Binary log file name of the replication target (Master)
     * SOURCE_LOG_POS: binary log position of the replication target (Master)
@@ -915,7 +923,7 @@ mariadb> CALL mysql.tcrds_repl_changesource (master_instance_ip, master_instance
 ex) call mysql.tcrds_repl_changesource('10.162.1.1',10000,'db_repl','password','mysql-bin.000001',4);
 ```
 
-> [Caution] The replication account must be created in the MYSQL.
+> [Caution] The replication account must be created in the replication target (Master) MariaDB.
 
 ### tcrds_repl_init
 
@@ -964,7 +972,7 @@ mariadb> CALL mysql.tcrds_repl_replica_start();
 * If you run the TCRDS_REPL_SKIP_REPL_ERROR procedure when the Duplicate Key error occurs, you can address the replica error.
     * Before 8.4: perform SQL_SLAVE_SKIP_COUNTER=1.
     * After 8.4: perform SQL_REPLICA_SKIP_COUNTER=1.
-* `MySQL error code 1062: 'Duplicate entry ? for key ?'`
+* `MariaDB error code 1062: 'Duplicate entry ? for key ?'`
 
 ```
 mariadb> CALL mysql.tcrds_repl_skip_repl_error();
@@ -986,7 +994,7 @@ mariadb> CALL mysql.tcrds_repl_next_changemaster();
 * Change the replication information so that you can read the next binary log log.
 * If you run the TCRDS_REXT_CHANGESOURCE procedure when the following replication error occurs, you can issue the replication error.
 
-e.g. MySQL error code 1236 (ER_SOURCE_FATAL_ERROR_READING_BINLOG): Got fatal error from source when reading data from binary log
+e.g. MariaDB error code 1236 (ER_SOURCE_FATAL_ERROR_READING_BINLOG): Got fatal error from source when reading data from binary log
 
 ```
 mariadb> CALL mysql.tcrds_repl_next_changesource();
@@ -1028,7 +1036,7 @@ mariadb> CALL mysql.tcrds_foreign_key_checks('{0|1|'OFF'|'ON'}');
 ## Data Migration
 
 * RDS can be exported as data to or imported from NHN Cloud RDS using mysqldump.
-* The mysqldump utility is provided by default when mariadb is installed.
+* The mysqldump utility is provided by default when MariaDB is installed.
 
 ### Export using mysqldump
 
@@ -1233,7 +1241,7 @@ mariadb> call mysql.tcrds_repl_replica_start;
 mariadb> call mysql.tcrds_repl_init();
 ```
 
-## Delete Registry Account
+## Appendix
 
 ### Appendix 1. DB Instance Migration Guide for Hypervisor Maintenance
 
