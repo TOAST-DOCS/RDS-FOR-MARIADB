@@ -1,11 +1,24 @@
 ## Database > RDS for MariaDB > Release Notes
 
+## May 12, 2026
+
+### Feature Updates
+
+* Added security patch feature
+    * Security patches for security vulnerabilities (CVEs) discovered in the OS can be performed as maintenance tasks.
+    * For more information, refer to the [Security patch](/Database/RDS%20for%20MariaDB/ko/db-instance/#security-patch) documentation.
+* Added `SELECT` option in addition to the existing `INSERT` option for high availability Ping check method
+* Added MariaDB versions 10.6.25, 10.11.16, 11.4.10, and 11.8.6
+* Restricted creation of new instances due to MariaDB 10.3 and 10.6 EOL (End of Life)
+* Added and updated API v4.0
+    * Added the View High Availability Information API.
+
 ### March 10, 2026
 
 #### Feature Updates
 
 * Added API v4.0
-    * For more information, see [API v4.0 guide](/Database/RDS%20for%20MariaDB/zh/api-guide-v4.0/) document.
+    * For more information, see [API v4.0 guide](/Database/RDS%20for%20MariaDB/en/api-guide-v4.0/) document.
 * Added snapshot backup feature
     * Perform backups using Cinder storage snapshots with zero impact on DB performance
 
