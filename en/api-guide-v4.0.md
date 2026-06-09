@@ -1,40 +1,41 @@
-## Database > RDS for MariaDB > API Guide
+## Database > RDS for MariaDB > API v4.0 Guide
 
 ## RDS for MariaDB API Common Information
 
 ### API Endpoint
 
 | Region | Endpoint |
-|--------|----------|
+|------|----------|
 | Korea (Pangyo) region | https://kr1-rds-mariadb.api.nhncloudservice.com |
+
 
 ### Authentication and Authorization
 
-RDS for MariaDB uses User Access Key tokens for authentication and authorization when making API calls. The User Access Key token is a temporary, Bearer-type access token issued from a User Access Key. For more information on issuing and using User Access Key tokens, please refer to the [User Access Key Token](/nhncloud/en/public-api/user-access-key-token).
+RDS for MariaDB uses User Access Key tokens for authentication/authorization when calling APIs. User Access Key tokens are Bearer-type temporary access tokens issued based on User Access Keys. For more information about issuing and using User Access Key tokens, see [User Access Key token](/nhncloud/en/public-api/user-access-key-token).
 The issued token must be included in the request header along with the Appkey.
 
-| Name                | Type   | Format | Required | Description                                           |
-|---------------------|--------|--------|----|-------------------------------------------------------------|
-| X-TC-APP-KEY        | Header | String | O  | Appkey of RDS for MariaDB or integrated Appkey for project |
-| X-NHN-AUTHORIZATION | Header | String | O  | Bearer type token issued with the Public API                           |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| X-TC-APP-KEY | Header | String | O | Appkey of RDS for MariaDB service or project integrated Appkey |
+| X-NHN-AUTHORIZATION | Header | String | O | Bearer type token issued by Public API |
 
-In addition, the APIs you can call are limited based on the project member role. You can grant permissions separately for `RDS for MariaDB ADMIN` and `RDS for MariaDB VIEWER`.
+Additionally, the APIs that can be called are limited according to project permissions. The `RDS for MariaDB ADMIN` and `RDS for MariaDB VIEWER` roles have default permissions as shown below, and you can grant only the necessary permissions in the role group management menu within the project.
 
-* `RDS for MariaDB ADMIN permission holders` can use all available features as before.
-* `RDS for MariaDB VIEWER permission holders` can use read-only feature.
-    * Cannot use any features aimed at DB instances or create, modify, or delete any DB instance.
-    * But, notification group and user group-related features are available.
+* The `RDS for MariaDB ADMIN` role is granted all permissions required for API execution.
+* The `RDS for MariaDB VIEWER` role is granted only permissions to view information.
+    * You cannot create, modify, or delete DB instances, or use any features that target DB instances.
+    * However, you can use features related to notification groups and user groups.
 
-If an API request fails to authenticate or is not authorized, the following error occurs.
+When API requests fail authentication or lack permissions, the following errors occur:
 
-| resultCode | resultMessage | Description            |
-|------------|---------------|------------------------|
-| 80401      | Unauthorized  | Failed to authenticate |
-| 80403      | Forbidden     | Unauthorized.          |
+| resultCode | resultMessage | Description |
+|------------|---------------|-----|
+| 80401 | Unauthorized | Authentication failed. |
+| 80403 | Forbidden | No permission. |
 
 ### Common Response Information
 
-The API responds with "200 OK" to all API requests. For more information on the response results, see Response Body Header.
+All API requests respond with '200 OK'. For detailed response results, refer to the header in the response body.
 
 #### Response Body
 ```json
@@ -47,44 +48,47 @@ The API responds with "200 OK" to all API requests. For more information on the 
 }
 ```
 
-#### Field
-| Name          | Format  | Description                                              |
-|---------------|---------|----------------------------------------------------------|
-| resultCode    | Number  | Result code<br/>- Success: `0`<br/>- Failure: `Non-zero` |
-| resultMessage | String  | Result message                                           |
-| isSuccessful  | Boolean | Successful or not                                        |
+#### Fields
+| Name | Format | Description |
+|-----|-----|-----|
+| resultCode | Number | Result code<br/>- Success: `0`<br/>- Failure: Non-zero value |
+| resultMessage | String | Result message |
+| isSuccessful | Boolean | Success status |
 
+### DB Engine Type
 
-### DB engine type
+| DB Engine Type | Creation Available | Restoration from OBS Available | Authentication Plugin Support |
+|------------|----------|------------------|------------|
+| MARIADB_V10330 | X | X | NATIVE, ED25519 |
+| MARIADB_V10611 | X | X | NATIVE, ED25519 |
+| MARIADB_V10612 | X | X | NATIVE, ED25519 |
+| MARIADB_V10616 | X | X | NATIVE, ED25519 |
+| MARIADB_V10622 | X | X | NATIVE, ED25519 |
+| MARIADB_V10625 | X | X | NATIVE, ED25519 |
+| MARIADB_V101107 | O | O | NATIVE, ED25519 |
+| MARIADB_V101108 | O | O | NATIVE, ED25519 |
+| MARIADB_V101113 | O | O | NATIVE, ED25519 |
+| MARIADB_V101116 | O | O | NATIVE, ED25519 |
+| MARIADB_V11407 | O | O | NATIVE, ED25519 |
+| MARIADB_V11410 | O | O | NATIVE, ED25519 |
+| MARIADB_V11806 | O | O | NATIVE, ED25519 |
 
-| DB engine type | Available for creation | Available for restoration from OBS | Authentication Plugin Support |
-|-----------------|----------|------------------|--|
-| MARIADB_V10330  | O        | O                | NATIVE, ED25519 |
-| MARIADB_V10611  | O        | O                | NATIVE, ED25519 |
-| MARIADB_V10612  | O        | O                | NATIVE, ED25519 |
-| MARIADB_V10616  | O        | O                | NATIVE, ED25519 |
-| MARIADB_V10622  | O        | O                | NATIVE, ED25519 |
-| MARIADB_V101107 | O        | O                | NATIVE, ED25519 |
-| MARIADB_V101108 | O        | O                | NATIVE, ED25519 |
-| MARIADB_V101113 | O        | O                | NATIVE, ED25519 |
-| MARIADB_V11407  | O        | O                | NATIVE, ED25519 |
-
-* You can use the value for the dbVersion field of ENUM type.
-* Depending on the version, creation or restoration may not be possible.
+* These values can be used for the dbVersion field of ENUM type.
+* Creation or restoration may not be possible depending on the version.
 
 ## Project Information
 
-### List Regions
+### View Project Member List
 
 ```http
-GET /v4.0/project/regions
+GET /v4.0/project/members
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                     | Description         |
-|-----------------------------------------|------------|
-| RDSforMariaDB:Project.Get | Query project information |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Project.Get | View project member list |
 
 #### Request
 
@@ -92,11 +96,63 @@ This API does not require a request body.
 
 #### Response
 
-| Name    | Type | Format | Description |
-|---------|------|--------|-------------|
-| regions | Body | Array  | Region list |
-| regions.regionCode | Body | Enum    | Region code<br/>- `KR1`: Korea (Pangyo) |
-| regions.isEnabled  | Body | Boolean | Whether to enable a region                                                                 |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| members | Body | Array | Project member list |
+| members.memberId | Body | UUID | Project member identifier |
+| members.memberName | Body | String | Project member name |
+| members.emailAddress | Body | String | Project member email address |
+| members.phoneNumber | Body | String | Project member phone number |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "members": [
+        {
+            "memberId": "550e8400-e29b-41d4-a716-446655440000",
+            "memberName": "memberName-example",
+            "emailAddress": "user@example.com",
+            "phoneNumber": "010-1234-5678"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### View Region List
+
+```http
+GET /v4.0/project/regions
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Project.Get | View region list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| regions | Body | Array | Region list |
+| regions.regionCode | Body | Enum | Region code<br/>- KR1: `Korea (Pangyo)` |
+| regions.isEnabled | Body | Boolean | Region enablement status |
 
 <details><summary>Example</summary>
 <p>
@@ -111,58 +167,7 @@ This API does not require a request body.
     "regions": [
         {
             "regionCode": "KR1",
-            "isEnabled": true
-        }
-    ]
-}
-```
-
-</details>
-
----
-
-### List Project Members
-
-```http
-GET /v4.0/project/members
-```
-
-#### Required permissions
-
-| Permission Name                                      | Description         |
-|-----------------------------------------|------------|
-| RDSforMariaDB:Project.Get | Query project information |
-
-#### Request
-
-This API does not require a request body.
-
-#### Response
-
-| Name                 | Type | Format | Description                  |
-|----------------------|------|--------|------------------------------|
-| members              | Body | Array  | Project member list          |
-| members.memberId     | Body | UUID   | Project member identifier    |
-| members.memberName   | Body | String | Project member name          |
-| members.emailAddress | Body | String | Project member email address |
-| members.phoneNumber  | Body | String | Project member mobile        |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "members": [
-        {
-            "memberId": "1b1d3627-507a-49ea-8cb7-c86dfa9caa58",
-            "memberName": "Hong Gildong",
-            "emailAddress": "gildong.hong@nhn.com",
-            "phoneNumber": "+821012345678"
+            "isEnabled": false
         }
     ]
 }
@@ -173,19 +178,19 @@ This API does not require a request body.
 
 ---
 
-## Specifications of DB Instance
+## DB Instance Specifications
 
-### List DB Instance Specifications
+### View DB Instance Specifications
 
 ```http
 GET /v4.0/db-flavors
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                       | Description               |
-|-------------------------------------------|------------------|
-| RDSforMariaDB:DbFlavor.List | List DB Instance Specifications |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbFlavor.List | View the list of DB instance specifications |
 
 #### Request
 
@@ -193,13 +198,13 @@ This API does not require a request body.
 
 #### Response
 
-| Name                   | Type | Format | Description                              |
-|------------------------|------|--------|------------------------------------------|
-| dbFlavors              | Body | Array  | List of DB instance specifications       |
-| dbFlavors.dbFlavorId   | Body | UUID   | Identifier of DB instance specifications |
-| dbFlavors.dbFlavorName | Body | String | Name of DB instance specifications       |
-| dbFlavors.ram          | Body | Number | Memory size (MB)                         |
-| dbFlavors.vcpus        | Body | Number | CPU cores                                |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbFlavors | Body | Array | List of DB instance specifications |
+| dbFlavors.dbFlavorId | Body | UUID | Identifier of the DB instance specification |
+| dbFlavors.dbFlavorName | Body | String | DB instance specification name |
+| dbFlavors.ram | Body | Number | Memory capacity (MB) |
+| dbFlavors.vcpus | Body | Number | Number of CPU cores |
 
 <details><summary>Example</summary>
 <p>
@@ -213,9 +218,9 @@ This API does not require a request body.
     },
     "dbFlavors": [
         {
-            "dbFlavorId": "50be6d9c-02d6-4594-a2d4-12010eb65ec0",
-            "dbFlavorName": "m2.c1m2",
-            "ram": 2048,
+            "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbFlavorName": "dbFlavorName-example",
+            "ram": 1,
             "vcpus": 1
         }
     ]
@@ -229,17 +234,17 @@ This API does not require a request body.
 
 ## Network
 
-### List Subnets
+### View Subnet List
 
 ```http
 GET /v4.0/network/subnets
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                     | Description        |
-|------------------------------------------|-----------|
-| RDSforMariaDB:Network.List | List subnets |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Network.List | View subnet list |
 
 #### Request
 
@@ -247,14 +252,14 @@ This API does not require a request body.
 
 #### Response
 
-| Name                     | Type | Format  | Description              |
-|--------------------------|------|---------|--------------------------|
-| subnets                  | Body | Array   | Subnet list              |
-| subnets.subnetId         | Body | UUID    | Subnet identifier        |
-| subnets.subnetName       | Body | String  | Name to identify subnets |
-| subnets.subnetCidr       | Body | String  | CIDR of subnet           |
-| subnets.usingGateway     | Body | Boolean | Whether to use gateway   |
-| subnets.availableIpCount | Body | Number  | Number of available IPs  |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| subnets | Body | Array | List of subnets |
+| subnets.subnetId | Body | UUID | Identifier of the subnet |
+| subnets.subnetName | Body | String | Name that can identify the subnet |
+| subnets.subnetCidr | Body | String | CIDR of the subnet |
+| subnets.usingGateway | Body | Boolean | Whether gateway is used |
+| subnets.availableIpCount | Body | Number | Number of available IPs |
 
 <details><summary>Example</summary>
 <p>
@@ -268,11 +273,11 @@ This API does not require a request body.
     },
     "subnets": [
         {
-            "subnetId": "1b2a9b23-0725-4b92-8c78-35db66b8ad9f",
-            "subnetName": "Default Network",
+            "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+            "subnetName": "subnetName-example",
             "subnetCidr": "192.168.0.0/24",
-            "usingGateway": true,
-            "availableIpCount": 240
+            "usingGateway": false,
+            "availableIpCount": 1
         }
     ]
 }
@@ -285,17 +290,17 @@ This API does not require a request body.
 
 ## DB Engine
 
-### List DB Engines
+### View DB Engine List
 
 ```http
 GET /v4.0/db-versions
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                        | Description          |
-|--------------------------------------------|-------------|
-| RDSforMariaDB:DbVersion.List | List DB Engines |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbVersion.List | View DB engine list |
 
 #### Request
 
@@ -303,12 +308,12 @@ This API does not require a request body.
 
 #### Response
 
-| Name                         | Type | Format  | Description                                           |
-|------------------------------|------|---------|-------------------------------------------------------|
-| dbVersions                   | Body | Array   | DB engine list                                        |
-| dbVersions.dbVersion         | Body | String  | DB engine type                                        |
-| dbVersions.dbVersionName     | Body | String  | DB engine name                                        |
-| dbVersions.restorableFromObs | Body | Boolean | Restoring backup from object storage available or not |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbVersions | Body | Array | DB engine list |
+| dbVersions.dbVersion | Body | String | DB engine type |
+| dbVersions.dbVersionName | Body | String | DB engine name |
+| dbVersions.restorableFromObs | Body | Boolean | Indicates whether restoration from Object Storage is possible |
 
 <details><summary>Example</summary>
 <p>
@@ -322,9 +327,9 @@ This API does not require a request body.
     },
     "dbVersions": [
         {
-            "dbVersion": "MARIADB_V10330",
-            "dbVersionName": "Maria DB 10.3.30",
-            "restorableFromObs": true
+            "dbVersion": "MYSQL_V8036",
+            "dbVersionName": "dbVersionName-example",
+            "restorableFromObs": false
         }
     ]
 }
@@ -335,19 +340,19 @@ This API does not require a request body.
 
 ---
 
-## Storage
+## Data Storage
 
-### List Storage Type
+### View Storage Type List
 
 ```http
 GET /v4.0/storage-types
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                      | Description                |
-|------------------------------------------|-------------------|
-| RDSforMariaDB:Storage.List | List data storage types |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Storage.List | View storage type list |
 
 #### Request
 
@@ -355,9 +360,9 @@ This API does not require a request body.
 
 #### Response
 
-| Name         | Type | Format | Description       |
-|--------------|------|--------|-------------------|
-| storageTypes | Body | Array  | Storage type list |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| storageTypes | Body | Array | Storage type list |
 
 <details><summary>Example</summary>
 <p>
@@ -381,56 +386,56 @@ This API does not require a request body.
 
 ---
 
-## Task Information
+## Job Information
 
-### Task Status
+### Job Status
 
 | Status Name        | Description                           |
 |--------------------|---------------------------------------|
-| `PREPARING`        | Task in preparation                   |
-| `READY`            | Task in ready                         |
-| `RUNNING`          | Task in progress                      |
-| `COMPLETED`        | Task completed                        |
-| `REGISTERED`       | Task registered                       |
-| `WAIT_TO_REGISTER` | Task waiting to register              |
-| `INTERRUPTED`      | Task being interrupted                |
-| `CANCELED`         | Task canceled                         |
-| `FAILED`           | Task failed                           |
-| `ERROR`            | Error occurred while task in progress |
-| `DELETED`          | Task deleted                          |
-| `FAIL_TO_READY`    | Failed to get ready for task          |
+| `PREPARING`        | The job is being prepared             |
+| `READY`            | The job is ready                      |
+| `RUNNING`          | The job is running                    |
+| `COMPLETED`        | The job is completed                  |
+| `REGISTERED`       | The job is registered                 |
+| `WAIT_TO_REGISTER` | The job is waiting to be registered   |
+| `INTERRUPTED`      | The job was interrupted while running |
+| `CANCELED`         | The job is canceled                   |
+| `FAILED`           | The job failed                        |
+| `ERROR`            | An error occurred while running the job |
+| `DELETED`          | The job is deleted                    |
+| `FAIL_TO_READY`    | Failed to prepare the job             |
 
-### List Task Details
+### View Job Details
 
 ```http
 GET /v4.0/jobs/{jobId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                 | Description          |
-|-------------------------------------|-------------|
-| RDSforMariaDB:Job.Get | List Task Details |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Job.Get | View job details |
 
 #### Request
 
 This API does not require a request body.
 
-| Name  | Type | Format | Required | Description     |
-|-------|------|--------|----------|-----------------|
-| jobId | URL  | UUID   | O        | Task identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| jobId | URL | UUID | O |  |
 
 #### Response
 
-| Name                           | Type | Format   | Description                                         |
-|--------------------------------|------|----------|-----------------------------------------------------|
-| jobId                          | Body | UUID     | Task identifier                                     |
-| jobStatus                      | Body | Enum     | Current task status                                 |
-| resourceRelations              | Body | Array    | Relevant resource list                              |
-| resourceRelations.resourceType | Body | Enum     | Relevant resource type                              |
-| resourceRelations.resourceId   | Body | UUID     | Relevant resource identifier                        |
-| createdYmdt                    | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| updatedYmdt                    | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Job identifier |
+| jobStatus | Body | Enum | Current status of the job<br/>- DELETED<br/>- CANNOT_PROGRESS<br/>- FAILED<br/>- ERROR<br/>- CANCELED<br/>- INTERRUPTED<br/>- COMPLETED<br/>- RUNNING<br/>- PREPARING<br/>- READY<br/>- CREATED<br/>- FAIL_TO_READY<br/>- REGISTERED<br/>- FAIL_TO_REGISTER<br/>- WAIT_TO_REGISTER |
+| resourceRelations | Body | Array | List of related resources |
+| resourceRelations.resourceType | Body | String | Related resource type |
+| resourceRelations.resourceId | Body | String | Related resource identifier |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -442,16 +447,16 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "jobId": "0ddb042c-5af6-43fb-a914-f4dd0540eb7c",
-    "jobStatus": "RUNNING",
+    "jobId": "550e8400-e29b-41d4-a716-446655440000",
+    "jobStatus": "DELETED",
     "resourceRelations": [
         {
-            "resourceType": "DB_INSTANCE",
-            "resourceId": "56b39dcf-65eb-47ec-9d4f-09f160ba2266"
+            "resourceType": "resourceType-example",
+            "resourceId": "resourceId-example"
         }
     ],
-    "createdYmdt": "2023-02-22T20:47:12+09:00",
-    "updatedYmdt": "2023-02-22T20:49:46+09:00"
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -460,19 +465,19 @@ This API does not require a request body.
 
 ---
 
-## DB Instance Group
+## DB Instance Groups
 
-### List DB Instance Groups
+### View DB Instance Group List
 
 ```http
 GET /v4.0/db-instance-groups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                              | Description               |
-|--------------------------------------------------|------------------|
-| RDSforMariaDB:DbInstanceGroup.List | List DB Instances |
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceGroup.List | View DB instance group list |
 
 #### Request
 
@@ -480,13 +485,13 @@ This API does not require a request body.
 
 #### Response
 
-| Name                               | Type | Format   | Description                                                                                                    |
-|------------------------------------|------|----------|----------------------------------------------------------------------------------------------------------------|
-| dbInstanceGroups                   | Body | Array    | DB instance groups                                                                                             |
-| dbInstanceGroups.dbInstanceGroupId | Body | UUID     | DB instance group identifier                                                                                   |
-| dbInstanceGroups.replicationType   | Body | Enum     | DB instance group replication type<br/>- `STANDALONE`: Standalone<br/>- `HIGH_AVAILABILITY`: High availability |
-| dbInstanceGroups.createdYmdt       | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                             |
-| dbInstanceGroups.updatedYmdt       | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                            |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbInstanceGroups | Body | Array | DB instance group list |
+| dbInstanceGroups.dbInstanceGroupId | Body | UUID | DB instance group identifier |
+| dbInstanceGroups.replicationType | Body | Enum | DB instance group replication type<br/>- STANDALONE: `High availability disabled`<br/>- HIGH_AVAILABILITY: `High availability enabled` |
+| dbInstanceGroups.createdYmdt | Body | DateTime | Creation date and time |
+| dbInstanceGroups.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -500,10 +505,10 @@ This API does not require a request body.
     },
     "dbInstanceGroups": [
         {
-            "dbInstanceGroupId": "05de0746-89fd-49c8-94f9-9c5b1df97009",
+            "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
             "replicationType": "STANDALONE",
-            "createdYmdt": "2023-02-13T17:35:20+09:00",
-            "updatedYmdt": "2023-02-13T17:35:20+09:00"
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -514,39 +519,38 @@ This API does not require a request body.
 
 ---
 
-### List DB Instance Group Details
+### View DB Instance Group Details
 
 ```http
 GET /v4.0/db-instance-groups/{dbInstanceGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                             | Description               |
-|-------------------------------------------------|------------------|
-| RDSforMariaDB:DbInstanceGroup.Get | List DB Instance Group Details |
-
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceGroup.Get | View DB instance group details |
 
 #### Request
 
 This API does not require a request body.
 
-| Name              | Type | Format | Required | Description                  |
-|-------------------|------|--------|----------|------------------------------|
-| dbInstanceGroupId | URL  | UUID   | O        | DB instance group identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceGroupId | URL | UUID | O |  |
 
 #### Response
 
-| Name                         | Type | Format   | Description                                                                                                                                                             |
-|------------------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceGroupId            | Body | UUID     | DB instance group identifier                                                                                                                                            |
-| replicationType              | Body | Enum     | DB instance group replication type<br/>- `STANDALONE`: Standalone<br/>- `HIGH_AVAILABILITY`: High availability                                                          |
-| dbInstances                  | Body | Array    | DB instances belong to DB instance group                                                                                                                                |
-| dbInstances.dbInstanceId     | Body | UUID     | DB instance identifier                                                                                                                                                  |
-| dbInstances.dbInstanceType   | Body | Enum     | DB instance role type<br/>- `MASTER`: Master<br/>- `FAILED_MASTER`: Failed over master<br/>- `CANDIDATE_MASTER`: Candidate master<br/>- `READ_ONLY_SLAVE`: Read replica |
-| dbInstances.dbInstanceStatus | Body | Enum     | DB instance current status                                                                                                                                              |
-| createdYmdt                  | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-| updatedYmdt                  | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbInstanceGroupId | Body | UUID | DB instance group identifier |
+| replicationType | Body | Enum | DB instance group replication type<br/>- STANDALONE: `High availability disabled`<br/>- HIGH_AVAILABILITY: `High availability enabled` |
+| dbInstances | Body | Array | List of DB instances in the DB instance group |
+| dbInstances.dbInstanceId | Body | UUID | DB instance identifier |
+| dbInstances.dbInstanceType | Body | Enum | DB instance role type<br/>- MASTER: `Master`<br/>- FAILED_MASTER: `Failed master`<br/>- CANDIDATE_MASTER: `Candidate master`<br/>- READ_ONLY_SLAVE: `Read replica` |
+| dbInstances.dbInstanceStatus | Body | Enum | Current status of the DB instance<br/>- BEFORE_CREATE: `Before creation (gray)`<br/>- AVAILABLE: `Available (green)`<br/>- STORAGE_FULL: `Storage full (red)`<br/>- FAIL_TO_CREATE: `Failed to create (red)`<br/>- FAIL_TO_CONNECT: `Failed to connect (red)`<br/>- REPLICATION_STOP: `Replication down (red)`<br/>- REPLICATION_DELAY: `Replication delay (yellow)`<br/>- FAILOVER: `Failover completed (red)`<br/>- SHUTDOWN: `Stopped (gray)`<br/>- DELETED: `Deleted (gray)` |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -558,17 +562,17 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "dbInstanceGroupId": "36617a8e-0df8-4b16-b6ea-6306019e95da",
+    "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
     "replicationType": "STANDALONE",
     "dbInstances": [
         {
-            "dbInstanceId": "6d2db0ef-fe9b-4ed4-97b1-d97fcb4cf1b8",
+            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
             "dbInstanceType": "MASTER",
-            "dbInstanceStatus": "AVAILABLE"
+            "dbInstanceStatus": "BEFORE_CREATE"
         }
     ],
-    "createdYmdt": "2023-03-03T17:38:14+09:00",
-    "updatedYmdt": "2023-03-03T17:38:14+09:00"
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -577,64 +581,64 @@ This API does not require a request body.
 
 ---
 
-## DB Instance
+## DB Instances
 
 ### DB Instance Status
 
-| Status             | Description                               |
-|--------------------|-------------------------------------------|
-| `AVAILABLE`        | DB instance is available                  |
-| `BEFORE_CREATE`    | Before DB instance is created             |
-| `STORAGE_FULL`     | Insufficient DB instance storage          |
-| `FAIL_TO_CREATE`   | Failed to create DB instance              |
-| `FAIL_TO_CONNECT`  | Failed to connect DB instance             |
-| `REPLICATION_STOP` | Replication of DB instance is stopped     |
-| `FAILOVER`         | High availability DB instance failed over |
-| `SHUTDOWN`         | DB instance is stopped                    |
-| `DELETED`          | DB instance is deleted                    |
+| Status | Description |
+|--------|-------------|
+| `AVAILABLE` | DB instance is available |
+| `BEFORE_CREATE` | DB instance not yet created |
+| `STORAGE_FULL` | DB instance storage is full |
+| `FAIL_TO_CREATE` | DB instance creation failed |
+| `FAIL_TO_CONNECT` | DB instance connection failed |
+| `REPLICATION_STOP` | DB instance replication is down |
+| `FAILOVER` | DB instance failover occurred |
+| `SHUTDOWN` | DB instance is shut down |
+| `DELETED` | DB instance is deleted |
 
 ### DB Instance Progress Status
 
-| Status                     | Description                      |
-|----------------------------|----------------------------------|
-| `APPLYING_PARAMETER_GROUP` | Parameter group is being applied |
-| `BACKING_UP`               | Backing up                       |
-| `CANCELING`                | Canceling                        |
-| `CREATING`                 | Creating                         |
-| `CREATING_SCHEMA`          | Creating DB schema	              |
-| `CREATING_USER`            | Creating user	                   |
-| `DELETING`                 | Deleting                         |
-| `DELETING_SCHEMA`          | Deleting DB schema               |
-| `DELETING_USER`            | Deleting user                    |
-| `EXPORTING_BACKUP`         | Exporting backup                 |
-| `FAILING_OVER`             | Under failover                   |
-| `MIGRATING`                | Under migration                  |
-| `MODIFYING`                | Under modification               |
-| `PREPARING`                | In preparation                   |
-| `PROMOTING`                | Promoting                        |
-| `REBUILDING`               | Rebuilding                       |
-| `REPAIRING`                | Recovering                       |
-| `REPLICATING`              | Replicating                      |
-| `RESTARTING`               | Restarting                       |
-| `RESTARTING_FORCIBLY`      | Force restarting                 |
-| `RESTORING`                | Restoring                        |
-| `STARTING`                 | Starting                         |
-| `STOPPING`                 | Stopping                         |
-| `SYNCING_SCHEMA`           | Synchronizing DB schema          |
-| `SYNCING_USER`             | Synchronizing user	              |
-| `UPDATING_USER`            | Modifying user	                  |
+| Status                     | Description           |
+|----------------------------|-----------------------|
+| `APPLYING_PARAMETER_GROUP` | Applying parameter group |
+| `BACKING_UP`               | Backing up            |
+| `CANCELING`                | Canceling             |
+| `CREATING`                 | Creating              |
+| `CREATING_SCHEMA`          | Creating DB schema    |
+| `CREATING_USER`            | Creating user         |
+| `DELETING`                 | Deleting              |
+| `DELETING_SCHEMA`          | Deleting DB schema    |
+| `DELETING_USER`            | Deleting user         |
+| `EXPORTING_BACKUP`         | Exporting backup      |
+| `FAILING_OVER`             | Failing over          |
+| `MIGRATING`                | Migrating             |
+| `MODIFYING`                | Modifying             |
+| `PREPARING`                | Preparing             |
+| `PROMOTING`                | Promoting             |
+| `REBUILDING`               | Rebuilding            |
+| `REPAIRING`                | Repairing             |
+| `REPLICATING`              | Replicating           |
+| `RESTARTING`               | Restarting            |
+| `RESTARTING_FORCIBLY`      | Restarting forcibly   |
+| `RESTORING`                | Restoring             |
+| `STARTING`                 | Starting              |
+| `STOPPING`                 | Stopping              |
+| `SYNCING_SCHEMA`           | Syncing DB schema     |
+| `SYNCING_USER`             | Syncing user          |
+| `UPDATING_USER`            | Updating user         |
 
-### List DB instances
+### View DB Instance List
 
 ```http
 GET /v4.0/db-instances
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                         | Description            |
-|---------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.List | List DB instances |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.List | View DB instance list |
 
 #### Request
 
@@ -642,20 +646,20 @@ This API does not require a request body.
 
 #### Response
 
-| Name                          | Type | Format   | Description                                                                                                                                                             |
-|-------------------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstances                   | Body | Array    | DB instances                                                                                                                                                            |
-| dbInstances.dbInstanceId      | Body | UUID     | DB instance identifier                                                                                                                                                  |
-| dbInstances.dbInstanceGroupId | Body | UUID     | DB instance group identifier                                                                                                                                            |
-| dbInstances.dbInstanceName    | Body | String   | Name to identify DB instances                                                                                                                                           |
-| dbInstances.description       | Body | String   | Additional information on DB instances                                                                                                                                  |
-| dbInstances.dbVersion         | Body | Enum     | DB engine type                                                                                                                                                          |
-| dbInstances.dbPort            | Body | Number   | DB port                                                                                                                                                                 |
-| dbInstances.dbInstanceType    | Body | Enum     | DB instance role type<br/>- `MASTER`: Master<br/>- `FAILED_MASTER`: Failed over master<br/>- `CANDIDATE_MASTER`: Candidate master<br/>- `READ_ONLY_SLAVE`: Read replica |
-| dbInstances.dbInstanceStatus  | Body | Enum     | DB instance current status                                                                                                                                              |
-| dbInstances.progressStatus    | Body | Enum     | DB instance current status                                                                                                                                              |
-| dbInstances.createdYmdt       | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-| dbInstances.updatedYmdt       | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbInstances | Body | Array | DB instance list |
+| dbInstances.dbInstanceId | Body | UUID | DB instance identifier |
+| dbInstances.dbInstanceGroupId | Body | UUID | DB instance group identifier |
+| dbInstances.dbInstanceName | Body | String | Name that can identify the DB instance |
+| dbInstances.description | Body | String | Additional information about the DB instance |
+| dbInstances.dbVersion | Body | Enum | DB engine type |
+| dbInstances.dbPort | Body | Number | DB port |
+| dbInstances.dbInstanceType | Body | Enum | DB instance role type<br/>- MASTER: `Master`<br/>- FAILED_MASTER: `Failed master`<br/>- CANDIDATE_MASTER: `Candidate master`<br/>- READ_ONLY_SLAVE: `Read replica` |
+| dbInstances.dbInstanceStatus | Body | Enum | Current status of the DB instance<br/>- BEFORE_CREATE: `Before creation (gray)`<br/>- AVAILABLE: `Available (green)`<br/>- STORAGE_FULL: `Storage full (red)`<br/>- FAIL_TO_CREATE: `Failed to create (red)`<br/>- FAIL_TO_CONNECT: `Failed to connect (red)`<br/>- REPLICATION_STOP: `Replication down (red)`<br/>- REPLICATION_DELAY: `Replication delay (yellow)`<br/>- FAILOVER: `Failover completed (red)`<br/>- SHUTDOWN: `Shutdown (gray)`<br/>- DELETED: `Deleted (gray)` |
+| dbInstances.progressStatus | Body | Enum | Current progress status of the DB instance<br/>- NONE<br/>- APPLYING_PARAMETER_GROUP<br/>- BACKING_UP<br/>- CANCELING<br/>- CREATING<br/>- CREATING_SCHEMA<br/>- CREATING_USER<br/>- DELETING<br/>- DELETING_SCHEMA<br/>- DELETING_USER<br/>- EXPORTING_BACKUP<br/>- FAILING_OVER<br/>- MIGRATING<br/>- MODIFYING<br/>- PREPARING<br/>- PROMOTING<br/>- PROMOTING_FORCIBLY<br/>- REBUILDING<br/>- REPAIRING<br/>- REPLICATING<br/>- RESTARTING<br/>- RESTARTING_FORCIBLY<br/>- RESTORING<br/>- STARTING<br/>- STOPPING<br/>- SYNCING_SCHEMA<br/>- SYNCING_USER<br/>- UPDATING_USER<br/>- WAIT_MANUAL_CONTROL |
+| dbInstances.createdYmdt | Body | DateTime | Creation date and time |
+| dbInstances.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -669,104 +673,19 @@ This API does not require a request body.
     },
     "dbInstances": [
         {
-            "dbInstanceId": "d067593b-1acc-4ccc-9e8a-cc72d6d79ec3",
-            "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
-            "dbInstanceName": "db-instance",
-            "description": null,
-            "dbVersion": "MARIADB_V10330",
-            "dbPort": 10000,
+            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbInstanceName": "dbInstanceName-example",
+            "description": "description-example",
+            "dbVersion": "MYSQL_V8036",
+            "dbPort": 1,
             "dbInstanceType": "MASTER",
-            "dbInstanceStatus": "AVAILABLE",
+            "dbInstanceStatus": "BEFORE_CREATE",
             "progressStatus": "NONE",
-            "createdYmdt": "2023-01-23T12:03:13+09:00",
-            "updatedYmdt": "2023-02-02T17:20:17+09:00"
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
-}
-```
-
-</p>
-</details>
-
----
-
-### List DB Instance Details
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}
-```
-
-#### Required permissions
-
-| Permission Name                                        | Description            |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                        | Type | Format   | Description                                                                                                                                                             |
-|-----------------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId                | Body | UUID     | DB instance identifier                                                                                                                                                  |
-| dbInstanceGroupId           | Body | UUID     | DB instance group identifier                                                                                                                                            |
-| dbInstanceName              | Body | String   | Name to identify DB instances                                                                                                                                           |
-| description                 | Body | String   | Additional information on DB instances                                                                                                                                  |
-| dbVersion                   | Body | Enum     | DB engine type                                                                                                                                                          |
-| dbPort                      | Body | Number   | DB port                                                                                                                                                                 |
-| dbInstanceType              | Body | Enum     | DB instance role type<br/>- `MASTER`: Master<br/>- `FAILED_MASTER`: Failed over master<br/>- `CANDIDATE_MASTER`: Candidate master<br/>- `READ_ONLY_SLAVE`: Read replica |
-| dbInstanceStatus            | Body | Enum     | DB instance current status                                                                                                                                              |
-| progressStatus              | Body | Enum     | Current task status of DB instance                                                                                                                                      |
-| dbFlavorId                  | Body | UUID     | Identifier of DB instance specifications                                                                                                                                |
-| parameterGroupId            | Body | UUID     | Parameter group identifier applied to DB instance                                                                                                                       |
-| dbSecurityGroupIds          | Body | Array    | DB security group identifiers applied to DB instance                                                                                                                    |
-| notificationGroupIds        | Body | Array    | Notification group identifiers applied to DB instance                                                                                                                   |
-| useDeletionProtection       | Body | Boolean  | Whether to protect DB instance against deletion                                                                                                                         |
-| useSlowQueryAnalysis        | Body | Boolean  | Whether to analyze slow queries                                                                                                                                                         |
-| supportAuthenticationPlugin | Body | Boolean  | Whether to support authentication plugin                                                                                                                                |
-| needToApplyParameterGroup   | Body | Boolean  | Need to apply the latest parameter group                                                                                                                                |
-| needMigration               | Body | Boolean  | Need to migrate                                                                                                                                                         |
-| supportDbVersionUpgrade     | Body | Boolean  | Whether to support DB version upgrade                                                                                                                                   |
-| createdYmdt                 | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-| updatedYmdt                 | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                     |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "dbInstanceId": "d067593b-1acc-4ccc-9e8a-cc72d6d79ec3",
-    "dbInstanceGroupId": "51c7d080-ff36-4025-84b1-9d9d0b4fe9e0",
-    "dbInstanceName": "db-instance",
-    "description": null,
-    "dbVersion": "MARIADB_V10330",
-    "dbPort": 10000,
-    "dbInstanceType": "MASTER",
-    "dbInstanceStatus": "AVAILABLE",
-    "progressStatus": "NONE",
-    "dbFlavorId": "e9ed4ef6-78d7-46fa-ace9-32481e97f3b7",
-    "parameterGroupId": "b03e8b13-de27-4d04-a488-ff5689589372",
-    "dbSecurityGroupIds": ["01908c35-d2c9-4852-baf0-17f06ec42c03"],
-    "notificationGroupIds": ["83a62a33-ddbf-4a04-8653-e54463d5b1ac"],
-    "useDeletionProtection": false,
-    "useSlowQueryAnalysis": true,
-    "supportAuthenticationPlugin": true,
-    "needToApplyParameterGroup": false,
-    "needMigration": false,
-    "supportDbVersionUpgrade": true,
-    "createdYmdt": "2022-11-23T12:03:13+09:00",
-    "updatedYmdt": "2022-12-02T17:20:17+09:00"
 }
 ```
 
@@ -781,86 +700,110 @@ This API does not require a request body.
 POST /v4.0/db-instances
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Create | Create DB Instance |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Create | Create DB instance |
 
-#### Request
+#### Common Request
 
-| Name                    | Type | Format  | Required | Description                                                                                                           |
-|-------------------------|------|---------|----------|-----------------------------------------------------------------------------------------------------------------------|
-| dbInstanceName          | Body | String  | O        | Master name to identify DB instances                                                                                  |
-| dbInstanceCandidateName | Body | String  | O        | Candidate name to identify DB instances                                                                               |
-| description             | Body | String  | X        | Additional information on DB instances                                                                                |
-| dbFlavorId              | Body | UUID    | O        | Identifier of DB instance specifications                                                                              |
-| dbVersion               | Body | Enum    | O        | DB engine type                                                                                                        |
-| dbPort                  | Body | Number  | O        | DB port<br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                                                      |
-| dbUserName              | Body | String  | O        | DB user account name                                                                                                  |
-| dbPassword              | Body | String  | O        | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256`                                        |
-| parameterGroupId        | Body | UUID    | O        | Parameter group identifier                                                                                            |
-| dbSecurityGroupIds      | Body | Array   | X        | DB security group identifiers                                                                                         |
-| userGroupIds            | Body | Array   | X        | User group identifiers                                                                                                |
-| useHighAvailability     | Body | Boolean | X        | Whether to use high availability<br/>- Default: `false`                                                                 |
-| pingInterval            | Body | Number  | X        | Ping interval (sec) when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
-| pingType                | Body | Enum    | X        | Ping type when using high availability<br/>- Default: `INSERT`<br/>- `INSERT`<br/>- `SELECT`                                         |
-| useDefaultNotification  | Body | Boolean | X        | Whether to use default notification<br/>- Default: `false`                                                              |
-| useDeletionProtection   | Body | Boolean | X        | Whether to protect against deletion<br/>- Default: `false`                                                              |
-| useSlowQueryAnalysis    | Body | Boolean | X        | Whether to analyze slow queries<br/>- Default: `true`                                                                 |
-| authenticationPlugin                     | Body | Enum    | X        | Authentication Plugin<br/>- Default: `NATIVE`(`ED25519` if not supported)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519`                                                                                                                                                                                |
-| network                                  | Body | Object  | O        | Network information objects                                                                                                                                                                                                                                               |
-| network.subnetId                         | Body | UUID    | O        | Subnet identifier                                                                                                                                                                                                                                                         |
-| network.usePublicAccess                  | Body | Boolean | X        | External access is available or not<br/>- Default: `false`                                                                                                                                                                                                                  |
-| network.availabilityZone                 | Body | Enum    | O        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`                                                                                                                                                                                             |
-| storage                                  | Body | Object  | O        | Storage information objects                                                                                                                                                                                                                                               |    
-| storage.storageType                      | Body | Enum    | O        | Block Storage Type<br/>- Example: `General SSD`                                                                                                                                                                                                                           |
-| storage.storageSize                      | Body | Number  | O        | Block Storage Size (GB)<br/>- Minimum value: `20`<br/>- Maximum value: `2048`                                                                                                                                                                                             |
-| storage.storageAutoscale                     | Body | Object  | X  | Block Storage Auto Scaling Objects                                         |
-| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X  | Whether to enable storage auto scaling                                     |
-| storage.storageAutoscale.threshold           | Body | Number  | X  | Auto scale out conditions (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95`        |
-| storage.storageAutoscale.maxStorageSize      | Body | Number  | X  | Auto scaling maximum size (GB)<br/>- Maximum value: `4096`                           |
-| storage.storageAutoscale.cooldownTime        | Body | Number  | X  | Auto scaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
-| backup                                   | Body | Object  | O        | Backup information objects                                                                                                                                                                                                                                                |
-| backup.backupPeriod                      | Body | Number  | O        | Backup retention period<br/>- Minimum value: `0`<br/>- Maximum value: `730`                                                                                                                                                                                               |
-| backup.ftwrlWaitTimeout                  | Body | Number  | X        | Query latency (sec)<br/>- Default: `1800`<br/>- Minimum value: `0`<br/>- Maximum value: `21600`                                                                                                                                                                                |
-| backup.backupRetryCount                  | Body | Number  | X        | Number of backup retries<br/>- Default: `0`<br/>- Minimum value: `0`<br/>- Maximum value: `10`                                                                                                                                                                              |
-| backup.useBackupLock                     | Body | Boolean | X        | Whether to use table lock<br/>- Default: `true`                                                                                                                                                                                                                             |
-| backup.backupSchedules                   | Body | Array   | O        | Scheduled auto backup list                                                                                                                                                                                                                                                |
-| backup.backupSchedules.backupWndBgnTime  | Body | String  | O        | Backup started time<br/>- Example: `00:00:00`                                                                                                                                                                                                                             |
-| backup.backupSchedules.backupWndDuration | Body | Enum    | O        | Backup duration<br/>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceName | Body | String | O | Name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbFlavorId | Body | UUID | O | Identifier for DB instance specifications |
+| dbVersion | Body | Enum | O | DB engine type |
+| dbPort | Body | Number | O | DB port<br/>- Minimum value: 3306, Maximum value: 43306 |
+| dbUserName | Body | String | O | DB user account name<br/>- Minimum length: `1`<br/>- Maximum length: `32` |
+| dbPassword | Body | String | O | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256` |
+| parameterGroupId | Body | UUID | O | Identifier for parameter group |
+| dbSecurityGroupIds | Body | Array | X | List of DB security group identifiers |
+| userGroupIds | Body | Array | X | List of user group identifiers |
+| useHighAvailability | Body | Boolean | X | Whether to use high availability<br/>- Default: `false` |
+| pingInterval | Body | Number | X | Ping interval in seconds when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
+| useDefaultNotification | Body | Boolean | X | Whether to use default notifications<br/>- Default: `false` |
+| useDeletionProtection | Body | Boolean | X | Whether to enable deletion protection<br/>- Default: `false` |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to analyze slow queries<br/>- Default: `true` |
+| authenticationPlugin | Body | Enum | X | Authentication Plugin<br/>- NATIVE: `mysql_native_password authentication`<br/>- ED25519: `ed25519 authentication (MariaDB only)` |
+| tlsOption | Body | Enum | X | TLS Option<br/>- Default: `NONE`<br/>- NONE: `TLS not used`<br/>- SSL: `SSL authentication`<br/>- X509: `X509 certificate authentication` |
+| network | Body | Object | O | Network information object |
+| network.subnetId | Body | UUID | O | Subnet identifier |
+| network.usePublicAccess | Body | Boolean | X | Whether external access is allowed<br/>- Default: `false` |
+| network.availabilityZone | Body | Enum | O | Availability zone to create the DB instance |
+| storage | Body | Object | O | Storage information object |
+| storage.storageType | Body | Enum | O | Data storage type |
+| storage.storageSize | Body | Number | O | Data storage size (GB)<br/>- Minimum value: `20` |
+| storage.storageAutoscale | Body | Object | X | Data storage auto-scaling object |
+| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to enable storage auto-scaling<br/>- Default: `false` |
+| backup | Body | Object | O | Backup information object |
+| backup.backupPeriod | Body | Number | O | Backup retention period (days)<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| backup.backupRetryCount | Body | Number | X | Number of backup retry attempts<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| backup.ftwrlWaitTimeout | Body | Number | X | Query delay wait time (seconds)<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backup.replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| backup.useBackupLock | Body | Boolean | X | Whether to use table lock<br/>- Default: `true` |
+| backup.backupSchedules | Body | Array | O | List of backup schedules |
+| backup.backupSchedules.backupWndBgnTime | Body | Time | O | Backup start time |
+| backup.backupSchedules.backupWndDuration | Body | Enum | O | Backup Duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
+
+#### When Using High Availability
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceCandidateName | Body | String | O | Standby master name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+
+#### When Using Storage Auto-scaling
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storage.storageAutoscale.threshold | Body | Number | O | Auto-scaling condition (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storage.storageAutoscale.maxStorageSize | Body | Number | O | Maximum auto-scaling size (GB)<br/>- Maximum value: `4096` |
+| storage.storageAutoscale.cooldownTime | Body | Number | O | Auto-scaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbVersion": "MARIADB_V10330",
-    "dbPort": 10000,
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
+    "dbInstanceName": "dbInstanceName",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbVersion": "MYSQL_V8036",
+    "dbPort": 1,
+    "dbUserName": "dbUserName",
+    "dbPassword": "dbPassword",
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
     "userGroupIds": [],
+    "useHighAvailability": false,
+    "pingInterval": 3,
+    "useDefaultNotification": false,
+    "useDeletionProtection": false,
+    "useSlowQueryAnalysis": true,
+    "authenticationPlugin": "NATIVE",
+    "tlsOption": "NONE",
     "network": {
-        "subnetId": "e721a9dd-dad0-4cf0-a53b-dd654ebfc683",
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
         "availabilityZone": "kr-pub-a"
     },
     "storage": {
         "storageType": "General SSD",
-        "storageSize": 20
+        "storageSize": 20,
+        "storageAutoscale": {
+            "useStorageAutoscale": false
+        }
     },
     "backup": {
-        "backupPeriod": 1,
+        "backupPeriod": 0,
+        "backupRetryCount": 0,
+        "ftwrlWaitTimeout": 1800,
+        "replicationRegion": "KR1",
+        "useBackupLock": true,
         "backupSchedules": [
             {
                 "backupWndBgnTime": "00:00:00",
-                "backupWndDuration": "ONE_HOUR"
+                "backupWndDuration": "HALF_AN_HOUR"
             }
         ]
     }
@@ -872,9 +815,318 @@ POST /v4.0/db-instances
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+### Restore DB Instance Using Object Storage
+
+```http
+POST /v4.0/db-instances/restore-from-obs
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.RestoreFromObs | Restore DB instance using Object Storage |
+
+#### Common request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceName | Body | String | O | Master name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbFlavorId | Body | UUID | O | DB instance specification identifier |
+| dbPort | Body | Number | O | DB port |
+| dbVersion | Body | Enum | O | DB engine type |
+| useHighAvailability | Body | Boolean | X | Whether to use high availability<br/>- Default: `false` |
+| pingInterval | Body | Number | X | Ping interval (seconds) when using high availability<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
+| storage | Body | Object | O | Storage information object |
+| storage.storageType | Body | Enum | O | Storage type |
+| storage.storageSize | Body | Number | O | Data storage size (GB)<br/>- Minimum value: `20` |
+| storage.storageAutoscale | Body | Object | X | Data storage auto-expansion object |
+| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to use storage auto-expansion<br/>- Default: `false` |
+| network | Body | Object | O | Network information object |
+| network.subnetId | Body | UUID | O | Subnet identifier |
+| network.usePublicAccess | Body | Boolean | X | Whether external access is possible<br/>- Default: `false` |
+| network.availabilityZone | Body | Enum | O | Availability zone where the DB instance will be created |
+| backup | Body | Object | O | Backup information object |
+| backup.backupPeriod | Body | Number | O | Backup retention period (days)<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| backup.ftwrlWaitTimeout | Body | Number | X | Query delay wait time (seconds)<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backup.backupRetryCount | Body | Number | X | Number of backup retries<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| backup.replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| backup.useBackupLock | Body | Boolean | X | Whether to use table lock<br/>- Default: `true` |
+| backup.backupSchedules | Body | Array | O | Backup schedule list |
+| backup.backupSchedules.backupWndBgnTime | Body | Time | O | Backup start time |
+| backup.backupSchedules.backupWndDuration | Body | Enum | O | Backup Duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
+| restore | Body | Object | O | Restore information object |
+| restore.tenantId | Body | String | O | Tenant ID of Object Storage where the backup is stored |
+| restore.username | Body | String | O | NHN Cloud account or IAM member ID |
+| restore.password | Body | String | O | API password for Object Storage where the backup is stored |
+| restore.targetContainer | Body | String | O | Container in Object Storage where the backup is stored |
+| restore.objectPath | Body | String | O | Path of the backup stored in the container |
+| useDefaultNotification | Body | Boolean | X | Whether to use default notifications<br/>- Default: `false` |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to analyze slow queries<br/>- Default: `true` |
+| parameterGroupId | Body | UUID | O | Parameter group identifier |
+| dbSecurityGroupIds | Body | Array | X | DB security group identifier list |
+| userGroupIds | Body | Array | X | User group identifier list |
+| useDeletionProtection | Body | Boolean | X | Whether to use deletion protection<br/>- Default: `false` |
+
+#### When using high availability
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceCandidateName | Body | String | O | Candidate master name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+
+#### When using storage auto-expansion
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storage.storageAutoscale.threshold | Body | Number | O | Auto-expansion condition (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storage.storageAutoscale.maxStorageSize | Body | Number | O | Auto-expansion maximum size (GB)<br/>- Maximum value: `4096` |
+| storage.storageAutoscale.cooldownTime | Body | Number | O | Auto-expansion cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbInstanceName": "dbInstanceName",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "dbVersion": "MYSQL_V8036",
+    "useHighAvailability": false,
+    "pingInterval": 3,
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20,
+        "storageAutoscale": {
+            "useStorageAutoscale": false
+        }
+    },
+    "network": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "backup": {
+        "backupPeriod": 0,
+        "ftwrlWaitTimeout": 1800,
+        "backupRetryCount": 0,
+        "replicationRegion": "KR1",
+        "useBackupLock": true,
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    },
+    "restore": {
+        "tenantId": "0123456789abcdef0123456789abcdef",
+        "username": "username-example",
+        "password": "password-example",
+        "targetContainer": "targetContainer-example",
+        "objectPath": "objectPath-example"
+    },
+    "useDefaultNotification": false,
+    "useSlowQueryAnalysis": true,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useDeletionProtection": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Delete DB Instance
+
+```http
+DELETE /v4.0/db-instances/{dbInstanceId}
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Delete | Delete DB instance |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | The identifier of the DB instance |
+| deleteAutoBackup | Body | Boolean | X | Whether to delete auto backup<br/>- Default: `false` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "deleteAutoBackup": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | The identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View DB Instance Details
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | View DB instance details |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbInstanceId | Body | UUID | DB instance identifier |
+| dbInstanceGroupId | Body | UUID | DB instance group identifier |
+| dbInstanceName | Body | String | Name that identifies the DB instance |
+| description | Body | String | Additional information about the DB instance |
+| dbVersion | Body | Enum | DB engine type |
+| dbPort | Body | Number | DB port |
+| dbInstanceType | Body | Enum | DB instance role type<br/>- MASTER: `Master`<br/>- FAILED_MASTER: `Failed master`<br/>- CANDIDATE_MASTER: `Candidate master`<br/>- READ_ONLY_SLAVE: `Read replica` |
+| dbInstanceStatus | Body | Enum | Current status of the DB instance<br/>- BEFORE_CREATE: `Before creation (gray)`<br/>- AVAILABLE: `Available (green)`<br/>- STORAGE_FULL: `Storage full (red)`<br/>- FAIL_TO_CREATE: `Failed to create (red)`<br/>- FAIL_TO_CONNECT: `Failed to connect (red)`<br/>- REPLICATION_STOP: `Replication down (red)`<br/>- REPLICATION_DELAY: `Replication delay (yellow)`<br/>- FAILOVER: `Failover completed (red)`<br/>- SHUTDOWN: `Stopped (gray)`<br/>- DELETED: `Deleted (gray)` |
+| progressStatus | Body | Enum | Current progress status of the DB instance<br/>- NONE<br/>- APPLYING_PARAMETER_GROUP<br/>- BACKING_UP<br/>- CANCELING<br/>- CREATING<br/>- CREATING_SCHEMA<br/>- CREATING_USER<br/>- DELETING<br/>- DELETING_SCHEMA<br/>- DELETING_USER<br/>- EXPORTING_BACKUP<br/>- FAILING_OVER<br/>- MIGRATING<br/>- MODIFYING<br/>- PREPARING<br/>- PROMOTING<br/>- PROMOTING_FORCIBLY<br/>- REBUILDING<br/>- REPAIRING<br/>- REPLICATING<br/>- RESTARTING<br/>- RESTARTING_FORCIBLY<br/>- RESTORING<br/>- STARTING<br/>- STOPPING<br/>- SYNCING_SCHEMA<br/>- SYNCING_USER<br/>- UPDATING_USER<br/>- WAIT_MANUAL_CONTROL |
+| dbFlavorId | Body | UUID | DB instance specification identifier |
+| parameterGroupId | Body | UUID | Identifier of the parameter group applied to the DB instance |
+| dbSecurityGroupIds | Body | Array | List of DB security group identifiers applied to the DB instance |
+| notificationGroupIds | Body | Array | List of notification group identifiers applied to the DB instance |
+| useDeletionProtection | Body | Boolean | Whether DB instance deletion protection is enabled |
+| useSlowQueryAnalysis | Body | Boolean | Whether slow query analysis is enabled |
+| supportAuthenticationPlugin | Body | Boolean | Whether authentication plugin is supported |
+| needToApplyParameterGroup | Body | Boolean | Whether the latest parameter group needs to be applied |
+| needMigration | Body | Boolean | Whether migration is required |
+| supportDbVersionUpgrade | Body | Boolean | Whether DB version upgrade is supported |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbInstanceName": "dbInstanceName-example",
+    "description": "description-example",
+    "dbVersion": "MYSQL_V8036",
+    "dbPort": 1,
+    "dbInstanceType": "MASTER",
+    "dbInstanceStatus": "BEFORE_CREATE",
+    "progressStatus": "NONE",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [
+        "550e8400-e29b-41d4-a716-446655440000"
+    ],
+    "notificationGroupIds": [
+        "550e8400-e29b-41d4-a716-446655440000"
+    ],
+    "useDeletionProtection": false,
+    "useSlowQueryAnalysis": false,
+    "supportAuthenticationPlugin": false,
+    "needToApplyParameterGroup": false,
+    "needMigration": false,
+    "supportDbVersionUpgrade": false,
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -884,1115 +1136,62 @@ POST /v4.0/db-instances
 PUT /v4.0/db-instances/{dbInstanceId}
 ```
 
-#### Required permissions
-
-| Permission Name                               | Description  |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
-
-#### Request
-
-| Name               | Type | Format  | Required | Description                                                                                                       |
-|--------------------|------|---------|----------|-------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId       | URL  | UUID    | O        | DB instance identifier                                                                                            |
-| dbInstanceName     | Body | String  | X        | Master name to identify DB instances                                                                              |
-| dbInstanceCandidateName| Body | String  | X        | Candidate name to identify DB instances                                                                               |
-| description        | Body | String  | X        | Additional information on DB instances                                                                            |
-| dbPort             | Body | Number  | X        | DB port<br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                                                  |
-| useSlowQueryAnalysis | Body | Boolean  | X | Whether to analyze slow queries |
-| dbFlavorId         | Body | UUID    | X        | Identifier of DB instance specifications                                                                          |
-| parameterGroupId   | Body | UUID    | X        | Parameter group identifier                                                                                        |
-| dbSecurityGroupIds | Body | Array   | X        | DB security group identifiers                                                                                     |
-| executeBackup      | Body | Boolean | X        | Whether to execute backup at this time<br/>- Default: `false`                                                       |
-| useOnlineFailover  | Body | Boolean | X        | Whether to restart using failover<br/>Available only for DB instance using high availability<br/>- Default: `false` |
-| waitReplicationDelay  | Body | Boolean | X  | Wait for replication lag to clear<br/>Available only for DB instances with high availability enabled.<br/>- Default: `false` |
-| useReadOnly  | Body | Boolean | X  | Switch to read-only mode<br/>Available only for DB instances with high availability enabled.<br/>- Default: `false` |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance2",
-    "description": "description2",
-    "dbPort": 10001,
-    "dbSecurityGroupIds": [],
-    "executeBackup": true
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Delete DB instance
-
-```http
-DELETE /v4.0/db-instances/{dbInstanceId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Delete | Delete DB instance |
-
-#### Request
-
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-| deleteAutoBackup          | Body | Boolean  | X  | Delete automated backups<br/>- Default: `false` |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Restart DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/restart
-```
-
-#### Required permissions
-
-| Permission Name                                            | Description            |
-|------------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Restart | Restart DB Instance |
-
-#### Request
-
-| Name              | Type | Format  | Required | Description                                                                                                       |
-|-------------------|------|---------|----------|-------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId      | URL  | UUID    | O        | DB instance identifier                                                                                            |
-| useOnlineFailover | Body | Boolean | X        | Whether to restart using failover<br/>Available only for DB instance using high availability<br/>- Default: `false` |
-| executeBackup     | Body | Boolean | X        | Whether to execute backup at this time<br/>- Default: `false`                                                       |
-| waitReplicationDelay     | Body | Boolean | X  | Wait for replication lag to clear<br/>Available only for DB instances with high availability enabled.<br/>- Default: `false`                                         |
-| useReadOnly     | Body | Boolean | X  | Switch to read-only mode<br/>Available only for DB instances with high availability enabled.<br/>- Default: `false`                                         |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-### Force Restart DB instance
-```http
-POST /v4.0/db-instances/{dbInstanceId}/force-restart
-```
-
-#### Required permissions
-
-| Permission Name                                                 | Description               |
-|-----------------------------------------------------|------------------|
-| RDSforMariaDB:DbInstance.ForceRestart | Force Restart DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-
-#### Response
-
-This API does not return a response body.
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
-
----
-
-### Start DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/start
-```
-
-#### Required permissions
-
-| Permission Name                              | Description           |
-|----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Start | Start DB Instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Stop DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/stop
-```
-
-#### Required permissions
-
-| Permission Name                                         | Description            |
-|---------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Stop | Stop DB Instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Replicate DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/replicate
-```
-
-#### Required permissions
-
-| Permission Name                                  | Description           |
-|--------------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Replicate | Replicate DB Instance |
-
-#### Request
-
-| Name                                         | Type | Format  | Required | Description                                                                                                                 |
-|----------------------------------------------|------|---------|----------|-----------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId                                 | URL  | UUID    | O        | DB instance identifier                                                                                                      |
-| dbInstanceName                               | Body | String  | O        | Name to identify DB instances                                                                                               |
-| description                                  | Body | String  | X        | Additional information on DB instances                                                                                      |
-| dbFlavorId                                   | Body | UUID    | X        | Identifier of DB instance specifications<br/>- Default: Original DB instance value                                          |
-| dbPort                                       | Body | Number  | X        | DB port<br/>- Default: Original DB instance value<br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                  |
-| parameterGroupId                             | Body | UUID    | X        | Parameter group identifier<br/>- Default: Original DB instance value                                                        |
-| dbSecurityGroupIds                           | Body | Array   | X        | DB security group identifiers<br/>- Default: Original DB instance value                                                     |
-| userGroupIds                                 | Body | Array   | X        | User group identifiers                                                                                                      |
-| useDefaultNotification                       | Body | Boolean | X        | Whether to use default notification<br/>- Default: `false`                                                                    |
-| useDeletionProtection                        | Body | Boolean | X        | Whether to protect against deletion<br/>- Default: `false`                                                                    |
-| useSlowQueryAnalysis                         | Body | Boolean | X        | Whether to analyze Slow query<br/>- Default: `true`                                                                                      |
-| network                                      | Body | Object  | O        | Network information objects                                                                                                 |
-| network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>- Default: Original DB instance value                                               |
-| network.availabilityZone                     | Body | Enum    | O        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`                                               |
-| storage                                      | Body | Object  | X        | Storage information objects                                                                                                 |    
-| storage.storageType                          | Body | Enum    | X        | Block Storage Type<br/>- Default: Original DB instance value<br/>- Example: `General SSD`                                   |
-| storage.storageSize                          | Body | Number  | X        | Block Storage Size (GB)<br/>- Default: Original DB instance value<br/>- Minimum value: `20`<br/>- Maximum value: `2048`     |
-| storage.storageAutoscale                     | Body | Object  | X        | Block Storage Auto Scaling Objects                                                                                          |
-| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X        | Whether to enable storage auto scaling                                                                                      |
-| storage.storageAutoscale.threshold           | Body | Number  | X        | Auto scale out conditions (%)<br/>- Default: Original DB instance value<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
-| storage.storageAutoscale.maxStorageSize      | Body | Number  | X        | Auto scaling maximum size (GB)<br/>- Default: Original DB instance value<br/>- Maximum value: `4096`                        |
-| storage.storageAutoscale.cooldownTime        | Body | Number  | X        | Auto scaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440`                                  |
-| backup                                       | Body | Object  | X        | Backup information objects                                                                                                  |
-| backup.backupPeriod                          | Body | Number  | X        | Backup retention period<br/>- Default: Original DB instance value<br/>- Minimum value: `0`<br/>- Maximum value: `730`       |
-| backup.ftwrlWaitTimeout                      | Body | Number  | X        | Query latency (sec)<br/>- Default: Original DB instance value<br/>- Minimum value: `0`<br/>- Maximum value: `21600`         |
-| backup.backupRetryCount                      | Body | Number  | X        | Number of backup retries<br/>- Default: Original DB instance value<br/>- Minimum value: `0`<br/>- Maximum value: `10`       |
-| backup.useBackupLock                     | Body | Boolean | X        | Whether to use table lock<br/>- Default: Original DB instance value                                                                                                                                                                                                                                                 |
-| backup.backupSchedules                   | Body | Array   | X        | Scheduled auto backup list                                                                                                                                                                                                                                                                                          |
-| backup.backupSchedules.backupWndBgnTime  | Body | String  | X        | Backup started time<br/>- Example: `00:00:00`<br/>- Default: Original DB instance value                                                                                                                                                                                                                             |
-| backup.backupSchedules.backupWndDuration | Body | Enum    | X        | Backup duration<br/>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour<br/>- Default: Original DB instance value |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance-replicate",
-    "description": "description",
-    "dbPort": 11000,
-    "network": {
-        "availabilityZone": "kr-pub-a"
-    },
-    "storage": {
-        "stroageSize": 100
-    }
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Promote DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/promote
-```
-
-#### Required permissions
-
-| Permission Name                                            | Description           |
-|------------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Promote | Promote DB Instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Rebuild DB Instance
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/rebuild
-```
-
-#### Required permissions
-
-| Permission Name                                            | Description            |
-|------------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Rebuild | Rebuild DB Instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|-----|------|----|--------------|
-| dbInstanceId | URL | UUID | O  | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|------|-------------|
-| jobId | Body | UUID | Identifier of requested task |
-
----
-
-### View Restoration Information
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/restoration-info
-```
-
-#### Required permissions
-
-| Permission Name                                        | Description            |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
-
-#### Request
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                                    | Type | Format   | Description                                                                                                                                                                                                          |
-|-----------------------------------------|------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| oldestRestorableYmdt                    | Body | DateTime | Oldest restorable time                                                                                                                                                                                               |
-| latestRestorableYmdt                    | Body | DateTime | Most recent restorable time                                                                                                                                                                                          |
-| restorableBackups                       | Body | Array    | List of restorable backups                                                                                                                                                                                           |
-| restorableBackups.backup                | Body | Object   | Backup information objects                                                                                                                                                                                           |
-| restorableBackups.backup.backupId       | Body | UUID     | Backup identifier                                                                                                                                                                                                    |
-| restorableBackups.backup.backupName     | Body | String   | Backup name                                                                                                                                                                                                          |
-| restorableBackups.backup.useBackupLock  | Body | Boolean  | Whether to use table lock                                                                                                                                                                                            |
-| restorableBackups.backup.backupSize     | Body | Number   | Backup size                                                                                                                                                                                                          |
-| restorableBackups.backup.backupType     | Body | Enum     | Backup type<br/>- `AUTO`: Automatic<br/>- `MANUAL`:  Manual                                                                                                                                     |
-| restorableBackups.backup.backupStatus   | Body | Enum     | Backup Status<br/>- `BACKING_UP`: Backup in progress<br/>- `COMPLETED`: Backup completed<br/>- `DELETING`: Backup being deleted<br/>- `DELETED`: Backup deleted<br/>- `ERROR`: Error occurred |
-| restorableBackups.backup.dbInstanceId   | Body | UUID     | Original DB instance identifier                                                                                                                                                                                      |
-| restorableBackups.backup.dbInstanceName | Body | String   | Original DB instance name                                                                                                                                                                                            |
-| restorableBackups.backup.dbVersion      | Body | String   | DB engine type                                                                                                                                                                                                       |
-| restorableBackups.backup.failoverCount  | Body | Number   | Number of failovers                                                                                                                                                                                                  |
-| restorableBackups.backup.binLogFileName | Body | String   | Binary log file name                                                                                                                                                                                                 |
-| restorableBackups.backup.binLogPosition | Body | Number   | Binary log file location                                                                                                                                                                                             |
-| restorableBackups.backup.createdYmdt    | Body | DateTime | Date and time of backup creation                                                                                                                                                                                     |
-| restorableBackups.backup.updatedYmdt    | Body | DateTime | Date and time of backup renewal                                                                                                                                                                                      |
-| restorableBackups.restorableBinLogs     | Body | Array    | Binary log names that can be restored using the backup                                                                                                                                                               |
-
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-	"header": {
-		"resultCode": 0,
-		"resultMessage": "SUCCESS",
-		"isSuccessful": true
-	},
-    "oldestRestorableYmdt": "2023-07-09T16:33:33+09:00",
-	"latestRestorableYmdt": "2023-07-10T15:44:44+09:00",
-	"restorableBackups": [
-		{
-			"backup": {
-				"backupId": "145d889a-fe08-474f-8f58-bde576ff96a9",
-				"backupName": "example-backup-name",
-				"backupStatus": "COMPLETED",
-				"dbInstanceId": "dba1be25-9429-4589-9716-7fb6daad7cb9",
-				"dbInstanceName": "original-db-instance-name",
-				"dbVersion": "MARIADB_V10330",
-				"backupType": "MANUAL",
-				"backupSize": 8299904,
-				"useBackupLock": true,
-				"failoverCount": 0,
-				"binLogFileName": "mysql-bin.000001",
-				"binLogPosition": 367916037,
-				"createdYmdt": "2023-07-10T15:44:44+09:00",
-				"updatedYmdt": "2023-07-10T15:46:07+09:00"
-			},
-			"restorableBinLogs": [
-				"mysql-bin.000001"
-			]
-		}
-	]
-}
-```
-
-</p>
-</details>
-
----
-
-### View the last query to be restored
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/restoration-info/last-query
-```
-
-#### Required permissions
-
-| Permission Name                                        | Description            |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
-
-#### Common Request
-
-| Name         | Type  | Format | Required | Description                                                                                                                                                                                                                        |
-|--------------|-------|--------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId | URL   | UUID   | O        | DB instance identifier                                                                                                                                                                                                             |
-| restoreType  | Query | Enum   | O        | Restoration type<br/>- `TIMESTAMP`: A point-in-time restoration type using the time within the restorable time<br/>- `BINLOG`: A point-in-time restoration type using a binary log location that can be restored. |
-
-#### If restoreType is `TIMESTAMP`
-
-| Name        | Type  | Format   | Required | Description                                           |
-|-------------|-------|----------|----------|-------------------------------------------------------|
-| restoreYmdt | Query | DateTime | O        | DB instance restore date (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-
-#### If restoreType is `BINLOG`
-
-| Name           | Type  | Format | Required | Description                                     |
-|----------------|-------|--------|----------|-------------------------------------------------|
-| backupId       | Query | UUID   | O        | Identifier of the backup to use for restoration |
-| binLogFileName | Query | String | O        | Binary log name to use for restoration          |
-| binLogPosition | Query | Number | O        | Binary log location to use for restoration      |
-
-#### Response
-
-| Name         | Type | Format   | Description                                      |
-|--------------|------|----------|--------------------------------------------------|
-| executedYmdt | Body | DateTime | Query executed date (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| lastQuery    | Body | String   | Last executed query                              |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "executedYmdt": "2023-03-17T14:02:29+09:00",
-    "lastQuery": "INSERT INTO `test`.`test`SET  @1='0123'"
-}
-```
-
-</p>
-</details>
-
----
-
-### Restoration
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/restore
-```
-
-#### Required permissions
-
-| Permission Name                                            | Description           |
-|------------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Restore | Restore DB Instance |
-
-#### Common Request
-
-| Name                                                | Type | Format  | Required | Description                                                                                                                                                                                                                                                                                   |
-|-----------------------------------------------------|------|---------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId                                        | URL  | UUID    | O        | DB instance identifier                                                                                                                                                                                                                                                                        |
-| restore                                             | Body | Object  | O        | Restoration information object                                                                                                                                                                                                                                                                |
-| restore.restoreType                                 | Body | Enum    | O        | Restoration type<br/>- `TIMESTAMP`: A point-in-time restoration type using the time within the restorable time<br/>- `BINLOG`: A point-in-time restoration type using a binary log location that can be restored.<br/>- `BACKUP`: Snapshot restoration type using a previously created backup |
-| dbInstanceName                                      | Body | String  | O        | Master name to identify DB instances                                                                                                                                                                                                                                                          |
-| dbInstanceCandidateName                             | Body | String  | O        | Candidate name to identify DB instances<br/>- Required to use high availability                                                                                                                                                                                                                                    |
-| description                                         | Body | String  | X        | Additional information on DB instances                                                                                                                                                                                                                                                        |
-| dbFlavorId                                          | Body | UUID    | X        | Identifier of DB instance specifications                                                                                                                                                                                                                                                      |
-| dbPort                                              | Body | Number  | X        | DB port<br/>- Default: Source DB instance value<br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                                                                                                                                                                                                       |
-| parameterGroupId | Body | UUID    | X        | Parameter group identifier<br/>- Default: Source DB instance value                                                                                                                                                                                                                                        |
-| dbSecurityGroupIds                                  | Body | Array   | X        | DB security group identifiers                                                                                                                                                                                                                                                                 |
-| userGroupIds                                        | Body | Array   | X        | User group identifiers                                                                                                                                                                                                                                                                        |
-| useHighAvailability                                 | Body | Boolean | X        | Whether to use high availability<br/>- Default: `false`                                                                                                                                                                                                                                       |
-| pingInterval                                        | Body | Number  | X        | Ping interval (sec) when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600`                                                                                                                                                                       |
-| pingType                                            | Body | Enum    | X        | Ping type when using high availability<br/>- Default: `INSERT`<br/>- `INSERT`<br/>- `SELECT`                                                                                                                                                                                                                  |
-| useDefaultNotification                              | Body | Boolean | X        | Whether to use default notification<br/>- Default: `false`                                                                                                                                                                                                                                    |
-| useDeletionProtection                               | Body | Boolean | X        | Whether to protect against deletion<br>Default: `false`                                                                                                                                                                                                                                       |
-| useSlowQueryAnalysis                                | Body | Boolean | X        | Whether to analyze slow queries<br/>- Default: `true`                                                                                                                                                                                                                                         |
-| network                                             | Body | Object  | X        | Network information objects                                                                                                                                                                                                                                                                   |
-| network.subnetId                                    | Body | UUID    | X        | Subnet identifier<br/>- Default: Source DB instance value                                                                                                                                                                                                                                                                             |
-| network.usePublicAccess                             | Body | Boolean | X        | External access is available or not<br/>- Default: `false`                                                                                                                                                                                                                                    |
-| network.availabilityZone                            | Body | Enum    | X        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`<br/>- Default: Random selection                                                                                                                                                                                                                 |
-| storage                                             | Body | Object  | X        | Storage information objects                                                                                                                                                                                                                                                                   |
-| storage.storageType                                 | Body | Enum    | X        | Block Storage Type<br/>- Default: Source DB instance value<br/>- Example: `General SSD`                                                                                                                                                                                                                   |
-| storage.storageSize                                 | Body | Number  | X        | Block Storage Size (GB)<br/>- Default: Source DB instance value<br/>- Minimum value: `20`<br/>- Maximum value: `2048`                                                                                                                                                                                       |
-| storage.storageAutoscale                            | Body | Object  | X        | Block Storage Auto Scaling Objects                                                                                                                                                                                                                                                            |
-| storage.storageAutoscale.useStorageAutoscale        | Body | Boolean | X        | Whether to enable storage auto scaling                                                                                                                                                                                                                                                                    |
-| storage.storageAutoscale.threshold                  | Body | Number  | X        | Auto scale out conditions (%)<br/>- Default: Source DB instance value<br/>- Minimum value: `50`<br/>- Maximum value: `95`                                                                                                                                                                                 |
-| storage.storageAutoscale.maxStorageSize             | Body | Number  | X        | Auto scaling maximum size (GB)<br/>- Default: Source DB instance value<br/>- Maximum value: `4096`                                                                                                                                                                                                        |
-| storage.storageAutoscale.cooldownTime               | Body | Number  | X        | Auto scaling cooldown time (minutes)<br/>- Default: Source DB instance value<br/>- Minimum value: `10`<br/>- Maximum value: `1440`                                                                                                                                                                        |
-| backup                                              | Body | Object  | X        | Backup information objects                                                                                                                                                                                                                                                                    |
-| backup.backupPeriod                                 | Body | Number  | X        | Backup retention period<br/>- Default: Source DB instance value<br/>- Minimum value: `0`<br/>- Maximum value: `730`                                                                                                                                                                                       |
-| backup.ftwrlWaitTimeout                             | Body | Number  | X        | Query latency (sec)<br/>- Default: `1800`<br/>- Minimum value: `0`<br/>- Maximum value: `21600`                                                                                                                                                                                                    |
-| backup.backupRetryCount                             | Body | Number  | X        | Number of backup retries<br/>- Default: `0`<br/>- Minimum value: `0`<br/>- Maximum value: `10`                                                                                                                                                                                               |
-| backup.useBackupLock                                | Body | Boolean | X        | Whether to use table lock<br/>- Default: `true`                                                                                                                                                                                                                                                   |
-| backup.backupSchedules                              | Body | Array   | X        | Scheduled auto backup list                                                                                                                                                                                                                                                                                       |
-| backup.backupSchedules.backupWndBgnTime             | Body | String  | X        | Backup started time<br/>- Example: `00:00:00`                                                                                                                                                                                                                                                    |
-| backup.backupSchedules.backupWndDuration            | Body | Enum    | X        | Backup duration<br>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour    |
-
-#### Request when restoring a point in time restoration using Timestamp (if restoreType is `TIMESTAMP`)
-
-| Name                | Type | Format   | Required | Description                                                                                                                                                                             |
-|---------------------|------|----------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| restore.restoreYmdt | Body | DateTime | O        | DB instance restore date (YYYY-MM-DDThh:mm:ss.SSSTZD)<br>Restoration is possible only before the most recent restorable time, which is queried through restoration information inquiry. |
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbPort": 10000,
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
-    "userGroupIds": [],
-    "network": {
-		"subnetId": "3ae7914f-9b42-4729-b125-87417b72cf36",
-		"availabilityZone": "kr-pub-a"
-	},
-	"storage": {
-		"storageType": "General SSD",
-		"storageSize": 20
-	},
-	"restore": {
-		"restoreType": "TIMESTAMP",
-		"restoreYmdt": "2023-07-10T15:44:44+09:00"
-	},
-	"backup": {
-		"backupPeriod": 1,
-		"backupSchedules": [
-			{
-				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF"
-			}
-		]
-	}
-}
-```
-
-</p>
-</details>
-
-#### Request for point-in-time restoration using binary logs (if restoreType is `BINLOG`)
-
-| Name                          | Type | Format | Required | Description                                     |
-|-------------------------------|------|--------|----------|-------------------------------------------------|
-| restore.backupId              | Body | UUID   | O        | Identifier of the backup to use for restoration |
-| restore.binLog                | Body | Object | O        | Binary log information object                   |
-| restore.binLog.binLogFileName | Body | String | O        | Binary log name to use for restoration          |
-| restore.binLog.binLogPosition | Body | Number | O        | Binary log location to use for restoration      |
-
-* When restoring a point in time using the binary log, it is possible to restore the log recorded after that based on the binary log file and location of the base backup.
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbPort": 10000,
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
-    "userGroupIds": [],
-    "network": {
-		"subnetId": "3ae7914f-9b42-4729-b125-87417b72cf36",
-		"availabilityZone": "kr-pub-a"
-	},
-	"storage": {
-		"storageType": "General SSD",
-		"storageSize": 20
-	},
-	"restore": {
-		"restoreType": "BINLOG",
-        "backupId":"3ae7914f-9b42-4729-b125-87417b72cf36",
-		"binLogFileName": "mysql-bin.000001",
-		"binLogPosition": 1234567
-	},
-	"backup": {
-		"backupPeriod": 1,
-		"backupSchedules": [
-			{
-				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF"
-			}
-		]
-	}
-}
-```
-
-</p>
-</details>
-
-#### Request when restoring from backup (if restoreType is `BACKUP`)
-
-| Name             | Type | Format | Required                       | Description                                     |
-|------------------|------|--------|--------------------------------|-------------------------------------------------|
-| restore.backupId | Body | UUID   | O (if restoreType is `BACKUP`) | Identifier of the backup to use for restoration |
-
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbPort": 10000,
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
-    "userGroupIds": [],
-    "network": {
-		"subnetId": "3ae7914f-9b42-4729-b125-87417b72cf36",
-		"availabilityZone": "kr-pub-a"
-	},
-	"storage": {
-		"storageType": "General SSD",
-		"storageSize": 20
-	},
-	"restore": {
-		"restoreType": "BACKUP",
-        "backupId":"3ae7914f-9b42-4729-b125-87417b72cf36"
-	},
-	"backup": {
-		"backupPeriod": 1,
-		"backupSchedules": [
-			{
-				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF"
-			}
-		]
-	}
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
-
----
-
-### Restore from Object Storage
-
-```http
-POST /v4.0/db-instances/restore-from-obs
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-------------------------------------------------------|-------------------------|
-| RDSforMariaDB:DbInstance.RestoreFromObs | Restore a DB instance from object storage |
-
-#### Request
-
-| Name                                                | Type | Format  | Required | Description                                                                                                                                    |
-|-----------------------------------------------------|------|---------|----------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| restore                                             | Body | Object  | O        | Restoration information object                                                                                                                 |
-| restore.tenantId                                    | Body | String  | O        | Tenant ID of object storage where backups are stored                                                                                           |
-| restore.username                                    | Body | String  | O        | NHN Cloud account or IAM member ID                                                                                                             |
-| restore.password                                    | Body | String  | O        | API password for object storage where backups are stored                                                                                       |
-| restore.targetContainer                             | Body | String  | O        | Container for object storage where backups are stored                                                                                          |
-| restore.objectPath                                  | Body | String  | O        | Backup path stored in container                                                                                                                |
-| dbVersion                                           | Body | Enum    | O        | DB engine type                                                                                                                                 |
-| dbInstanceName                                      | Body | String  | O        | Master name to identify DB instances                                                                                  |
-| dbInstanceCandidateName                             | Body | String  | O        | Candidate name to identify DB instances                                                                               |
-| description                                         | Body | String  | X        | Additional information on DB instances                                                                                                         |
-| dbFlavorId                                          | Body | UUID    | O        | Identifier of DB instance specifications                                                                                                       |
-| dbPort                                              | Body | Number  | O        | DB port<br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                                                               |
-| parameterGroupId | Body | UUID    | O        | Parameter group identifier                                                                                                                     |
-| dbSecurityGroupIds                                  | Body | Array   | X        | DB security group identifiers                                                                                                                  |
-| userGroupIds                                        | Body | Array   | X        | User group identifiers                                                                                                                         |
-| useHighAvailability                                 | Body | Boolean | X        | Whether to use high availability<br/>- Default: `false`                                                                         |
-| pingInterval                                        | Body | Number  | X        | Ping interval (sec) when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
-| pingType                                            | Body | Enum    | X        | Ping type when using high availability<br/>- Default: `INSERT`<br/>- `INSERT`<br/>- `SELECT`                                     |
-| useDefaultNotification                              | Body | Boolean | X        | Whether to use default notification<br/>- Default: `false`                                                                      |
-| useDeletionProtection                               | Body | Boolean | X        | Whether to protect against deletion<br>Default: `false`                                                                                        |
-| useSlowQueryAnalysis                                | Body | Boolean | X        | Whether to analyze slow queries<br/>- Default: `true`                                                                                                             |
-| network                                             | Body | Object  | O        | Network information objects                                                                                                                    |
-| network.subnetId                                    | Body | UUID    | O        | Subnet identifier                                                                                                                              |
-| network.usePublicAccess                             | Body | Boolean | X        | External access is available or not<br/>- Default: `false`                                                                      |
-| network.availabilityZone                            | Body | Enum    | O        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`                                                 |
-| storage                                             | Body | Object  | O        | Storage information objects                                                                                                                    |
-| storage.storageType                                 | Body | Enum    | O        | Block Storage Type<br/>- Example: `General SSD`                                                                               |
-| storage.storageSize                                 | Body | Number  | O        | Block Storage Size (GB)<br/>- Minimum value: `20`<br/>- Maximum value: `2048`                                               |
-| storage.storageAutoscale                            | Body | Object  | X        | Block Storage Auto Scaling Objects                                                                                                                                   |
-| storage.storageAutoscale.useStorageAutoscale        | Body | Boolean | X        | Whether to enable storage auto scaling                                                                                                                                  |
-| storage.storageAutoscale.threshold                  | Body | Number  | X        | Auto scale out conditions (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95`                                                                                                    |
-| storage.storageAutoscale.maxStorageSize             | Body | Number  | X        | Auto scaling maximum size (GB)<br/>- Maximum value: `4096`                                                                                                              |
-| storage.storageAutoscale.cooldownTime               | Body | Number  | X        | Auto scaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440`                                                                                              |
-| backup                                              | Body | Object  | O        | Backup information objects                                                                                                                     |
-| backup.backupPeriod                                 | Body | Number  | O        | Backup retention period<br/>- Minimum value: `0`<br/>- Maximum value: `730`                                               |
-| backup.ftwrlWaitTimeout                             | Body | Number  | X        | Query latency (sec)<br/>- Default: `1800`<br/>- Minimum value: `0`<br/>- Maximum value: `21600`                              |
-| backup.backupRetryCount                             | Body | Number  | X        | Number of backup retries<br/>- Default: `0`<br/>- Minimum value: `0`<br/>- Maximum value: `10`                         |
-| backup.useBackupLock                                | Body | Boolean | X        | Whether to use table lock<br/>- Default: `true`                                                                                                                                                                                                                                                |
-| backup.backupSchedules                              | Body | Array   | O        | Scheduled auto backup list                                                                                                                                                                                                                                                                                    |
-| backup.backupSchedules.backupWndBgnTime             | Body | String  | O        | Backup started time<br/>- Example: `00:00:00`                                                                                                                                                                                                                                                 |
-| backup.backupSchedules.backupWndDuration            | Body | Enum    | O        | Backup duration<br>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour |
-
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbInstanceName": "db-instance",
-    "description": "description",
-    "dbFlavorId": "71f69bf9-3c01-4c1a-b135-bb75e93f6268",
-    "dbPort": 10000,
-    "dbVersion": "MARIADB_V10330",
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "parameterGroupId": "488bf4f5-d8f7-459b-ace6-529b606c8570",
-    "dbSecurityGroupIds": [
-        "b0483a3d-e8e2-46f6-9e84-d5e31b0d44f4"
-    ],
-    "userGroupIds": [],
-    "network": {
-		"subnetId": "3ae7914f-9b42-4729-b125-87417b72cf36",
-		"availabilityZone": "kr-pub-a"
-	},
-	"storage": {
-		"storageType": "General SSD",
-		"storageSize": 20
-	},
-	"restore": {
-		"tenantId":"tenant-id",
-        "username":"username",
-        "password":"password",
-        "targetContainer":"targetContainer",
-        "objectPath":"objectPath"
-	},
-	"backup": {
-		"backupPeriod": 1,
-		"backupSchedules": [
-			{
-				"backupWndBgnTime": "00:00:00",
-				"backupWndDuration": "ONE_HOUR_AND_HALF"
-			}
-		]
-	}
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
-
----
-
-
-### Change DB Instance Deletion Protection Settings
-
-```http
-PUT /v4.0/db-instances/{dbInstanceId}/deletion-protection
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
-
-#### Request
-
-| Name                  | Type | Format  | Required | Description                         |
-|-----------------------|------|---------|----------|-------------------------------------|
-| dbInstanceId          | URL  | UUID    | O        | DB instance identifier              |
-| useDeletionProtection | Body | Boolean | O        | Whether to protect against deletion |
-
-#### Response
-
-This API does not return a response body.
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### High availability status
-
-| Status | Description |
-|----------------------------------|---------------------------------|
-| `CREATED` | High availability has been created |
-| `STABLE` | High availability is operating normally |
-| `PAUSING` | High availability is being paused |
-| `PAUSED` | High availability has been paused |
-| `PAUSED_DUE_TO_TASK` | High availability has been paused due to a task |
-| `DISABLE_MASTER_IN_REPLICATION` | High availability has been disabled due to detection of abnormal master replication |
-| `DISABLE_MHA_PROCESS` | The high availability process has been stopped |
-| `DISABLE_REPLICATION_STOP` | High availability has been disabled due to replication stoppage |
-| `DISABLE_REPLICATION_DELAY` | High availability has been disabled due to replication delay |
-| `MASTER_FAILURE_DETECTION` | A master failure has been detected |
-| `FAILOVER_STARTED` | Failover has started |
-| `FAILOVER_FAILED` | Failover has failed |
-| `FAILOVER_COMPLETED` | Failover has been completed |
-| `DELETED` | High availability has been deleted |
-
----
-
-### View High Availability Information
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/high-availability
-```
-
 #### Required Permissions
 
 | Permission | Description |
-|----------------------------------------------------|------------|
-| RDSforMariaDB:DbInstance.Get | View DB instance details |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
 
 #### Request
 
-This API does not require a request body.
-
 | Name | Type | Format | Required | Description |
-|--------------|-----|------|----|--------------|
-| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier for the DB instance |
+| dbInstanceName | Body | String | X | Name that can identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| dbInstanceCandidateName | Body | String | X | Candidate master name that can identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbPort | Body | Number | X | DB port<br/>- Minimum: 3306, Maximum: 43306 |
+| dbFlavorId | Body | UUID | X | Identifier for the DB instance specification |
+| parameterGroupId | Body | UUID | X | Identifier for the parameter group |
+| dbVersion | Body | Enum | X | DB engine version code |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to analyze slow queries |
+| useDummy | Body | Boolean | X | Whether to use dummy when upgrading the DB version of a single DB instance<br/>- Default: `false` |
+| dbSecurityGroupIds | Body | Array | X | List of DB security group identifiers |
+| executeBackup | Body | Boolean | X | Whether to proceed with current point backup<br/>- Default: `false` |
+| useOnlineFailover | Body | Boolean | X | Whether to restart using failover<br/>- Default: `false` |
+| waitReplicationDelay | Body | Boolean | X | Wait for replication delay resolution<br/>- Default: `false` |
+| useReadOnly | Body | Boolean | X | Block write load<br/>- Default: `false` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbInstanceName": "dbInstanceName",
+    "dbInstanceCandidateName": "dbInstanceCandidateName",
+    "description": "description-example",
+    "dbPort": 1,
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbVersion": "MYSQL_V8036",
+    "useSlowQueryAnalysis": false,
+    "useDummy": false,
+    "dbSecurityGroupIds": [],
+    "executeBackup": false,
+    "useOnlineFailover": false,
+    "waitReplicationDelay": false,
+    "useReadOnly": false
+}
+```
+
+</p>
+</details>
 
 #### Response
 
 | Name | Type | Format | Description |
-|---------------------|------|---------|---------------------------------------------------------------------------------------------------------------------|
-| useHighAvailability | Body | Boolean | Whether high availability is enabled |
-| haStatus | Body | Enum | High availability status |
-| pingInterval | Body | Number | Ping interval (seconds) |
-| pingType | Body | Enum | Ping type<br/>- `INSERT`<br/>- `SELECT` |
-
-<details><summary>Example</summary>
-
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "useHighAvailability": true,
-    "haStatus": "STABLE",
-    "pingInterval": 3,
-    "pingType": "INSERT"
-}
-```
-
-</p>
-
-</details>
-
----
-
-### Modify High Availability
-
-```http
-PUT /v4.0/db-instances/{dbInstanceId}/high-availability
-```
-
-#### Required permissions
-
-| Permission Name                                     | Description        |
-|-----------------------------------------------------|-----------|
-| RDSforMariaDB:HighAvailability.Modify | Modify high availability |
-
-#### Request
-
-| Name                | Type | Format  | Required | Description                                                                                          |
-|---------------------|------|---------|----------|------------------------------------------------------------------------------------------------------|
-| dbInstanceId        | URL  | UUID    | O        | DB instance identifier                                                                               |
-| useHighAvailability | Body | Boolean | O        | Whether to use high availability                                                                     |
-| pingInterval        | Body | Number  | X        | Ping interval (sec) when using high availability<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
-| pingType            | Body | Enum    | X        | Ping type when using high availability<br/>- `INSERT`<br/>- `SELECT`                                              |
-| dbInstanceCandidateName        | Body | String  | O  | Name to identify DB instances<br/>- Required for using high availability |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Restart High Availability
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/high-availability/resume
-```
-
-#### Required permissions
-
-| Permission Name                                     | Description           |
-|-----------------------------------------------------|--------------|
-| RDSforMariaDB:HighAvailability.Resume | Restart high availability |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Pause High Availability
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/high-availability/pause
-```
-
-#### Required permissions
-
-| Permission Name                                    | Description           |
-|----------------------------------------------------|--------------|
-| RDSforMariaDB:HighAvailability.Pause | Pause high availability |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Recover High Availability
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/high-availability/repair
-```
-
-#### Required permissions
-
-| Permission Name                                     | Description           |
-|-----------------------------------------------------|-----------|
-| RDSforMariaDB:HighAvailability.Repair | Recover high availability |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Separate High Availability
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/high-availability/split
-```
-
-#### Required permissions
-
-| Permission Name                                    | Description           |
-|----------------------------------------------------|-----------|
-| RDSforMariaDB:HighAvailability.Split | Separate high availability |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### View Storage Information
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/storage-info
-```
-
-#### Required permissions
-
-| Permission Name                            | Description           |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                                 | Type | Format  | Description                                                                                                |
-|--------------------------------------|------|---------|------------------------------------------------------------------------------------------------------------|
-| storageType                          | Body | Enum    | Block Storage Type                                                                                         |
-| storageSize                          | Body | Number  | Block Storage Size (GB)                                                                                    |
-| storageStatus                        | Body | Enum    | Data Storage Current Status<br/>- `DETACHED`: Detached<br/>- `ATTACHED`: Attached<br/>- `DELETED`: Deleted |
-| storageAutoscale                     | Body | Object  | Block Storage Auto Scaling Objects                                                                         |
-| storageAutoscale.useStorageAutoscale | Body | Boolean | Whether to enable storage auto scaling                                                                     |
-| storageAutoscale.threshold           | Body | Number  | Auto scale out conditions (%)                                                                              |
-| storageAutoscale.maxStorageSize      | Body | Number  | Auto scaling maximum size (GB)                                                                             |
-| storageAutoscale.cooldownTime        | Body | Number  | Auto scaling cooldown time (minutes)                                                                       |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier for the requested job |
 
 <details><summary>Example</summary>
 <p>
@@ -2004,54 +1203,12 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "storageType": "General SSD",
-    "storageSize": 20,
-    "storageStatus": "ATTACHED",
-    "storageAutoscale": {
-         "useStorageAutoscale": true,
-         "threshold": 80,
-         "maxStorageSize": 100,
-         "cooldownTime": 10
-    }
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
 </p>
 </details>
-
-
----
-
-### Modify Storage Information
-
-```http
-PUT /v4.0/db-instances/{dbInstanceId}/storage-info
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
-
-#### Request
-
-| Name                                 | Type | Format  | Required | Description                                                                                                       |
-|--------------------------------------|------|---------|----------|-------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId                         | URL  | UUID    | O        | DB instance identifier                                                                                            |
-| storageSize                          | Body | Number  | O        | Block Storage Size (GB)<br/>- Minimum value: Current value<br/>- Maximum value: `2048`                            |
-| useOnlineFailover                    | Body | Boolean | X        | Whether to restart using failover<br/>Available only for DB instance using high availability<br/>- Default: `false` |
-| storageAutoscale                     | Body | Object  | X        |Block Storage Auto Scaling Objects                                                                                                 |
-| storageAutoscale.useStorageAutoscale | Body | Boolean | X        | Whether to enable storage auto scaling                                                                                                     |
-| storageAutoscale.threshold           | Body | Number  | X        | Auto scale out conditions (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95`                                                                       |
-| storageAutoscale.maxStorageSize      | Body | Number  | X        | Auto scaling maximum size (GB)<br/>- Maximum value: `4096`                                                                                 |
-| storageAutoscale.cooldownTime        | Body | Number  | X        | Auto scaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440`                                                                 |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
 
 ---
 
@@ -2061,32 +1218,32 @@ PUT /v4.0/db-instances/{dbInstanceId}/storage-info
 GET /v4.0/db-instances/{dbInstanceId}/backup-info
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                        | Description            |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | View backup information |
 
 #### Request
 
 This API does not require a request body.
 
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
 
 #### Response
 
-| Name                              | Type | Format  | Description                |
-|-----------------------------------|------|---------|----------------------------|
-| backupPeriod                      | Body | Number  | Backup retention period    |
-| ftwrlWaitTimeout                  | Body | Number  | Query latency (sec)        |
-| backupRetryCount                  | Body | Number  | Number of backup retries   |
-| replicationRegion                 | Body | Enum    | Backup replication region  |
-| useBackupLock                     | Body | Boolean | Whether to use table lock  |
-| backupSchedules                   | Body | Array   | Scheduled auto backup list |
-| backupSchedules.backupWndBgnTime  | Body | String  | Backup started time        |
-| backupSchedules.backupWndDuration | Body | Enum    | Backup duration            |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| backupPeriod | Body | Number | Backup retention period (days) |
+| ftwrlWaitTimeout | Body | Number | Query delay wait time (seconds) |
+| backupRetryCount | Body | Number | Number of backup retries |
+| replicationRegion | Body | Enum | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| useBackupLock | Body | Boolean | Whether to use table locking |
+| backupSchedules | Body | Array | Backup schedule list |
+| backupSchedules.backupWndBgnTime | Body | Time | Backup start time |
+| backupSchedules.backupWndDuration | Body | Enum | Backup duration<br/>- HALF_AN_HOUR<br/>- ONE_HOUR<br/>- ONE_HOUR_AND_HALF<br/>- TWO_HOURS<br/>- TWO_HOURS_AND_HALF<br/>- THREE_HOURS |
 
 <details><summary>Example</summary>
 <p>
@@ -2099,14 +1256,14 @@ This API does not require a request body.
         "isSuccessful": true
     },
     "backupPeriod": 1,
-    "ftwrlWaitTimeout": 1800,
-    "backupRetryCount": 0,
-    "replicationRegion": null,
+    "ftwrlWaitTimeout": 1,
+    "backupRetryCount": 1,
+    "replicationRegion": "KR1",
     "useBackupLock": false,
     "backupSchedules": [
         {
             "backupWndBgnTime": "00:00:00",
-            "backupWndDuration": "ONE_HOUR_AND_HALF"
+            "backupWndDuration": "HALF_AN_HOUR"
         }
     ]
 }
@@ -2114,7 +1271,6 @@ This API does not require a request body.
 
 </p>
 </details>
-
 
 ---
 
@@ -2124,36 +1280,40 @@ This API does not require a request body.
 PUT /v4.0/db-instances/{dbInstanceId}/backup-info
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Modify | Modify backup information |
 
 #### Request
 
-| Name                              | Type | Format  | Required | Description                                                                                                                                                                                                                                                               |
-|-----------------------------------|------|---------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId                      | URL  | UUID    | O        | DB instance identifier                                                                                                                                                                                                                                                    |
-| backupPeriod                      | Body | Number  | X        | Backup retention period<br/>- Minimum value: `0`<br/>- Maximum value: `730`                                                                                                                                                                                               |
-| ftwrlWaitTimeout                  | Body | Number  | X        | Query latency (sec)<br/>- Minimum value: `0`<br/>- Maximum value: `21600`                                                                                                                                                                                                 |
-| backupRetryCount                  | Body | Number  | X        | Number of backup retries<br/>- Minimum value: `0`<br/>- Maximum value: `10`                                                                                                                                                                                               |
-| useBackupLock                     | Body | Boolean | X        | Whether to use table lock                                                                                                                                                                                                                                                 |
-| backupSchedules                   | Body | Array   | X        | Scheduled auto backup list                                                                                                                                                                                                                                                |
-| backupSchedules.backupWndBgnTime  | Body | String  | O        | Backup started time<br/>- Example: `00:00:00`                                                                                                                                                                                                                             |
-| backupSchedules.backupWndDuration | Body | Enum    | O        | Backup duration<br/>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| backupPeriod | Body | Number | X | Backup retention period (days)<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| ftwrlWaitTimeout | Body | Number | X | Query delay wait time (seconds)<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backupRetryCount | Body | Number | X | Backup retry count<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| useBackupLock | Body | Boolean | X | Whether to use table lock |
+| backupSchedules | Body | Array | X | Backup schedule list |
+| backupSchedules.backupWndBgnTime | Body | Time | O | Backup start time |
+| backupSchedules.backupWndDuration | Body | Enum | O | Backup duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "backupPeriod": 5,
-    "useBackupLock": true,
+    "backupPeriod": 0,
+    "ftwrlWaitTimeout": 0,
+    "backupRetryCount": 0,
+    "replicationRegion": "KR1",
+    "useBackupLock": false,
     "backupSchedules": [
         {
-            "backupWndBgnTime": "01:00:00",
-            "backupWndDuration": "TWO_HOURS"
+            "backupWndBgnTime": "00:00:00",
+            "backupWndDuration": "HALF_AN_HOUR"
         }
     ]
 }
@@ -2164,45 +1324,9 @@ PUT /v4.0/db-instances/{dbInstanceId}/backup-info
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### List Network Information
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/network-info
-```
-
-#### Required permissions
-
-| Permission Name                                       | Description            |
-|--------------------------------------------|---------------|
-| RDSforMariaDB:DbInstance.Get | List DB Instance Details |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                   | Type | Format | Description                                                                                                                                                                                                |
-|------------------------|------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| availabilityZone       | Body | Enum   | Availability zone where DB instance will be created                                                                                                                                                        |
-| subnet                 | Body | Object | Subnet object                                                                                                                                                                                              |
-| subnet.subnetId        | Body | UUID   | Subnet identifier                                                                                                                                                                                          |
-| subnet.subnetName      | Body | UUID   | Name to identify subnets                                                                                                                                                                                   |
-| subnet.subnetCidr      | Body | UUID   | CIDR of subnet                                                                                                                                                                                             |
-| endPoints              | Body | Array  | List of access information                                                                                                                                                                                 |
-| endPoints.domain       | Body | String | Domain                                                                                                                                                                                                     |
-| endPoints.ipAddress    | Body | String | IP address                                                                                                                                                                                                 |
-| endPoints.endPointType | Body | Enum   | Access information type<br>-`EXTERNAL`: External access domain<br>-`INTERNAL`: Internal access domain<br>-`PUBLIC`: (Deprecated) External access domain<br>-`PRIVATE`: (Deprecated) Internal access domain |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
 
 <details><summary>Example</summary>
 <p>
@@ -2214,19 +1338,7 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "availabilityZone": "kr-pub-a",
-    "subnet": {
-        "subnetId": "bd453789-34ae-416c-9f78-05b9e43a46be",
-        "subnetName": "Default Network",
-        "subnetCidr": "192.168.0.0/16"
-    },
-    "endPoints": [
-        {
-            "domain": "ea548a78-d85f-43b4-8ddf-c88d999b9905.internal.kr1.mariadb.rds.nhncloudservice.com",
-            "ipAddress": "192.168.0.2",
-            "endPointType": "INTERNAL"
-        }
-    ]
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -2235,509 +1347,34 @@ This API does not require a request body.
 
 ---
 
-### Modify Network Information
-
-```http
-PUT /v4.0/db-instances/{dbInstanceId}/network-info
-```
-
-#### Required permissions
-
-| Permission Name                               | Description           |
-|-----------------------------------------------|--------------|
-| RDSforMariaDB:DbInstance.Modify | Modify DB Instance |
-
-#### Request
-
-| Name            | Type | Format  | Required | Description                         |
-|-----------------|------|---------|----------|-------------------------------------|
-| dbInstanceId    | URL  | UUID    | O        | DB instance identifier              |
-| usePublicAccess | Body | Boolean | O        | External access is available or not |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### List DB Users
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/db-users
-```
-
-#### Required permissions
-
-| Permission Name                                 | Description                  |
-|-------------------------------------------------|---------------------|
-| RDSforMariaDB:DbInstanceUser.List | List of users in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                         | Type | Format   | Description                                                                                                                                                              |
-|------------------------------|------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbUsers                      | Body | Array    | DB users                                                                                                                                                                 |
-| dbUsers.dbUserId             | Body | UUID     | DB user identifier                                                                                                                                                       |
-| dbUsers.dbUserName           | Body | String   | DB user account name                                                                                                                                                     |
-| dbUsers.host                 | Body | String   | DB user account host name                                                                                                                                                |
-| dbUsers.authorityType        | Body | Enum     | DB user permission type<br/>- `READ`: Permission to execute SELECT query<br/>- `CRUD`: Permission to execute DML query<br/>- `DDL`: Permission to execute DDL query<br/> |
-| dbUsers.dbUserStatus         | Body | Enum     | DB user current status<br/>- `STABLE`: Created<br/>- `CREATING`: Creating<br/>- `UPDATING`: Modifying<br/>- `DELETING`: Deleting<br/>- `DELETED`: Deleted                     |
-| dbUsers.authenticationPlugin | Body | Enum     | Authentication Plugin<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519` |
-| dbUsers.createdYmdt          | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                       |
-| dbUsers.updatedYmdt          | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "dbUsers": [
-        {
-            "dbUserId": "4b3d530b-fd02-4d59-a620-83d019a67bbb",
-            "dbUserName": "db-user",
-            "host": "%",
-            "authorityType": "DDL",
-            "dbUserStatus": "STABLE",
-            "createdYmdt": "2023-03-17T14:02:29+09:00",
-            "updatedYmdt": "2023-03-17T14:02:31+09:00"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-### Create DB User
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/db-users
-```
-
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------------|
-| RDSforMariaDB:DbInstanceUser.Create | Create users in DB instance |
-
-#### Request
-
-| Name                 | Type | Format | Required | Description                                                                                                                                                              |
-|----------------------|------|--------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O        | DB instance identifier                                                                                                                                                   |
-| dbUserName           | Body | String | O        | DB user account name<br/>- Minimum length: `1`<br/>- Maximum length: `32`                                                                                                |
-| dbPassword           | Body | String | O        | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256`                                                                                           |
-| host                 | Body | String | O        | DB user account host name<br/>- Example: `1.1.1.%`                                                                                                                       |
-| authorityType        | Body | Enum   | O        | DB user permission type<br/>- `READ`: Permission to execute SELECT query<br/>- `CRUD`: Permission to execute DML query<br/>- `DDL`: Permission to execute DDL query<br/> |
-| authenticationPlugin | Body | Enum   | X        | Authentication Plugin<br/>- Default: `NATIVE`(`ED25519` if not supported)<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519`                                                                                                                                                                                |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbUserName": "db-user",
-    "dbPassword": "password",
-    "host": "1.1.1.%",
-    "authorityType": "CRUD"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Modify DB User
-
-```http
-PUT /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------------|
-| RDSforMariaDB:DbInstanceUser.Modify | Modify users in DB instance |
-
-#### Request
-
-| Name                 | Type | Format | Required | Description                                                                                                                                                             |
-|----------------------|------|--------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId         | URL  | UUID   | O        | DB instance identifier                                                                                                                                                  |
-| dbUserId             | URL  | UUID   | O        | DB user identifier                                                                                                                                                      |
-| dbPassword           | Body | String | X        | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256`                                                                                          |
-| authorityType        | Body | Enum   | X        | DB user permission type<br/>- `READ`: Permission to execute SELECT query<br/>- `CRUD`: Permission to execute DML query<br/>- `DDL`: Permission to execute DDL query<br/> |
-| authenticationPlugin | Body | Enum   | X        | Authentication Plugin<br/>- NATIVE: `mysql_native_password`<br />- ED25519: `auth_ed25519`                                                                                                                                                                                |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "authorityType": "DDL"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Delete DB User
-
-```http
-DELETE /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------------|
-| RDSforMariaDB:DbInstanceUser.Delete | Delete users in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-| dbUserId     | URL  | UUID   | O        | DB user identifier     |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### List DB Schema
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/db-schemas
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|---------------------|
-| RDSforMariaDB:DbInstanceSchema.List | List of schemas in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-
-#### Response
-
-| Name                     | Type | Format   | Description                                                                                                                  |
-|--------------------------|------|----------|------------------------------------------------------------------------------------------------------------------------------|
-| dbSchemas                | Body | Array    | DB schema list                                                                                                               |
-| dbSchemas.dbSchemaId     | Body | UUID     | DB schema identifier                                                                                                         |
-| dbSchemas.dbSchemaName   | Body | String   | DB schema name                                                                                                               |
-| dbSchemas.dbSchemaStatus | Body | Enum     | DB schema current status<br/>- `STABLE`: Created<br/>- `CREATING`: Creating<br/>- `DELETING`: Deleting<br/>- `DELETED`: Deleted |
-| dbSchemas.createdYmdt    | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                           |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "dbSchemas": [
-        {
-            "dbSchemaId": "7c9a94b8-86c1-435d-8af2-82a5e9d53fd4",
-            "dbSchemaName": "schema",
-            "dbSchemaStatus": "STABLE",
-            "createdYmdt": "2023-03-20T13:37:45+09:00"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-### Create DB Schema
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/db-schemas
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-----------------------------------------------------|--------------------|
-| RDSforMariaDB:DbInstanceSchema.Create | Create schemas in DB instance |
-
-#### Request
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-| dbSchemaName | Body | String | O        | DB schema name         |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Delete DB Schema
-
-```http
-DELETE /v4.0/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-----------------------------------------------------|--------------------|
-| RDSforMariaDB:DbInstanceSchema.Delete | Delete schemas in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | URL  | UUID   | O        | DB instance identifier |
-| dbSchemaId   | URL  | UUID   | O        | DB schema identifier   |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### List Log Files
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/log-files
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|------------------------------------------------|-----------------------|
-| RDSforMariaDB:DbInstanceLog.List | List of log files in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type  | Format | Required | Description                                                                                                                                                                                         |
-|--------------|-------|--------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId | URL   | UUID   | O        | DB instance identifier                                                                                                                                                                              |
-| logFileTypes | Query | Array  | X        | Log File type list<br/>- `ERROR`: error.log<br/>- `BINLOG`: mysql-bin<br/>- `GENERAL`: general.log<br/>- `SLOW_QUERY`: slow_query.log<br/>- `AUDIT`: server_audit.log<br/>- `BACKUP`: xtra_full.log |
-
-#### Response
-
-| Name                 | Type | Format   | Description                                                                                                                                                                                    |
-|----------------------|------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| logFiles             | Body | Array    | Log File list                                                                                                                                                                                  |
-| logFiles.logFileName | Body | String   | Log File name                                                                                                                                                                                  |
-| logFiles.logFileType | Body | Enum     | Log File type<br/>- `ERROR`: error.log<br/>- `BINLOG`: mysql-bin<br/>- `GENERAL`: general.log<br/>- `SLOW_QUERY`: slow_query.log<br/>- `AUDIT`: server_audit.log<br/>- `BACKUP`: xtra_full.log |
-| logFiles.logFileSize | Body | Number   | Log File size(Byte)                                                                                                                                                                            |
-| logFiles.createdYmdt | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                                             |
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "logFiles": [
-        {
-            "logFileName": "xtra_full.log-20230317",
-            "logFileType": "BACKUP",
-            "logFileSize": 4096,
-            "createdYmdt": "2023-03-17T14:02:29+09:00"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-### View Log File contents
-
-```http
-GET /v4.0/db-instances/{dbInstanceId}/log-files/{logFileName}
-```
-
-#### Required permissions
-
-| Permission Name                               | Description                           |
-|-----------------------------------------------|---------------------------------------|
-| RDSforMariaDB:DbInstanceLog.Get | View log file contents in DB instance |
-
-#### Request
-
-This API does not require a request body.
-
-| Name         | Type  | Format | Required | Description                                                                                                                                                                                    |
-|--------------|-------|--------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbInstanceId | URL   | UUID   | O        | DB instance identifier                                                                                                                                                                         |
-| logFileName  | URL   | String | O        | Log File name                                                                                                                                                                                  |
-| logFileType  | Query | Enum   | O        | Log File type<br/>- `ERROR`: error.log<br/>- `BINLOG`: mysql-bin<br/>- `GENERAL`: general.log<br/>- `SLOW_QUERY`: slow_query.log<br/>- `AUDIT`: server_audit.log<br/>- `BACKUP`: xtra_full.log |
-
-#### Response
-
-| Name    | Type | Format | Description                            |
-|---------|------|--------|----------------------------------------|
-| content | Body | String | Log File contents(maximum 65533 Bytes) |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "content": "..."
-}
-```
-
-</p>
-</details>
-
----
-
-### Export Log File
-
-```http
-POST /v4.0/db-instances/{dbInstanceId}/log-files/export
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|--------------------------------------------------|----------------------|
-| RDSforMariaDB:DbInstanceLog.Export | Export log files in DB instance |
-
-#### Request
-
-| Name            | Type | Format | Required | Description                                              |
-|-----------------|------|--------|----------|----------------------------------------------------------|
-| dbInstanceId    | URL  | UUID   | O        | DB instance identifier                                   |
-| logFileNames    | Body | Array  | O        | Log File name list<br/>- Minimum size: `1`               |
-| tenantId        | Body | String | O        | Tenant ID of object storage to store log file            |
-| username        | Body | String | O        | NHN Cloud account or IAM member ID                       |
-| password        | Body | String | O        | API password for object storage where log file is stored |
-| targetContainer | Body | String | O        | Object storage container where log file is stored        |
-| objectPath      | Body | String | O        | Log file path to be stored in container                  |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "logFileNames": ["xtra_full.log-20230317"],
-    "tenantId": "399631c404744dbbb18ce4fa2dc71a5a",
-    "username": "gildong.hong@nhn.com",
-    "password": "password",
-    "targetContainer": "container",
-    "objectPath": "logs/backup"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### View BinLog Lists
+### View Binary Log List
 
 ```http
 GET /v4.0/db-instances/{dbInstanceId}/binlogs
 ```
 
-#### Required Permission
+#### Required Permissions
 
-| Permission                                               | Description           |
-|---------------------------------------------------|---------------|
-| RDSforMariaDB:DbInstanceBinLog.List | View BinLog lists |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceBinLog.List | View binary log list |
 
 #### Request
 
 This API does not require a request body.
 
-| Name           | Type    | Format      | Required | Description                                                                                   |
-|--------------|-------|---------|----|---------------------------------------------------------------------------------------|
-| dbInstanceId | URL   | UUID    | O  | DB instance identifier                                                                         |
-| deletable    | Query | Boolean | X  | Show only deletable BinLogs<br/>- `true`: Exclude latest BinLog<br/>- `false`: All<br/>- Default: `false` |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O |  |
 
 #### Response
 
-| Name                     | Type   | Format       | Description                                |
-|------------------------|------|----------|-----------------------------------|
-| binLogs                | Body | Array    | BinLog file list                      |
-| binLogs.binLogFileName | Body | String   | BinLog file name                      |
-| binLogs.binLogFileSize | Body | Number   | BinLog file size (Byte)                |
-| binLogs.createdYmdt    | Body | DateTime | Created at(YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| binLogs | Body | Array | BinLog file list |
+| binLogs.binLogFileName | Body | String | BinLog file name |
+| binLogs.binLogFileSize | Body | Number | BinLog file size (bytes) |
+| binLogs.createdYmdt | Body | DateTime | Created date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -2751,9 +1388,9 @@ This API does not require a request body.
     },
     "binLogs": [
         {
-            "binLogFileName": "mysql-bin.000001",
-            "binLogFileSize": 1073741824,
-            "createdYmdt": "2023-03-17T14:02:29+09:00"
+            "binLogFileName": "binLogFileName-example",
+            "binLogFileSize": 1,
+            "createdYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -2764,24 +1401,24 @@ This API does not require a request body.
 
 ---
 
-### Delete BinLog
+### Delete Binary Log
 
 ```http
 POST /v4.0/db-instances/{dbInstanceId}/binlogs/purge
 ```
 
-#### Required Permission
+#### Required Permissions
 
-| Permission                                                | Description        |
-|----------------------------------------------------|------------|
-| RDSforMariaDB:DbInstanceBinLog.Purge | Delete BinLog |
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceBinLog.Purge | Delete binary log |
 
 #### Request
 
-| Name                 | Type   | Format     | Required | Description                                     |
-|--------------------|------|--------|----|----------------------------------------|
-| dbInstanceId       | URL  | UUID   | O  | DB instance identifier                           |
-| lastBinLogFileName | Body | String | O  | Last BinLog file name to delete (delete all files prior to this file) |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O |  |
+| lastBinLogFileName | Body | String | O | The name of the last BinLog file to delete (files before this file are deleted) |
 
 <details><summary>Example</summary>
 <p>
@@ -2799,53 +1436,37 @@ POST /v4.0/db-instances/{dbInstanceId}/binlogs/purge
 
 This API does not return a response body.
 
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
 ---
 
-### View Certificate File Lists
+### View Certificate File List
 
 ```http
 GET /v4.0/db-instances/{dbInstanceId}/certificates
 ```
 
-#### Required Permission
+#### Required Permissions
 
-| Permission                                                    | Description           |
-|--------------------------------------------------------|---------------|
-| RDSforMariaDB:DbInstanceCertificate.List | View certificate file lists |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceCertificate.List | View certificate file list |
 
 #### Request
 
 This API does not require a request body.
 
-| Name           | Type  | Format   | Required | Description           |
-|--------------|-----|------|----|---------------|
-| dbInstanceId | URL | UUID | O  | DB instance identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
 
 #### Response
 
-| Name                           | Type   | Format       | Description                                                                           |
-|------------------------------|------|----------|------------------------------------------------------------------------------|
-| certificates                 | Body | Array    | Certificate file list                                                                    |
-| certificates.fileName        | Body | String   | Certificate file name                                                                    |
-| certificates.certificateType | Body | Enum     | Certificate type<br/>- `CA_FILE`: CA certificate<br/>- `CERT_FILE`: certificate<br/>- `KEY_FILE`: Secret key |
-| certificates.fileSize        | Body | Number   | Certificate file size (Byte)                                                              |
-| certificates.createdYmdt     | Body | DateTime | Created at(YYYY-MM-DDThh:mm:ss.SSSTZD)                                            |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| certificates | Body | Array | Certificate file list |
+| certificates.fileName | Body | String | Certificate file name |
+| certificates.certificateType | Body | Enum | Certificate type<br/>- CA_FILE<br/>- CERT_FILE<br/>- KEY_FILE |
+| certificates.fileSize | Body | Number | Certificate file size (bytes) |
+| certificates.createdYmdt | Body | DateTime | Created date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -2859,10 +1480,10 @@ This API does not require a request body.
     },
     "certificates": [
         {
-            "fileName": "ca.pem",
+            "fileName": "fileName-example",
             "certificateType": "CA_FILE",
-            "fileSize": 2048,
-            "createdYmdt": "2023-03-17T14:02:29+09:00"
+            "fileSize": 1,
+            "createdYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -2873,42 +1494,41 @@ This API does not require a request body.
 
 ---
 
-### Export a Certificate File
+### Export Certificate File
 
 ```http
 POST /v4.0/db-instances/{dbInstanceId}/certificates/upload
 ```
 
-#### Required Permission
+#### Required permissions
 
-| Permission                                                      | Description          |
-|----------------------------------------------------------|-------------|
-| RDSforMariaDB:DbInstanceCertificate.Export | Export a certificate file |
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceCertificate.Export | Export certificate file |
 
 #### Request
 
-| Name               | Type   | Format     | Required | Description                                                                           |
-|------------------|------|--------|----|------------------------------------------------------------------------------|
-| dbInstanceId     | URL  | UUID   | O  | DB instance identifier                                                                 |
-| certificateTypes | Body | Array  | O  | Certificate type to upload<br/>- `CA_FILE`: CA certificate<br/>- `CERT_FILE`: Certificate<br/>- `KEY_FILE`: Secret key |
-| tenantId         | Body | String | O  | Tenant ID of object storage to store certificate file                                                |
-| username         | Body | String | O  | NHN Cloud account or IAM account ID                                                    |
-| password         | Body | String | O  | API password for object storage where certificate file is stored                                              |
-| targetContainer  | Body | String | O  | Object storage container where certificate file is stored                                                  |
-| objectPath       | Body | String | O  |
-Certificate file path to be stored in container                                                         |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| certificateTypes | Body | Array | O | List of certificate types to upload |
+| tenantId | Body | String | O | Tenant ID of Object Storage where the certificate file will be stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
+| username | Body | String | O | NHN Cloud member or IAM member ID |
+| password | Body | String | O | API password of Object Storage where the certificate file will be stored |
+| targetContainer | Body | String | O | Container of Object Storage where the certificate file will be stored |
+| objectPath | Body | String | O | Path of the certificate file to be stored in the container |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "certificateTypes": ["CA_FILE", "CERT_FILE", "KEY_FILE"],
-    "tenantId": "399631c404744dbbb18ce4fa2dc71a5a",
-    "username": "gildong.hong@nhn.com",
-    "password": "password",
-    "targetContainer": "container",
-    "objectPath": "certificates/"
+    "certificateTypes": [],
+    "tenantId": "0123456789abcdef0123456789abcdef",
+    "username": "username-example",
+    "password": "password-example",
+    "targetContainer": "targetContainer-example",
+    "objectPath": "objectPath-example"
 }
 ```
 
@@ -2917,65 +1537,9 @@ Certificate file path to be stored in container                                 
 
 #### Response
 
-| Name    | Type   | Format   | Description          |
-|-------|------|------|-------------|
-| jobId | Body | UUID | Identifier of requested task |
-
----
-
-## Backups
-
-### Backup Status
-
-| Status       | Description             |
-|--------------|-------------------------|
-| `BACKING_UP` | Backup in progress      |
-| `COMPLETED`  | Backup is completed     |
-| `DELETING`   | Backup is being deleted |
-| `DELETED`    | Backup is deleted       |
-| `ERROR`      | Error occurred          |
-
-### View Backup Details
-
-```http
-GET /v4.0/backups/{backupId}
-```
-
-#### Required Permission
-
-| Permission                                    | Description       |
-|----------------------------------------|----------|
-| RDSforMariaDB:Backup.Get | View backup details |
-
-#### Request
-
-This API does not require a request body.
-
-| Name       | Type  | Format   | Required | Description      |
-|----------|-----|------|----|---------|
-| backupId | URL | UUID | O  | Backup identifier |
-
-#### Response
-
-| Name                      | Type   | Format       | Description              |
-|-------------------------|------|----------|-----------------|
-| backup                  | Body | Object   | Back details        |
-| backup.backupId         | Body | UUID     | Backup identifier         |
-| backup.regionCode       | Body | Enum     | Region code           |
-| backup.backupName       | Body | String   | Name to identify backups |
-| backup.backupStatus     | Body | Enum     | Backup current status       |
-| backup.dbInstanceId     | Body | UUID     | Source DB instance identifier |
-| backup.dbInstanceName   | Body | String   | Source DB instance name  |
-| backup.dbVersion        | Body | Enum     | DB engine version        |
-| backup.backupType       | Body | Enum     | Backup type                             |
-| backup.backupMethodType | Body | Enum     | Backup method                             |
-| backup.backupFileType   | Body | Enum     | Backup file type                          |
-| backup.backupSize       | Body | Number   | Backup size (Byte)                      |
-| backup.isReplicable     | Body | Boolean  | Replicable                          |
-| backup.binLogFileName   | Body | String   | Binary log file name                       |
-| backup.binLogPosition   | Body | Number   | Binary log location                        |
-| backup.createdYmdt      | Body | DateTime | Created at (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| backup.updatedYmdt      | Body | DateTime | Updated at (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
 
 <details><summary>Example</summary>
 <p>
@@ -2987,23 +1551,1992 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### List DB Schemas
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/db-schemas
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceSchema.List | List DB schemas |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | Yes | The identifier of the DB instance |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbSchemas | Body | Array | List of DB schemas |
+| dbSchemas.dbSchemaId | Body | UUID | The identifier of the DB schema |
+| dbSchemas.dbSchemaName | Body | String | DB schema name |
+| dbSchemas.dbSchemaStatus | Body | Enum | Current status of the DB schema<br/>- STABLE<br/>- CREATING<br/>- SYNCING<br/>- DELETING<br/>- DELETED |
+| dbSchemas.createdYmdt | Body | DateTime | Creation date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "dbSchemas": [
+        {
+            "dbSchemaId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbSchemaName": "dbSchemaName-example",
+            "dbSchemaStatus": "STABLE",
+            "createdYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### Create DB Schema
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/db-schemas
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceSchema.Create | Create DB schema |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| dbSchemaName | Body | String | O | DB schema name<br/>- Maximum length: `64`<br/>- Begin with an English letter, contain only English letters, numbers, and underscore (_), be between 1 and 64 characters long, and must not use MySQL reserved words |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbSchemaName": "dbSchemaName-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Delete DB Schema
+
+```http
+DELETE /v4.0/db-instances/{dbInstanceId}/db-schemas/{dbSchemaId}
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceSchema.Delete | Delete DB schema |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| dbSchemaId | URL | UUID | O | DB schema identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View DB User List
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/db-users
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceUser.List | View DB user list |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbUsers | Body | Array | DB user list |
+| dbUsers.dbUserId | Body | UUID | DB user identifier |
+| dbUsers.dbUserName | Body | String | DB user account name |
+| dbUsers.host | Body | String | Host name of the DB user account |
+| dbUsers.authorityType | Body | Enum | DB user permission type<br/>- CUSTOM: `Custom permissions`<br/>- READ: `Read permissions`<br/>- CRUD: `CRUD permissions`<br/>- DDL: `DDL permissions`<br/>- ALL: `All permissions` |
+| dbUsers.dbUserStatus | Body | Enum | Current status of the DB user<br/>- STABLE<br/>- CREATING<br/>- UPDATING<br/>- SYNCING<br/>- DELETING<br/>- DELETED |
+| dbUsers.createdYmdt | Body | DateTime | Creation date and time |
+| dbUsers.updatedYmdt | Body | DateTime | Modification date and time |
+| dbUsers.authenticationPlugin | Body | Enum | User authentication plugin<br/>- NATIVE: `mysql_native_password authentication`<br/>- ED25519: `ed25519 authentication (MariaDB only)` |
+| dbUsers.tlsOption | Body | Enum | Certificate options<br/>- NONE: `No TLS`<br/>- SSL: `SSL authentication`<br/>- X509: `X509 certificate authentication` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "dbUsers": [
+        {
+            "dbUserId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbUserName": "dbUserName-example",
+            "host": "192.168.0.1",
+            "authorityType": "CUSTOM",
+            "dbUserStatus": "STABLE",
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00",
+            "authenticationPlugin": "NATIVE",
+            "tlsOption": "NONE"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### Create DB User
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/db-users
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceUser.Create | Create DB user |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| dbUserName | Body | String | O | DB user account name<br/>- Minimum length: `1`<br/>- Maximum length: `32` |
+| dbPassword | Body | String | O | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256` |
+| host | Body | String | O | DB user account host name<br/>- Maximum length: `45` |
+| authorityType | Body | Enum | O | DB user authority type<br/>- CUSTOM: `Custom authority`<br/>- READ: `Read authority`<br/>- CRUD: `CRUD authority`<br/>- DDL: `DDL authority`<br/>- ALL: `All authority` |
+| authenticationPlugin | Body | Enum | X | User authentication plugin<br/>- NATIVE: `mysql_native_password authentication`<br/>- ED25519: `ed25519 authentication (MariaDB only)` |
+| tlsOption | Body | Enum | X | Certificate option<br/>- Default: `NONE`<br/>- NONE: `TLS not used`<br/>- SSL: `SSL authentication`<br/>- X509: `X509 certificate authentication` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbUserName": "dbUserName",
+    "dbPassword": "dbPassword",
+    "host": "192.168.0.1",
+    "authorityType": "CUSTOM",
+    "authenticationPlugin": "NATIVE",
+    "tlsOption": "NONE"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Delete DB User
+
+```http
+DELETE /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceUser.Delete | Delete DB user |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier for the DB instance |
+| dbUserId | URL | UUID | O | Identifier for the DB user |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier for the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify DB User
+
+```http
+PUT /v4.0/db-instances/{dbInstanceId}/db-users/{dbUserId}
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceUser.Modify | Modify DB User |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| dbUserId | URL | UUID | O | DB user identifier |
+| dbPassword | Body | String | X | DB user account password<br/>- Minimum length: `4`<br/>- Maximum length: `256` |
+| authorityType | Body | Enum | X | DB user permission type<br/>- CUSTOM: `Custom permissions`<br/>- READ: `Read permissions`<br/>- CRUD: `CRUD permissions`<br/>- DDL: `DDL permissions`<br/>- ALL: `All permissions` |
+| authenticationPlugin | Body | Enum | X | User authentication plugin<br/>- NATIVE: `mysql_native_password authentication`<br/>- ED25519: `ed25519 authentication (MariaDB only)` |
+| tlsOption | Body | Enum | X | Certificate options<br/>- NONE: `TLS not used`<br/>- SSL: `SSL authentication`<br/>- X509: `X509 certificate authentication` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbPassword": "dbPassword",
+    "authorityType": "CUSTOM",
+    "authenticationPlugin": "NATIVE",
+    "tlsOption": "NONE"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Change DB Instance Deletion Protection Settings
+
+```http
+PUT /v4.0/db-instances/{dbInstanceId}/deletion-protection
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Modify | Change DB instance deletion protection settings |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| useDeletionProtection | Body | Boolean | O | Whether to use deletion protection |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "useDeletionProtection": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### Force Restart DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/force-restart
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.ForceRestart | Force restart DB instance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### View High Availability Information
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/high-availability
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | View high availability information |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| useHighAvailability | Body | Boolean | Whether to use high availability<br/>- Default value: `false` |
+| haStatus | Body | Enum | High availability status<br/>- CREATED: `Created`<br/>- STABLE: `Stable`<br/>- PAUSING: `Pausing`<br/>- DISABLE: `Disabled`<br/>- DISABLE_MASTER_IN_REPLICATION: `High availability stopped due to abnormal master replication detection`<br/>- DISABLE_MHA_PROCESS: `High availability process stopped`<br/>- DISABLE_REPLICATION_STOP: `High availability stopped due to replication down`<br/>- DISABLE_REPLICATION_DELAY: `High availability stopped due to replication delay`<br/>- FAILOVER_STARTED: `Failover started`<br/>- FAILOVER_FAILED: `Failover failed`<br/>- FAILOVER_COMPLETED: `Failover completed`<br/>- DELETED: `Deleted`<br/>- PAUSED: `Paused`<br/>- PAUSED_DUE_TO_TASK: `Paused due to task`<br/>- MASTER_FAILURE_DETECTION: `Master failure detection` |
+| pingInterval | Body | Number | Ping interval (seconds) |
+| pingType | Body | String | Ping method |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "useHighAvailability": false,
+    "haStatus": "CREATED",
+    "pingInterval": 1,
+    "pingType": "pingType-example"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify High Availability
+
+```http
+PUT /v4.0/db-instances/{dbInstanceId}/high-availability
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:HighAvailability.Modify | Modify high availability |
+
+#### Common Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| useHighAvailability | Body | Boolean | O | Whether to use high availability |
+| pingInterval | Body | Number | X | Ping interval when using high availability (seconds)<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
+
+#### When Using High Availability
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceCandidateName | Body | String | O | Standby master name that can identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "useHighAvailability": false,
+    "pingInterval": 1
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Pause high availability
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/pause
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:HighAvailability.Pause | Pause high availability |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Repair High Availability
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/repair
+```
+
+#### Required Permissions
+
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:HighAvailability.Repair | Repair high availability |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Resume High Availability
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/resume
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:HighAvailability.Resume | Resume high availability |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier for the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Separate High Availability
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/high-availability/split
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:HighAvailability.Split | Separate high availability |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | Y | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View Log File List
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/log-files
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceLog.List | View log file list |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| logFiles | Body | Array | Log file list |
+| logFiles.logFileName | Body | String | Log file name |
+| logFiles.logFileType | Body | Enum | Log file type<br/>- ERROR<br/>- BINLOG<br/>- GENERAL<br/>- SLOW_QUERY<br/>- AUDIT<br/>- BACKUP |
+| logFiles.logFileSize | Body | Number | Log file size (bytes) |
+| logFiles.createdYmdt | Body | DateTime | Created date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "logFiles": [
+        {
+            "logFileName": "logFileName-example",
+            "logFileType": "ERROR",
+            "logFileSize": 1,
+            "createdYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+### Export Log Files
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/log-files/export
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceLog.Export | Export log files |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O |  |
+| logFileNames | Body | Array | O | List of log file names |
+| tenantId | Body | String | O | Tenant ID of the Object Storage where log files will be stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
+| username | Body | String | O | NHN Cloud member or IAM member ID |
+| password | Body | String | O | API password for the Object Storage where log files will be stored |
+| targetContainer | Body | String | O | Container of the Object Storage where log files will be stored |
+| objectPath | Body | String | O | Path of the log file to be stored in the container |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "logFileNames": [],
+    "tenantId": "0123456789abcdef0123456789abcdef",
+    "username": "username-example",
+    "password": "password-example",
+    "targetContainer": "targetContainer-example",
+    "objectPath": "objectPath-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View Log File Content
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/log-files/{logFileName}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstanceLog.Get | View log file content |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| logFileName | URL | UUID | O | Log file name |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| content | Body | String | Log file content (up to 65533 bytes) |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "content": "content-example"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View DB Instance Maintenance List
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/maintenances
+```
+
+#### Required Permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Maintenance.List | View DB instance maintenance list |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier for the DB instance |
+| type | Query | String | X |  |
+| statuses | Query | String | X |  |
+| category | Query | String | X |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Number of maintenance items |
+| maintenances | Body | Array | Maintenance list |
+| maintenances.maintenanceId | Body | UUID | Maintenance ID |
+| maintenances.dbInstanceId | Body | UUID | DB instance ID |
+| maintenances.category | Body | Enum | Maintenance category<br/>- USER: `User maintenance category`<br/>- PROVIDER: `Provider maintenance category`<br/>- AUTO: `Automatic maintenance category` |
+| maintenances.description | Body | String | Maintenance description |
+| maintenances.type | Body | Enum | Maintenance type<br/>- UPDATE_DB_INSTANCE: `DB instance modification (specification change, port change, parameter group change)`<br/>- UPGRADE_ENGINE_VERSION: `Engine version upgrade`<br/>- APPLY_CHANGE_PARAMETER: `Parameter change in parameter group`<br/>- UPGRADE_OS: `Operating system version upgrade`<br/>- PATCH_SECURITY: `Security update`<br/>- MIGRATION: `Migration for hypervisor inspection`<br/>- CLEANUP_STORAGE: `Storage cleanup` |
+| maintenances.payload | Body | Object | Payload according to maintenance type |
+| maintenances.required | Body | Boolean | Whether maintenance is required |
+| maintenances.deadlineYmdt | Body | DateTime | Forced maintenance application date and time |
+| maintenances.status | Body | Enum | Maintenance status<br/>- PENDING: `Pending`<br/>- READY: `Ready`<br/>- RUNNING: `Running`<br/>- COMPLETED: `Completed`<br/>- FAILED: `Failed`<br/>- EXCLUDED: `Excluded`<br/>- DELETED: `Deleted`<br/>- UNKNOWN |
+| maintenances.executionType | Body | Enum | Maintenance execution type<br/>- SCHEDULED: `Scheduled execution (automatic execution during maintenance period)`<br/>- MANUAL: `Manual execution (immediate execution)`<br/>- FORCED: `Forced execution (automatic execution after deadline exceeded)` |
+| maintenances.addedYmdt | Body | DateTime | Maintenance schedule registration date and time |
+| maintenances.executionStartedYmdt | Body | DateTime | Maintenance start date and time |
+| maintenances.executionCompletedYmdt | Body | DateTime | Maintenance end date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "totalCounts": 1,
+    "maintenances": [
+        {
+            "maintenanceId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "USER",
+            "description": "description-example",
+            "type": "UPDATE_DB_INSTANCE",
+            "payload": {
+            },
+            "required": false,
+            "deadlineYmdt": "2023-12-31T15:00:00+09:00",
+            "status": "PENDING",
+            "executionType": "SCHEDULED",
+            "addedYmdt": "2023-12-31T15:00:00+09:00",
+            "executionStartedYmdt": "2023-12-31T15:00:00+09:00",
+            "executionCompletedYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### Execute DB Instance Maintenance Immediately
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/maintenances/execute-now
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Maintenance.Execute | Execute DB instance maintenance immediately |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | Yes | DB instance identifier |
+| configId | Body | String | Yes | Configuration ID |
+| category | Body | Enum | Yes | Maintenance category<br/>- USER: `User maintenance category`<br/>- PROVIDER: `Provider maintenance category`<br/>- AUTO: `Auto maintenance category` |
+| description | Body | String | No | Maintenance description |
+| type | Body | Enum | Yes | Maintenance type<br/>- UPDATE_DB_INSTANCE: `Modify DB instance (specification change, port change, parameter group change)`<br/>- UPGRADE_ENGINE_VERSION: `Engine version upgrade`<br/>- APPLY_CHANGE_PARAMETER: `Parameter change in parameter group`<br/>- UPGRADE_OS: `Operating system version upgrade`<br/>- PATCH_SECURITY: `Security update`<br/>- MIGRATION: `Migration for hypervisor maintenance`<br/>- CLEANUP_STORAGE: `Storage cleanup` |
+| payload | Body | String | Yes | Payload according to maintenance type |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "configId": "configId-example",
+    "category": "USER",
+    "description": "description-example",
+    "type": "UPDATE_DB_INSTANCE",
+    "payload": "payload-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Requested job identifier |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Schedule DB Instance Maintenance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/maintenances/schedule
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Maintenance.Update | Schedule DB instance maintenance |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| configId | Body | String | O | Configuration ID |
+| category | Body | Enum | O | Maintenance category<br/>- USER: `User maintenance category`<br/>- PROVIDER: `Provider maintenance category`<br/>- AUTO: `Auto maintenance category` |
+| description | Body | String | X | Maintenance description |
+| type | Body | Enum | O | Maintenance type<br/>- UPDATE_DB_INSTANCE: `DB instance modification (specification change, port change, parameter group change)`<br/>- UPGRADE_ENGINE_VERSION: `Engine version upgrade`<br/>- APPLY_CHANGE_PARAMETER: `Parameter change in parameter group`<br/>- UPGRADE_OS: `Operating system version upgrade`<br/>- PATCH_SECURITY: `Security update`<br/>- MIGRATION: `Migration for hypervisor maintenance`<br/>- CLEANUP_STORAGE: `Storage cleanup` |
+| payload | Body | String | O | Payload according to maintenance type |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "configId": "configId-example",
+    "category": "USER",
+    "description": "description-example",
+    "type": "UPDATE_DB_INSTANCE",
+    "payload": "payload-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### Delete DB Instance Maintenance
+
+```http
+DELETE /v4.0/db-instances/{dbInstanceId}/maintenances/{maintenanceId}
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Maintenance.Delete | Delete DB instance maintenance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| maintenanceId | URL | UUID | O | Maintenance ID |
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### View Network Information
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/network-info
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | View network information |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| availabilityZone | Body | String | Availability zone where the DB instance is created |
+| subnet | Body | Object | Subnet object |
+| subnet.subnetId | Body | UUID | Identifier of the subnet |
+| subnet.subnetName | Body | String | Name that can identify the subnet |
+| subnet.subnetCidr | Body | String | CIDR of the subnet |
+| endPoints | Body | Array | List of connection information |
+| endPoints.domain | Body | String | Domain |
+| endPoints.ipAddress | Body | String | IP address |
+| endPoints.endPointType | Body | String | Connection information type |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "availabilityZone": "kr-pub-a",
+    "subnet": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "subnetName": "subnetName-example",
+        "subnetCidr": "192.168.0.0/24"
+    },
+    "endPoints": [
+        {
+            "domain": "domain-example",
+            "ipAddress": "192.168.0.1",
+            "endPointType": "https://example.com"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify Network Information
+
+```http
+PUT /v4.0/db-instances/{dbInstanceId}/network-info
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Modify | Modify Network Information |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier for the DB instance |
+| usePublicAccess | Body | Boolean | O | Whether external access is enabled |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "usePublicAccess": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Promote DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/promote
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Promote | Promote DB instance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Rebuild DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/rebuild
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Rebuild | Rebuild DB instance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Replicate DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/replicate
+```
+
+#### Required Permission
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Replicate | Replicate DB instance |
+
+#### Common Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| dbInstanceName | Body | String | O | Name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbFlavorId | Body | UUID | X | Identifier of the DB instance specification |
+| dbPort | Body | Number | X | DB port<br/>- Minimum value: 3306, Maximum value: 43306 |
+| parameterGroupId | Body | UUID | X | Identifier of the parameter group |
+| dbSecurityGroupIds | Body | Array | X | List of DB security group identifiers |
+| userGroupIds | Body | Array | X | List of user group identifiers |
+| useDefaultNotification | Body | Boolean | X | Whether to use default notifications<br/>- Default value: `false` |
+| useDeletionProtection | Body | Boolean | X | Whether to use deletion protection<br/>- Default value: `false` |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to use slow query analysis<br/>- Default value: `true` |
+| network | Body | Object | O | Network information object |
+| network.usePublicAccess | Body | Boolean | X | Whether to allow external access |
+| network.availabilityZone | Body | Enum | O | Availability zone to create the DB instance |
+| storage | Body | Object | X | Storage information object |
+| storage.storageType | Body | Enum | X | Data storage type |
+| storage.storageSize | Body | Number | X | Data storage size (GB)<br/>- Minimum value: `20` |
+| storage.storageAutoscale | Body | Object | X | Data storage autoscaling object |
+| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to use storage autoscaling<br/>- Default value: `false` |
+| backup | Body | Object | X | Backup information object |
+| backup.backupPeriod | Body | Number | X | Backup retention period (days)<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| backup.backupRetryCount | Body | Number | X | Number of backup retries<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| backup.ftwrlWaitTimeout | Body | Number | X | Query delay wait time (seconds)<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backup.replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| backup.useBackupLock | Body | Boolean | X | Whether to use table lock |
+| backup.backupSchedules | Body | Array | X | List of backup schedules |
+| backup.backupSchedules.backupWndBgnTime | Body | Time | X | Backup start time |
+| backup.backupSchedules.backupWndDuration | Body | Enum | X | Backup duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
+
+#### When Using Storage Autoscaling
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storage.storageAutoscale.threshold | Body | Number | O | Autoscaling condition (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storage.storageAutoscale.maxStorageSize | Body | Number | O | Maximum autoscaling size (GB)<br/>- Maximum value: `4096` |
+| storage.storageAutoscale.cooldownTime | Body | Number | O | Autoscaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbInstanceName": "dbInstanceName",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useDefaultNotification": false,
+    "useDeletionProtection": false,
+    "useSlowQueryAnalysis": true,
+    "network": {
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20,
+        "storageAutoscale": {
+            "useStorageAutoscale": false
+        }
+    },
     "backup": {
-        "backupId": "0017f136-3e01-4530-94aa-20661afe6632",
-        "regionCode": "KR1",
-        "backupName": "backup",
-        "backupStatus": "COMPLETED",
-        "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd",
-        "dbInstanceName": "db-instance",
-        "dbVersion": "MARIADB_V10330",
-        "backupType": "AUTO",
-        "backupMethodType": "FULL",
-        "backupFileType": "XTRA_BACKUP",
-        "backupSize": 4996786,
-        "isReplicable": true,
-        "binLogFileName": "mysql-bin.000001",
-        "binLogPosition": 154,
-        "createdYmdt": "2023-02-21T00:35:00+09:00",
-        "updatedYmdt": "2023-02-22T00:35:32+09:00"
+        "backupPeriod": 0,
+        "backupRetryCount": 0,
+        "ftwrlWaitTimeout": 0,
+        "replicationRegion": "KR1",
+        "useBackupLock": false,
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    }
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+### Restart DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/restart
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Restart | Restart DB instance |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | The identifier of the DB instance |
+| useOnlineFailover | Body | Boolean | X | Whether to restart using failover<br/>- Default: `false` |
+| executeBackup | Body | Boolean | X | Whether to proceed with current point-in-time backup<br/>- Default: `false` |
+| waitReplicationDelay | Body | Boolean | X | Wait for replication delay resolution<br/>- Default: `false` |
+| useReadOnly | Body | Boolean | X | Block write load<br/>- Default: `false` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "useOnlineFailover": false,
+    "executeBackup": false,
+    "waitReplicationDelay": false,
+    "useReadOnly": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | The identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Get DB Instance Restoration Information
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/restoration-info
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | Get DB instance restoration information |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| oldestRestorableYmdt | Body | DateTime | Oldest restorable time |
+| latestRestorableYmdt | Body | DateTime | Latest restorable time |
+| restorableBackups | Body | Array | List of restorable backups |
+| restorableBackups.backup | Body | Object | Backup information object |
+| restorableBackups.backup.backupId | Body | UUID | Backup identifier |
+| restorableBackups.backup.backupName | Body | String | Backup name |
+| restorableBackups.backup.backupStatus | Body | Enum | Backup status<br/>- BACKING_UP: `Backing up (spinner)`<br/>- VERIFYING: `Verifying (spinner)`<br/>- COMPLETED: `Available (green icon)`<br/>- DELETING: `Deleting (spinner)`<br/>- DELETED: `Deleted (gray icon)`<br/>- ERROR: `Error (red icon)` |
+| restorableBackups.backup.dbInstanceId | Body | UUID | Original DB instance identifier |
+| restorableBackups.backup.dbInstanceName | Body | String | Original DB instance name |
+| restorableBackups.backup.dbVersion | Body | Enum | DB engine type |
+| restorableBackups.backup.backupType | Body | Enum | Backup type<br/>- AUTO<br/>- MANUAL |
+| restorableBackups.backup.backupSize | Body | Number | Backup size |
+| restorableBackups.backup.useBackupLock | Body | Boolean | Whether to use table lock |
+| restorableBackups.backup.failoverCount | Body | Number | Failover count |
+| restorableBackups.backup.binLogFileName | Body | String | Binary log file name |
+| restorableBackups.backup.binLogPosition | Body | Object | Binary log file location |
+| restorableBackups.backup.createdYmdt | Body | DateTime | Backup creation date and time |
+| restorableBackups.backup.updatedYmdt | Body | DateTime | Backup update date and time |
+| restorableBackups.restorableBinLogs | Body | Array | List of binary log names that can be restored using the corresponding backup |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "oldestRestorableYmdt": "2023-12-31T15:00:00+09:00",
+    "latestRestorableYmdt": "2023-12-31T15:00:00+09:00",
+    "restorableBackups": [
+        {
+            "backup": {
+                "backupId": "550e8400-e29b-41d4-a716-446655440000",
+                "backupName": "backupName-example",
+                "backupStatus": "BACKING_UP",
+                "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+                "dbInstanceName": "dbInstanceName-example",
+                "dbVersion": "MYSQL_V8036",
+                "backupType": "AUTO",
+                "backupSize": 1,
+                "useBackupLock": false,
+                "failoverCount": 1,
+                "binLogFileName": "binLogFileName-example",
+                "binLogPosition": {
+                },
+                "createdYmdt": "2023-12-31T15:00:00+09:00",
+                "updatedYmdt": "2023-12-31T15:00:00+09:00"
+            },
+            "restorableBinLogs": []
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
+### Retrieve Last Query for Restoration
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/restoration-info/last-query
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | Retrieve last query for restoration |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| executedYmdt | Body | DateTime | Query execution date and time |
+| lastQuery | Body | String | Last executed query |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "executedYmdt": "2023-12-31T15:00:00+09:00",
+    "lastQuery": "lastQuery-example"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Restore DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/restore
+```
+
+#### Required Permission
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Restore | Restore DB instance |
+
+#### Common Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+| dbInstanceName | Body | String | O | Master name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbFlavorId | Body | UUID | X | Identifier of the DB instance specification. If not entered, the specification of the original instance is applied. |
+| dbPort | Body | Number | X | DB port |
+| useHighAvailability | Body | Boolean | X | Whether to use high availability<br/>- Default value: `false` |
+| pingInterval | Body | Number | X | Ping interval (seconds) when using high availability<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
+| storage | Body | Object | X | Storage information object. If not entered, the storage settings of the original instance are applied. |
+| storage.storageType | Body | Enum | X | Storage type. If not entered, the storage type of the original instance is applied. |
+| storage.storageSize | Body | Number | X | Data storage size (GB). If not entered, the storage size of the original instance is applied.<br/>- Minimum value: `20` |
+| storage.storageAutoscale | Body | Object | X | Data storage autoscale object |
+| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to use storage autoscale<br/>- Default value: `false` |
+| network | Body | Object | X | Network information object. If not entered, the network settings of the original instance are applied. |
+| network.subnetId | Body | UUID | X | Identifier of the subnet. If not entered, the original instance value is used |
+| network.usePublicAccess | Body | Boolean | X | Whether external access is possible<br/>- Default value: `false` |
+| network.availabilityZone | Body | Enum | X | Availability zone to create the DB instance. If not entered, randomly selected |
+| backup | Body | Object | X | Backup information object. If not entered, the backup settings of the original instance are applied. |
+| backup.backupPeriod | Body | Number | X | Backup retention period (days). If not entered, the backup retention period of the original instance is applied.<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| backup.ftwrlWaitTimeout | Body | Number | X | Query delay wait time (seconds)<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backup.backupRetryCount | Body | Number | X | Number of backup retries<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| backup.replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| backup.useBackupLock | Body | Boolean | X | Whether to use table lock<br/>- Default value: `true` |
+| backup.backupSchedules | Body | Array | X | Backup schedule list. If not entered, the backup schedule of the original instance is applied. |
+| backup.backupSchedules.backupWndBgnTime | Body | Time | X | Backup start time |
+| backup.backupSchedules.backupWndDuration | Body | Enum | X | Backup Duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
+| restore | Body | Object | O | Restore information object |
+| restore.restoreType | Body | Enum | O | Restore type<br/>- TIMESTAMP: `Restore to a certain point in time using a time within the restorable time range`<br/>- BINLOG: `Restore to a certain point in time using a restorable binary log position`<br/>- BACKUP: `Snapshot backup restore using a previously created backup` |
+| restore.binLog.binLogFileName | Body | String | X | Binary log name to use for restoration |
+| restore.binLog.binLogPosition | Body | Object | X | Binary log position to use for restoration |
+| useDefaultNotification | Body | Boolean | X | Whether to use default notification<br/>- Default value: `false` |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to analyze slow query<br/>- Default value: `true` |
+| parameterGroupId | Body | UUID | X | Identifier of the parameter group. If not entered, the parameter group of the original instance is applied. |
+| dbSecurityGroupIds | Body | Array | X | List of DB security group identifiers. If not entered, the security groups of the original instance are applied. |
+| userGroupIds | Body | Array | X | List of user group identifiers |
+| useDeletionProtection | Body | Boolean | X | Whether to use deletion protection<br/>- Default value: `false` |
+
+#### When Using High Availability
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceCandidateName | Body | String | O | Candidate master name to identify the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+
+#### When Using Storage Autoscale
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storage.storageAutoscale.threshold | Body | Number | O | Autoscale condition (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storage.storageAutoscale.maxStorageSize | Body | Number | O | Maximum autoscale size (GB)<br/>- Maximum value: `4096` |
+| storage.storageAutoscale.cooldownTime | Body | Number | O | Autoscale cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
+
+#### Request for Restore to a Certain Point in Time Using Timestamp (when restoreType is `TIMESTAMP`)
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| restore.restoreYmdt | Body | DateTime | X | DB instance restore date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+
+Restoration is only possible for times before the most recent restorable time retrieved through restore information inquiry.
+
+#### Request for Restore to a Certain Point in Time Using Binary Log (when restoreType is `BINLOG`)
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| restore.backupId | Body | UUID | X | Identifier of the backup to use for restoration |
+| restore.binLog | Body | Object | X | Binary log information object to use for restoration |
+
+When using binary log for restore to a certain point in time, restoration is possible for logs recorded after the binary log file and position of the baseline backup.
+
+#### Request for Restore Using Backup (when restoreType is `BACKUP`)
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| restore.backupId | Body | UUID | X | Identifier of the backup to use for restoration |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbInstanceName": "dbInstanceName",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "useHighAvailability": false,
+    "pingInterval": 3,
+    "storage": {
+        "storageType": "General SSD",
+        "storageSize": 20,
+        "storageAutoscale": {
+            "useStorageAutoscale": false
+        }
+    },
+    "network": {
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
+        "availabilityZone": "kr-pub-a"
+    },
+    "backup": {
+        "backupPeriod": 0,
+        "ftwrlWaitTimeout": 1800,
+        "backupRetryCount": 0,
+        "replicationRegion": "KR1",
+        "useBackupLock": true,
+        "backupSchedules": [
+            {
+                "backupWndBgnTime": "00:00:00",
+                "backupWndDuration": "HALF_AN_HOUR"
+            }
+        ]
+    },
+    "restore": {
+        "restoreType": "TIMESTAMP",
+        "binLog": {
+            "binLogFileName": "binLogFileName-example",
+            "binLogPosition": {
+            }
+        }
+    },
+    "useDefaultNotification": false,
+    "useSlowQueryAnalysis": true,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useDeletionProtection": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Start DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/start
+```
+
+#### Required Permission
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Start | Start DB instance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | Identifier of the DB instance |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Stop DB Instance
+
+```http
+POST /v4.0/db-instances/{dbInstanceId}/stop
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Stop | Stop DB instance |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### View Storage Information
+
+```http
+GET /v4.0/db-instances/{dbInstanceId}/storage-info
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Get | View storage information |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| storageType | Body | String | Data storage type |
+| storageSize | Body | Number | Data storage size (GB) |
+| storageStatus | Body | Enum | Current status of data storage<br/>- DELETED: `Deleted`<br/>- PENDING_DELETION: `Deletion deferred`<br/>- DELETION_RESERVED: `Deletion reserved (waiting for snapshot cleanup)`<br/>- DETACHED: `Detached`<br/>- ATTACHED: `Attached` |
+| storageAutoscale | Body | Object | Data storage auto scaling object |
+| storageAutoscale.useStorageAutoscale | Body | Boolean | Whether storage auto scaling is enabled |
+| storageAutoscale.threshold | Body | Number | Auto scaling condition (%) |
+| storageAutoscale.maxStorageSize | Body | Number | Auto scaling maximum size (GB) |
+| storageAutoscale.cooldownTime | Body | Number | Auto scaling cooldown time (minutes) |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "storageType": "General SSD",
+    "storageSize": 1,
+    "storageStatus": "DELETED",
+    "storageAutoscale": {
+        "useStorageAutoscale": false,
+        "threshold": 1,
+        "maxStorageSize": 1,
+        "cooldownTime": 1
     }
 }
 ```
@@ -3013,45 +3546,119 @@ This API does not require a request body.
 
 ---
 
-### Retrieve Backup List
+### Modify Storage Information
+
+```http
+PUT /v4.0/db-instances/{dbInstanceId}/storage-info
+```
+
+#### Required Permissions
+
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:DbInstance.Modify | Modify storage information |
+
+#### Common Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceId | URL | UUID | O | DB instance identifier |
+| storageSize | Body | Number | O | Data storage size (GB)<br/>- Maximum value: `2048` |
+| storageAutoscale | Body | Object | X | Data storage autoscaling object |
+| storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to enable storage autoscaling |
+
+#### When Using Storage Autoscaling
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storageAutoscale.threshold | Body | Number | O | Autoscaling condition (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storageAutoscale.maxStorageSize | Body | Number | O | Maximum autoscaling size (GB)<br/>- Maximum value: `4096` |
+| storageAutoscale.cooldownTime | Body | Number | O | Autoscaling cooldown time (minutes)<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "storageSize": 1,
+    "storageAutoscale": {
+        "useStorageAutoscale": false
+    }
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+## Backup
+
+### Backup Status
+
+| Status           | Description           |
+|--------------|--------------|
+| `BACKING_UP` | When backing up     |
+| `COMPLETED`  | When backup is completed   |
+| `DELETING`   | When backup is being deleted |
+| `DELETED`    | When backup is deleted   |
+| `ERROR`      | When an error occurs   |
+
+### Get Backup List
 
 ```http
 GET /v4.0/backups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-----------------------------------------|----------|
-| RDSforMariaDB:Backup.List | Retrieve Backup List |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Backup.List | Get backup list |
 
 #### Request
 
 This API does not require a request body.
 
-| Name         | Type  | Format | Required | Description                                                                          |
-|-------------------|-------|----------|----|--------------------------------------------------------------------------------------|
-| page              | Query | Number   | X  | Page to retrieve<br/>- Default: 1 <br/>- Minimum value: `1`                                         |
-| size              | Query | Number   | X  | Page size to retrieve<br/>- Default: 20                                                     |
-| backupType   | Query | Enum   | X        | Backup type<br/>- `AUTO`: Automatic<br/>- `MANUAL`:  Manual<br/>- Default value: All |
-| dbInstanceId | Query | UUID   | X        | Original DB instance identifier                                                      |
-| dbVersion    | Query | Enum   | X        | DB engine type                                                                       |
-
 #### Response
 
-| Name                 | Type | Format   | Description                                         |
-|----------------------|------|----------|-----------------------------------------------------|
-| totalCounts          | Body | Number   | Number of all backup lists                          |
-| backups              | Body | Array    | Backup list                                         |
-| backups.backupId     | Body | UUID     | Backup identifier                                   |
-| backups.backupName   | Body | String   | Name to identify backups                            |
-| backups.backupStatus | Body | Enum     | Backup current status                               |
-| backups.dbInstanceId | Body | UUID     | Original DB instance identifier                     |
-| backups.dbVersion    | Body | Enum     | DB engine type                                      |
-| backups.backupType   | Body | Enum     | Backup type                                         |
-| backups.backupSize   | Body | Number   | Backup size (Byte)                                  |
-| createdYmdt          | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| updatedYmdt          | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total number of backup lists |
+| backups | Body | Array | Backup list |
+| backups.backupId | Body | UUID | Backup identifier |
+| backups.backupName | Body | String | Name that can identify the backup |
+| backups.backupStatus | Body | Enum | Current status of the backup<br/>- BACKING_UP: `Backing up (spinner)`<br/>- VERIFYING: `Verifying (spinner)`<br/>- COMPLETED: `Available (green icon)`<br/>- DELETING: `Deleting (spinner)`<br/>- DELETED: `Deleted (gray icon)`<br/>- ERROR: `Error (red icon)` |
+| backups.dbInstanceId | Body | UUID | Identifier of the source DB instance |
+| backups.dbVersion | Body | Enum | DB engine type |
+| backups.utilVersion | Body | String | Utility version |
+| backups.backupType | Body | Enum | Backup type<br/>- AUTO<br/>- MANUAL |
+| backups.backupSize | Body | Number | Backup size (bytes) |
+| backups.createdYmdt | Body | DateTime | Creation date and time |
+| backups.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -3066,15 +3673,16 @@ This API does not require a request body.
     "totalCounts": 1,
     "backups": [
         {
-            "backupId": "0017f136-3e01-4530-94aa-20661afe6632",
-            "backupName": "backup",
-            "backupStatus": "COMPLETED",
-            "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd",
-            "dbVersion": "MARIADB_V10330",
+            "backupId": "550e8400-e29b-41d4-a716-446655440000",
+            "backupName": "backupName-example",
+            "backupStatus": "BACKING_UP",
+            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbVersion": "MYSQL_V8036",
+            "utilVersion": "utilVersion-example",
             "backupType": "AUTO",
-            "backupSize": 4996786,
-            "createdYmdt": "2023-02-21T00:35:00+09:00",
-            "updatedYmdt": "2023-02-22T00:35:32+09:00"
+            "backupSize": 1,
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -3091,91 +3699,184 @@ This API does not require a request body.
 POST /v4.0/backups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-------------------------------------------|---------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:Backup.Create | Create backup |
 
-#### Common Request
+#### Request
 
-| Name             | Type | Format | Required | Description                                                                                                             |
-|------------------|------|--------|----------|-------------------------------------------------------------------------------------------------------------------------|
-| backupName       | Body | String | O        | Backup name                                                                                                             |
-| backupMethodType | Body | Enum   | O        | Backup method type<br/>- `FULL`: Full backup<br/>- `INCREMENTAL`: Incremental backup <br/>- `SNAPSHOT`: Snapshot backup |
-
-#### If backupMethodType is `FULL`
-
-| Name         | Type | Format | Required | Description            |
-|--------------|------|--------|----------|------------------------|
-| dbInstanceId | Body | UUID   | O        | DB instance identifier |
-
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| backupName | Body | String | O | A name to identify the backup<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| baseBackupId | Body | UUID | X | Identifier of the original backup |
+| dbInstanceId | Body | UUID | X | DB instance identifier |
+| backupMethodType | Body | Enum | O | Backup method type<br/>- FULL: `Full backup`<br/>- INCREMENTAL: `Incremental backup`<br/>- SNAPSHOT: `Snapshot backup` |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "backupName": "example-backup-name",
-    "backupMethodType": "FULL",
-    "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd"
+    "backupName": "backupName",
+    "baseBackupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+    "backupMethodType": "FULL"
 }
 ```
 
 </p>
 </details>
-
-#### If backupMethodType is `INCREMENTAL`
-
-| Name         | Type | Format | Required | Description                |
-|--------------|------|--------|----------|----------------------------|
-| baseBackupId | Body | UUID   | O        | Baseline backup identifier |
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "backupName": "example-backup-name",
-    "backupMethodType": "INCREMENTAL",
-    "baseBackupId": "3ae7914f-9b42-4729-b125-87417b72cf36"
-}
-```
-
-</p>
-</details>
-
-
-
-
-#### Snapshot Backup (if backupMethodType is `SNAPSHOT`)
-
-| Name           | Type   | Format   | Required | Description           |
-|--------------|------|------|----|--------------|
-| dbInstanceId | Body | UUID | O  | DB instance identifier |
-
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "backupName": "example-backup-name",
-    "backupMethodType": "SNAPSHOT",
-    "dbInstanceId": "142e6ccc-3bfb-4e1e-84f7-38861284fafd"
-}
-```
-
-</p>
-</details>
-
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Delete Backup
+
+```http
+DELETE /v4.0/backups/{backupId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Backup.Delete | Delete backup |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| backupId | URL | UUID | Yes |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Get Single Backup
+
+```http
+GET /v4.0/backups/{backupId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Backup.Get | Get single backup |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| backupId | URL | UUID | O |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| backup | Body | Object | Backup details |
+| backup.backupId | Body | UUID | Backup identifier |
+| backup.regionCode | Body | Enum | Region code<br/>- KR1: `Korea (Pangyo)` |
+| backup.backupName | Body | String | Name to identify the backup |
+| backup.backupStatus | Body | Enum | Current status of the backup<br/>- BACKING_UP: `Backing up (spinner)`<br/>- VERIFYING: `Verifying (spinner)`<br/>- COMPLETED: `Available (green icon)`<br/>- DELETING: `Deleting (spinner)`<br/>- DELETED: `Deleted (gray icon)`<br/>- ERROR: `Error (red icon)` |
+| backup.dbInstanceId | Body | UUID | Original DB instance identifier |
+| backup.dbInstanceName | Body | String | Original DB instance name |
+| backup.dbVersion | Body | Enum | DB engine version |
+| backup.utilVersion | Body | String | Utility version |
+| backup.backupType | Body | Enum | Backup type (AUTO, MANUAL)<br/>- AUTO<br/>- MANUAL |
+| backup.backupMethodType | Body | Enum | Backup method (FULL, SNAPSHOT, INCREMENTAL)<br/>- FULL<br/>- INCREMENTAL<br/>- SNAPSHOT |
+| backup.backupFileType | Body | Enum | Backup file type<br/>- XBSTREAM<br/>- TAR_ZSTD<br/>- TAR_LZ4<br/>- TAR_GZIP<br/>- SNAPSHOT |
+| backup.backupSize | Body | Number | Backup size (Byte) |
+| backup.isReplicable | Body | Boolean | Whether replication is possible |
+| backup.binLogFileName | Body | String | Binary log file name |
+| backup.binLogPosition | Body | Object | Binary log position |
+| backup.createdYmdt | Body | DateTime | Creation date and time |
+| backup.updatedYmdt | Body | DateTime | Update date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "backup": {
+        "backupId": "550e8400-e29b-41d4-a716-446655440000",
+        "regionCode": "KR1",
+        "backupName": "backupName-example",
+        "backupStatus": "BACKING_UP",
+        "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+        "dbInstanceName": "dbInstanceName-example",
+        "dbVersion": "MYSQL_V8036",
+        "utilVersion": "utilVersion-example",
+        "backupType": "AUTO",
+        "backupMethodType": "FULL",
+        "backupFileType": "XBSTREAM",
+        "backupSize": 1,
+        "isReplicable": false,
+        "binLogFileName": "binLogFileName-example",
+        "binLogPosition": {
+        },
+        "createdYmdt": "2023-12-31T15:00:00+09:00",
+        "updatedYmdt": "2023-12-31T15:00:00+09:00"
+    }
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -3185,33 +3886,33 @@ POST /v4.0/backups
 POST /v4.0/backups/{backupId}/export
 ```
 
-#### Required permissions
+#### Required Permission
 
-| Permission Name                                           | Description           |
-|-------------------------------------------|---------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:Backup.Export | Export backup |
 
 #### Request
 
-| Name            | Type | Format | Required | Description                                            |
-|-----------------|------|--------|----------|--------------------------------------------------------|
-| backupId        | URL  | UUID   | O        | Backup identifier                                      |
-| tenantId        | Body | String | O        | Tenant ID of object storage to store backup            |
-| username        | Body | String | O        | NHN Cloud account or IAM member ID                     |
-| password        | Body | String | O        | API password for object storage where backup is stored |
-| targetContainer | Body | String | O        | Object storage container where backup is stored        |
-| objectPath      | Body | String | O        | Backup path to be stored in container                  |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| backupId | URL | UUID | O |  |
+| tenantId | Body | String | O | Tenant ID of the Object Storage where the backup is stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
+| username | Body | String | O | NHN Cloud account or IAM member ID |
+| password | Body | String | O | API password of the Object Storage where the backup is stored |
+| targetContainer | Body | String | O | Container of the Object Storage where the backup is stored |
+| objectPath | Body | String | O | Path of the backup to be stored in the container |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "tenantId": "399631c404744dbbb18ce4fa2dc71a5a",
-    "username": "gildong.hong@nhn.com",
-    "password": "password",
-    "targetContainer": "container",
-    "objectPath": "backups/backup_file"
+    "tenantId": "0123456789abcdef0123456789abcdef",
+    "username": "username-example",
+    "password": "password-example",
+    "targetContainer": "targetContainer-example",
+    "objectPath": "objectPath-example"
 }
 ```
 
@@ -3220,9 +3921,26 @@ POST /v4.0/backups/{backupId}/export
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
 
 ---
 
@@ -3232,72 +3950,97 @@ POST /v4.0/backups/{backupId}/export
 POST /v4.0/backups/{backupId}/restore
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|--------------------------------------------|---------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:Backup.Restore | Restore backup |
 
-#### Request
+#### Common Request
 
-| Name                                         | Type | Format  | Required | Description                                                                                                                               |
-|----------------------------------------------|------|---------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| backupId                                     | URL  | UUID    | O        | Backup identifier                                                                                                                         |
-| dbInstanceName                               | Body | String  | O        | Master name to identify DB instances                                                                                                      |
-| dbInstanceCandidateName                      | Body | String  | X        | Candidate name to identify DB instances                                                                                                   |
-| description                                  | Body | String  | X        | Additional information on DB instances                                                                                                    |
-| dbFlavorId                                   | Body | UUID    | X        | Identifier of DB instance specifications<br/>- Default: Original DB instance value                                                                                                  |
-| dbPort                                       | Body | Integer | X        | DB port <br/> - Default: Source DB instance value     <br/>- Minimum value: `3306`<br/>- Maximum value: `43306`                           |
-| parameterGroupId                             | Body | UUID    | X        | Parameter group identifier<br/>- Default: Original DB instance value                                                                                                                |
-| dbSecurityGroupIds                           | Body | Array   | X        | DB security group identifiers                                                                                                             |
-| userGroupIds                                 | Body | Array   | X        | User group identifiers                                                                                                                    |
-| useHighAvailability                          | Body | Boolean | X        | Whether to use high availability<br/>- Default: `false`                                                                                     |
-| pingInterval                                 | Body | Number  | X        | Ping interval (sec) when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600`                     |
-| pingType                                     | Body | Enum    | X        | Ping type when using high availability<br/>- Default: `INSERT`<br/>- `INSERT`<br/>- `SELECT`                                                               |
-| useDefaultNotification                       | Body | Boolean | X        | Whether to use default notification<br/>- Default: `false`                                                                                  |
-| useDeletionProtection                        | Body | Boolean | X        | Whether to protect against deletion<br/>- Default: `false`                                                                                  | 
-| useSlowQueryAnalysis                         | Body | Boolean | X        | Whether to analyze slow queries<br/>- Default: `true`                                                                                     |
-| network                                      | Body | Object  | X        | Network information objects                                                                                                               |
-| network.subnetId                             | Body | UUID    | X        | Subnet identifier<br/>- Default: Original DB instance value                                                                                                                         |
-| network.usePublicAccess                      | Body | Boolean | X        | External access is available or not<br/>- Default: `false`                                                                                  |
-| network.availabilityZone                     | Body | Enum    | X        | Availability zone where DB instance will be created<br/>- Example: `kr-pub-a`<br/>- Default: Random selection                             |
-| storage                                      | Body | Object  | X        | Storage information objects                                                                                                               |
-| storage.storageType                          | Body | Enum    | X        | Block Storage Type <br/> - Default: Source DB instance value     <br/>- Example: `General SSD`                                            |
-| storage.storageSize                          | Body | Number  | X        | Block Storage Size (GB) <br/> - Default: Source DB instance value     <br/>- Minimum value: `20`<br/>- Maximum value: `2048`              |
-| storage.storageAutoscale                     | Body | Object  | X        | Block Storage Auto Scaling Objects                                                                                                        |
-| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X        | Whether to enable storage auto scaling        <br/> - Default: Source DB instance value                                                   |
-| storage.storageAutoscale.threshold           | Body | Number  | X        | Auto scale out conditions (%) <br/> - Default: Source DB instance value     <br/>- Minimum value: `50`<br/>- Maximum value: `95`          |
-| storage.storageAutoscale.maxStorageSize      | Body | Number  | X        | Auto scaling maximum size (GB) <br/> - Default: Source DB instance value     <br/>- Maximum value: `4096`                                 |
-| storage.storageAutoscale.cooldownTime        | Body | Number  | X        | Auto scaling cooldown time (minutes) <br/> - Default: Source DB instance value     <br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
-| backup                                       | Body | Object  | X        | Backup information objects                                                                                                                |
-| backup.backupPeriod                          | Body | Number  | X        | Backup retention period <br/> - Default: Source DB instance value     <br/>- Minimum value: `0`<br/>- Maximum value: `730`                |
-| backup.ftwrlWaitTimeout                      | Body | Number  | X        | Query latency (sec)<br/>- Default: `1800`<br/>- Minimum value: `0`<br/>- Maximum value: `21600`                                                |
-| backup.backupRetryCount                      | Body | Number  | X        | Number of backup retries<br/>- Default: `0`<br/>- Minimum value: `0`<br/>- Maximum value: `10`                                              |
-| backup.useBackupLock                     | Body | Boolean | X        | Whether to use table lock<br/>- Default: `true`                                                                                                                                                                                                                             |
-| backup.backupSchedules                   | Body | Array   | X        | Scheduled auto backup list<br/>- Default: Original DB instance value                                                                                                                                                                                                                                                |
-| backup.backupSchedules.backupWndBgnTime  | Body | String  | O        | Backup started time<br/>- Example: `00:00:00`                                                                                                                                                                                                                             |
-| backup.backupSchedules.backupWndDuration | Body | Enum    | O        | Backup duration<br/>Auto backup proceeds within duration from backup start time.<br/>- `HALF_AN_HOUR`: 30 minutes<br/>- `ONE_HOUR`: 1 hour<br/>- `ONE_HOUR_AND_HALF`: 1.5 hour<br/>- `TWO_HOURS`: 2 hour<br/>- `TWO_HOURS_AND_HALF`: 2.5 hour<br/>- `THREE_HOURS`: 3 hour |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| backupId | URL | UUID | O |  |
+| dbInstanceName | Body | String | O | Master name that identifies the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB instance<br/>- Maximum length: `100` |
+| dbFlavorId | Body | UUID | X | Identifier of the DB instance specification. If not specified, uses the original instance value |
+| dbPort | Body | Number | X | DB port. If not specified, uses the original instance value<br/>- Minimum value: 3306, Maximum value: 43306 |
+| parameterGroupId | Body | UUID | X | Identifier of the parameter group. If not specified, uses the original instance value |
+| dbSecurityGroupIds | Body | Array | X | List of DB security group identifiers |
+| userGroupIds | Body | Array | X | List of user group identifiers |
+| useHighAvailability | Body | Boolean | X | Whether to use high availability<br/>- Default: `false` |
+| pingInterval | Body | Number | X | Ping interval in seconds when using high availability<br/>- Default: `3`<br/>- Minimum value: `1`<br/>- Maximum value: `600` |
+| useDefaultNotification | Body | Boolean | X | Whether to use default notifications<br/>- Default: `false` |
+| useDeletionProtection | Body | Boolean | X | Whether to enable deletion protection<br/>- Default: `false` |
+| useSlowQueryAnalysis | Body | Boolean | X | Whether to enable slow query analysis<br/>- Default: `true` |
+| network | Body | Object | X | Network information object. If not specified, uses the original instance value |
+| network.subnetId | Body | UUID | X | Identifier of the subnet. If not specified, uses the original instance value |
+| network.usePublicAccess | Body | Boolean | X | Whether to allow external access<br/>- Default: `false` |
+| network.availabilityZone | Body | Enum | X | Availability zone where the DB instance will be created. If not specified, randomly selected |
+| storage | Body | Object | X | Storage information object. If not specified, uses the original instance value |
+| storage.storageType | Body | Enum | X | Storage type. If not specified, uses the original instance value |
+| storage.storageSize | Body | Number | X | Data storage size in GB. If not specified, uses the original instance value<br/>- Minimum value: `20` |
+| storage.storageAutoscale | Body | Object | X | Data storage auto-scaling object. If not specified, uses the original instance value |
+| storage.storageAutoscale.useStorageAutoscale | Body | Boolean | X | Whether to enable storage auto-scaling<br/>- Default: `false` |
+| backup | Body | Object | X | Backup information object. If not specified, uses the original instance backup settings |
+| backup.backupPeriod | Body | Number | X | Backup retention period in days. If not specified, uses the original instance value<br/>- Minimum value: `0`<br/>- Maximum value: `730` |
+| backup.backupRetryCount | Body | Number | X | Number of backup retries. If not specified, uses the original instance value<br/>- Minimum value: `0`<br/>- Maximum value: `10` |
+| backup.ftwrlWaitTimeout | Body | Number | X | Query delay wait time in seconds. If not specified, uses the original instance value<br/>- Minimum value: `0`<br/>- Maximum value: `21600` |
+| backup.replicationRegion | Body | Enum | X | Backup replication region<br/>- KR1: `Korea (Pangyo)` |
+| backup.useBackupLock | Body | Boolean | X | Whether to use table lock. If not specified, uses the original instance value |
+| backup.backupSchedules | Body | Array | X | List of backup schedules. If not specified, uses the original instance value |
+| backup.backupSchedules.backupWndBgnTime | Body | Time | O | Backup start time |
+| backup.backupSchedules.backupWndDuration | Body | Enum | O | Backup duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
+
+#### When Using High Availability
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbInstanceCandidateName | Body | String | O | Candidate master name that identifies the DB instance<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+
+#### When Using Storage Auto-scaling
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| storage.storageAutoscale.threshold | Body | Number | O | Auto-scaling threshold (%)<br/>- Minimum value: `50`<br/>- Maximum value: `95` |
+| storage.storageAutoscale.maxStorageSize | Body | Number | O | Maximum auto-scaling size in GB<br/>- Maximum value: `4096` |
+| storage.storageAutoscale.cooldownTime | Body | Number | O | Auto-scaling cooldown time in minutes<br/>- Minimum value: `10`<br/>- Maximum value: `1440` |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
-
 {
-    "dbInstanceName": "db-instance-restore",
-    "dbFlavorId": "50be6d9c-02d6-4594-a2d4-12010eb65ec0",
-    "dbPort": 10000,
-    "parameterGroupId": "132d383c-38e3-468a-a826-5e9a8fff15d0",
+    "dbInstanceName": "dbInstanceName",
+    "description": "description-example",
+    "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbPort": 1,
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupIds": [],
+    "userGroupIds": [],
+    "useHighAvailability": false,
+    "pingInterval": 3,
+    "useDefaultNotification": false,
+    "useDeletionProtection": false,
+    "useSlowQueryAnalysis": true,
     "network": {
-        "subnetId": "e721a9dd-dad0-4cf0-a53b-dd654ebfc683",
+        "subnetId": "550e8400-e29b-41d4-a716-446655440000",
+        "usePublicAccess": false,
         "availabilityZone": "kr-pub-a"
     },
     "storage": {
         "storageType": "General SSD",
-        "storageSize": 20
+        "storageSize": 20,
+        "storageAutoscale": {
+            "useStorageAutoscale": false
+        }
     },
     "backup": {
-        "backupPeriod": 1,
+        "backupPeriod": 0,
+        "backupRetryCount": 0,
+        "ftwrlWaitTimeout": 0,
+        "replicationRegion": "KR1",
+        "useBackupLock": false,
         "backupSchedules": [
             {
                 "backupWndBgnTime": "00:00:00",
@@ -3313,82 +4056,9 @@ POST /v4.0/backups/{backupId}/restore
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Delete Backup
-
-```http
-DELETE /v4.0/backups/{backupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-------------------------------------------|---------|
-| RDSforMariaDB:Backup.Delete | Delete backup |
-
-#### Request
-
-This API does not require a request body.
-
-| Name     | Type | Format | Required | Description       |
-|----------|------|--------|----------|-------------------|
-| backupId | URL  | UUID   | O        | Backup identifier |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-## DB Security Group
-
-### DB Security Group Progress
-
-| Status          | Description         |
-|-----------------|---------------------|
-| `NONE`          | No task in progress |
-| `CREATING_RULE` | Creating rules      |
-| `UPDATING_RULE` | Modifying rules     |
-| `DELETING_RULE` | Deleting rules      |
-
-### List DB Security Groups
-
-```http
-GET /v4.0/db-security-groups
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|--------------------------------------------------|----------------|
-| RDSforMariaDB:DbSecurityGroup.List | List DB security groups |
-
-#### Request
-
-This API does not require a request body.
-
-| Name              | Type | Format | Required | Description                  |
-|-------------------|-------|----------|----|-------------------------------------------------------------|
-| page              | Query | Number   | X  | Page to retrieve<br/>- Default: 1 <br/>- Minimum value: `1` |
-| size              | Query | Number   | X  | Page size to retrieve<br/>- Default: 20                     |
-#### Response
-
-| Name                                 | Type | Format   | Description                                         |
-|--------------------------------------|------|----------|-----------------------------------------------------|
-| dbSecurityGroups                     | Body | Array    | DB security groups                                  |
-| dbSecurityGroups.dbSecurityGroupId   | Body | UUID     | DB security group identifier                        |
-| dbSecurityGroups.dbSecurityGroupName | Body | String   | Name to identify DB instances                       |
-| dbSecurityGroups.description         | Body | String   | Additional information on DB security group         |
-| dbSecurityGroups.progressStatus      | Body | Enum     | Current status of DB security group                 |
-| dbSecurityGroups.createdYmdt         | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| dbSecurityGroups.updatedYmdt         | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Identifier of the requested job |
 
 <details><summary>Example</summary>
 <p>
@@ -3400,16 +4070,7 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "dbSecurityGroups": [
-        {
-            "dbSecurityGroupId": "fe4f2aee-afbb-4c19-a5e9-eb2eab394708",
-            "dbSecurityGroupName": "dbSecurityGroup",
-            "description": "description",
-            "progressStatus": "NONE",
-            "createdYmdt": "2023-02-19T19:18:13+09:00",
-            "updatedYmdt": "2022-02-19T19:18:13+09:00"
-        }
-    ]
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -3418,49 +4079,45 @@ This API does not require a request body.
 
 ---
 
-### List DB Security Group Details
+## DB Security Group
+
+### DB Security Group Progress Status
+
+| Status              | Description           |
+|-----------------|--------------|
+| `NONE`          | No job in progress |
+| `CREATING_RULE` | Creating rule policy   |
+| `UPDATING_RULE` | Updating rule policy   |
+| `DELETING_RULE` | Deleting rule policy   |
+
+### View DB security group list
 
 ```http
-GET /v4.0/db-security-groups/{dbSecurityGroupId}
+GET /v4.0/db-security-groups
 ```
 
 #### Required permissions
 
-| Permission Name                                           | Description           |
-|-------------------------------------------------|----------------|
-| RDSforMariaDB:DbSecurityGroup.Get | List DB security group details
- |
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbSecurityGroup.List | View DB security group list |
 
 #### Request
 
 This API does not require a request body.
 
-| Name              | Type | Format | Required | Description                  |
-|-------------------|------|--------|----------|------------------------------|
-| dbSecurityGroupId | URL  | UUID   | O        | DB security group identifier |
-
 #### Response
 
-| Name                | Type | Format   | Description                                                                                                                                              |
-|---------------------|------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbSecurityGroupId   | Body | UUID     | DB security group identifier                                                                                                                             |
-| dbSecurityGroupName | Body | String   | Name to identify DB instances                                                                                                                            |
-| description         | Body | String   | Additional information on DB security group                                                                                                              |
-| progressStatus      | Body | Enum     | Current status of DB security group                                                                                                                      |
-| rules               | Body | Array    | DB security group rules                                                                                                                                  |
-| rules.ruleId        | Body | UUID     | DB security group rule identifier                                                                                                                        |
-| rules.description   | Body | String   | Additional information on DB security group rule                                                                                                         |
-| rules.direction     | Body | Enum     | Communication direction<br/>- `INGRESS`: Inbound<br/>- `EGRESS`: Outbound                                                                                |
-| rules.etherType     | Body | Enum     | Ether type<br/>- `IPV4`: IPv4<br/>- `IPV6`: IPv6                                                                                                         |
-| rules.port          | Body | Object   | Port object                                                                                                                                              |
-| rules.port.portType | Body | Enum     | Port type<br/>- `DB_PORT`: Sets to DB instance port value.<br/>- `PORT`: Sets to specified port value.<br/>- `PORT_RANGE`: Sets to specified port range. |
-| rules.port.minPort  | Body | Number   | Minimum port range                                                                                                                                       |
-| rules.port.maxPort  | Body | Number   | Maximum port range                                                                                                                                       |
-| rules.cidr          | Body | String   | Remote source for traffic to allow                                                                                                                       |
-| rules.createdYmdt   | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                       |
-| rules.updatedYmdt   | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                      |
-| createdYmdt         | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                       |
-| updatedYmdt         | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                      |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total count of DB security groups |
+| dbSecurityGroups | Body | Array | DB security group list |
+| dbSecurityGroups.dbSecurityGroupId | Body | UUID | Identifier of the DB security group |
+| dbSecurityGroups.dbSecurityGroupName | Body | String | Name to identify the DB security group |
+| dbSecurityGroups.description | Body | String | Additional information about the DB security group |
+| dbSecurityGroups.progressStatus | Body | Enum | Current progress status of the DB security group<br/>- NONE: `None`<br/>- CREATING_RULE: `Creating rule`<br/>- UPDATING_RULE: `Updating rule`<br/>- DELETING_RULE: `Deleting rule`<br/>- APPLYING_DEFAULT_RULE: `Applying default rule` |
+| dbSecurityGroups.createdYmdt | Body | DateTime | Creation date and time |
+| dbSecurityGroups.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -3472,30 +4129,17 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "dbSecurityGroup": {
-        "dbSecurityGroupId": "fe4f2aee-afbb-4c19-a5e9-eb2eab394708",
-        "dbSecurityGroupName": "dbSecurityGroup",
-        "description": "description",
-        "progressStatus": "NONE",
-        "rules": [
-            {
-                "ruleId": "17c88ef6-95f1-4678-84f9-fee1b22e250d",
-                "description": "description",
-                "direction": "INGRESS",
-                "etherType": "IPV4",
-                "port": {
-                    "portType": "PORT_RANGE",
-                    "minPort": 10000,
-                    "maxPort": 10005
-                },
-                "cidr": "0.0.0.0/0",
-                "createdYmdt": "2023-02-19T19:18:13+09:00",
-                "updatedYmdt": "2023-02-19T19:18:13+09:00"
-            }
-        ],
-        "createdYmdt": "2023-02-19T19:18:13+09:00",
-        "updatedYmdt": "2023-02-19T19:18:13+09:00"
-    }
+    "totalCounts": 1,
+    "dbSecurityGroups": [
+        {
+            "dbSecurityGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbSecurityGroupName": "dbSecurityGroupName-example",
+            "description": "description-example",
+            "progressStatus": "NONE",
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ]
 }
 ```
 
@@ -3512,46 +4156,44 @@ POST /v4.0/db-security-groups
 
 #### Required permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------------------|---------------|
+| Permission name | Description |
+|-----|-----|
 | RDSforMariaDB:DbSecurityGroup.Create | Create DB security group |
 
 #### Request
 
-| Name                | Type | Format | Required | Description                                                                                                                                                                                                                      |
-|---------------------|------|--------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbSecurityGroupName | Body | String | O        | Name to identify DB instances                                                                                                                                                                                                    |
-| description         | Body | String | X        | Additional information on DB security group                                                                                                                                                                                      |
-| rules               | Body | Array  | O        | DB security group rules                                                                                                                                                                                                          |
-| rules.description   | Body | String | X        | Additional information on DB security group rule                                                                                                                                                                                 |
-| rules.direction     | Body | Enum   | O        | Communication direction<br/>- `INGRESS`: Inbound<br/>- `EGRESS`: Outbound                                                                                                                                                        |
-| rules.etherType     | Body | Enum   | O        | Ether type<br/>- `IPV4`: IPv4<br/>- `IPV6`: IPv6                                                                                                                                                                                 |
-| rules.cidr          | Body | String | O        | Remote source for traffic to allow<br/>- Example: `1.1.1.1/32`                                                                                                                                                                   |
-| rules.port          | Body | Object | O        | Port object                                                                                                                                                                                                                      |
-| rules.port.portType | Body | Enum   | O        | Port type<br/>- `DB_PORT`: Sets to DB instance port value. Values for `minPort` and `maxPort` are not required.<br/>- `PORT`: Sets to the specified port value. `minPort` and `maxPort` must be the same.<br/>- `PORT_RANGE`: Sets to specified port range. |
-| rules.port.minPort  | Body | Number | X        | Minimum port range<br/>- Minimum value: 1                                                                                                                                                                                        |
-| rules.port.maxPort  | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
-
-> [Caution]
-> DB port cannot be set to transmit direction.
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupName | Body | String | O | A name that can identify the DB security group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB security group<br/>- Maximum length: `100` |
+| rules | Body | Array | O | List of DB security group rules |
+| rules.direction | Body | Enum | O | Communication direction<br/>- INGRESS: `Inbound`<br/>- EGRESS: `Outbound` |
+| rules.etherType | Body | Enum | O | Ether type<br/>- IPV4: `IPv4 format`<br/>- IPV6: `IPv6 format` |
+| rules.port | Body | Object | O | Port object |
+| rules.port.portType | Body | Enum | O | Port type<br/>- ALL: `All port ranges (not used in user console)`<br/>- PORT: `Specific port`<br/>- DB_PORT: `DB inbound port`<br/>- PORT_RANGE: `Port range` |
+| rules.port.minPort | Body | Number | X | Minimum port range<br/>- Minimum value: `3306` |
+| rules.port.maxPort | Body | Number | X | Maximum port range<br/>- Maximum value: `65535` |
+| rules.cidr | Body | String | O | CIDR |
+| rules.description | Body | String | X | Additional information about the security group rule |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "dbSecurityGroupName": "dbSecurityGroup",
-    "description": "description",
+    "dbSecurityGroupName": "dbSecurityGroupName",
+    "description": "description-example",
     "rules": [
         {
             "direction": "INGRESS",
             "etherType": "IPV4",
             "port": {
-                "portType": "PORT_RANGE",
-                "minPort": 10000,
-                "maxPort": 10005
+                "portType": "ALL",
+                "minPort": 3306,
+                "maxPort": 1
             },
-            "cidr": "0.0.0.0/0"
+            "cidr": "192.168.0.0/24",
+            "description": "description-example"
         }
     ]
 }
@@ -3562,48 +4204,9 @@ POST /v4.0/db-security-groups
 
 #### Response
 
-| Name              | Type | Format | Description                  |
-|-------------------|------|--------|------------------------------|
-| dbSecurityGroupId | Body | UUID   | DB security group identifier |
-
----
-
-### Modify DB Security Group
-
-```http
-PUT /v4.0/db-security-groups/{dbSecurityGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|----------------------------------------------------|---------------|
-| RDSforMariaDB:DbSecurityGroup.Modify | Modify DB security group |
-
-#### Request
-
-| Name                | Type | Format | Required | Description                                 |
-|---------------------|------|--------|----------|---------------------------------------------|
-| dbSecurityGroupId   | URL  | UUID   | O        | DB security group identifier                |
-| dbSecurityGroupName | Body | String | X        | Name to identify DB instances               |
-| description         | Body | String | X        | Additional information on DB security group |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "dbSecurityGroupName": "dbSecurityGroup",
-    "description": "description"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-This API does not return a response body.
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbSecurityGroupId | Body | UUID | DB security group identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -3614,13 +4217,13 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "dbSecurityGroupId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
 </p>
 </details>
-
 
 ---
 
@@ -3632,21 +4235,66 @@ DELETE /v4.0/db-security-groups/{dbSecurityGroupId}
 
 #### Required permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------------------|---------------|
+| Permission name | Description |
+|-----|-----|
 | RDSforMariaDB:DbSecurityGroup.Delete | Delete DB security group |
 
 #### Request
 
 This API does not require a request body.
 
-| Name              | Type | Format | Required | Description                  |
-|-------------------|------|--------|----------|------------------------------|
-| dbSecurityGroupId | URL  | UUID   | O        | DB security group identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
 
 #### Response
 
 This API does not return a response body.
+
+---
+
+### View DB Security Group Details
+
+```http
+GET /v4.0/db-security-groups/{dbSecurityGroupId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:DbSecurityGroup.Get | View DB security group details |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| dbSecurityGroupId | Body | UUID | DB security group identifier |
+| dbSecurityGroupName | Body | String | Name that can identify the DB security group |
+| description | Body | String | Additional information about the DB security group |
+| progressStatus | Body | Enum | Current progress status of the DB security group<br/>- NONE: `None`<br/>- CREATING_RULE: `Creating rule`<br/>- UPDATING_RULE: `Updating rule`<br/>- DELETING_RULE: `Deleting rule`<br/>- APPLYING_DEFAULT_RULE: `Applying default rule` |
+| rules | Body | Array | DB security group rule list |
+| rules.ruleId | Body | UUID | DB security group rule identifier |
+| rules.description | Body | String | Additional information about the DB security group rule |
+| rules.direction | Body | Enum | Communication direction<br/>- INGRESS: `Inbound`<br/>- EGRESS: `Outbound` |
+| rules.etherType | Body | Enum | Ether type<br/>- IPV4: `IPv4 format`<br/>- IPV6: `IPv6 format` |
+| rules.port | Body | Object | Port object |
+| rules.port.portType | Body | Enum | Port type<br/>- ALL: `All port ranges (not used in user console)`<br/>- PORT: `Specific port`<br/>- DB_PORT: `DB inbound port`<br/>- PORT_RANGE: `Port range` |
+| rules.port.minPort | Body | Number | Minimum port range |
+| rules.port.maxPort | Body | Number | Maximum port range |
+| rules.cidr | Body | String | CIDR |
+| rules.createdYmdt | Body | DateTime | Creation date and time |
+| rules.updatedYmdt | Body | DateTime | Modification date and time |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -3657,7 +4305,114 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "dbSecurityGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "dbSecurityGroupName": "dbSecurityGroupName-example",
+    "description": "description-example",
+    "progressStatus": "NONE",
+    "rules": [
+        {
+            "ruleId": "550e8400-e29b-41d4-a716-446655440000",
+            "description": "description-example",
+            "direction": "INGRESS",
+            "etherType": "IPV4",
+            "port": {
+                "portType": "ALL",
+                "minPort": 1,
+                "maxPort": 1
+            },
+            "cidr": "192.168.0.0/24",
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ],
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify DB Security Group
+
+```http
+PUT /v4.0/db-security-groups/{dbSecurityGroupId}
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbSecurityGroup.Modify | Modify DB security group |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
+| dbSecurityGroupName | Body | String | X | A name that identifies the DB security group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the DB security group<br/>- Maximum length: `100` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "dbSecurityGroupName": "dbSecurityGroupName",
+    "description": "description-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### Delete DB Security Group Rules
+
+```http
+DELETE /v4.0/db-security-groups/{dbSecurityGroupId}/rules
+```
+
+#### Required permissions
+
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbSecurityGroupRule.Delete | Delete DB security group rules |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
+| ruleIds | Query | String | O |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Job identifier |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -3674,26 +4429,23 @@ POST /v4.0/db-security-groups/{dbSecurityGroupId}/rules
 
 #### Required permissions
 
-| Permission Name                                        | Description           |
-|--------------------------------------------------------|------------------|
+| Permission name | Description |
+|-----|-----|
 | RDSforMariaDB:DbSecurityGroupRule.Create | Create DB security group rule |
 
 #### Request
 
-| Name              | Type | Format | Required | Description                                                                                                                                                                                                                      |
-|-------------------|------|--------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbSecurityGroupId | URL  | UUID   | O        | DB security group identifier                                                                                                                                                                                                     |
-| description       | Body | String | X        | Additional information on DB security group rule                                                                                                                                                                                 |
-| direction         | Body | Enum   | O        | Communication direction<br/>- `INGRESS`: Inbound<br/>- `EGRESS`: Outbound                                                                                                                                                        |
-| etherType         | Body | Enum   | O        | Ether type<br/>- `IPV4`: IPv4<br/>- `IPV6`: IPv6                                                                                                                                                                                 |
-| port              | Body | Object | O        | Port object                                                                                                                                                                                                                      |
-| port.portType     | Body | Enum   | O        | Port type<br/>- `DB_PORT`: Sets to DB instance port value. Values for `minPort` and `maxPort` are not required.<br/>- `PORT`: Sets to specified port value. The `minPort` and `maxPort` values must be the same.<br/>- `PORT_RANGE`: Sets to specified port range. |
-| port.minPort      | Body | Number | X        | Minimum port range<br/>- Minimum value: 1                                                                                                                                                                                        |
-| port.maxPort      | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
-| cidr              | Body | String | O        | Remote source for traffic to allow<br/>- Example: `1.1.1.1/32`                                                                                                                                                                   |
-
-> [Caution]
-> DB port cannot be set to transmit direction.
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
+| direction | Body | Enum | O | Communication direction<br/>- INGRESS: `Inbound`<br/>- EGRESS: `Outbound` |
+| etherType | Body | Enum | O | Ether type<br/>- IPV4: `IPv4 format`<br/>- IPV6: `IPv6 format` |
+| port | Body | Object | O | Port object |
+| port.portType | Body | Enum | O | Port type<br/>- ALL: `All port ranges (not used in user console)`<br/>- PORT: `Specific port`<br/>- DB_PORT: `DB inbound port`<br/>- PORT_RANGE: `Port range` |
+| port.minPort | Body | Number | X | Minimum port range<br/>- Minimum value: `3306` |
+| port.maxPort | Body | Number | X | Maximum port range<br/>- Maximum value: `65535` |
+| cidr | Body | String | O | CIDR |
+| description | Body | String | X | Additional information about the DB security group rule<br/>- Maximum length: `200` |
 
 <details><summary>Example</summary>
 <p>
@@ -3703,11 +4455,12 @@ POST /v4.0/db-security-groups/{dbSecurityGroupId}/rules
     "direction": "INGRESS",
     "etherType": "IPV4",
     "port": {
-        "portType": "PORT",
-        "minPort": 10000,
-        "maxPort": 10000
+        "portType": "ALL",
+        "minPort": 3306,
+        "maxPort": 1
     },
-    "cidr": "0.0.0.0/0"
+    "cidr": "192.168.0.0/24",
+    "description": "description-example"
 }
 ```
 
@@ -3716,13 +4469,30 @@ POST /v4.0/db-security-groups/{dbSecurityGroupId}/rules
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Job identifier |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
 
 ---
 
-### Modify DB Security Group Rule
+### Modify DB Security Group Rules
 
 ```http
 PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
@@ -3730,27 +4500,24 @@ PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 
 #### Required permissions
 
-| Permission Name                                        | Description           |
-|--------------------------------------------------------|------------------|
-| RDSforMariaDB:DbSecurityGroupRule.Modify | Modify DB security group rule |
+| Permission name | Description |
+|-----|-----|
+| RDSforMariaDB:DbSecurityGroupRule.Modify | Modify DB security group rules |
 
 #### Request
 
-| Name              | Type | Format | Required | Description                                                                                                                                                                                                                      |
-|-------------------|------|--------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| dbSecurityGroupId | URL  | UUID   | O        | DB security group identifier                                                                                                                                                                                                     |
-| ruleId            | URL  | UUID   | O        | DB security group rule identifier                                                                                                                                                                                                |
-| description       | Body | String | X        | Additional information on DB security group rule                                                                                                                                                                                 |
-| direction         | Body | Enum   | O        | Communication direction<br/>- `INGRESS`: Inbound<br/>- `EGRESS`: Outbound                                                                                                                                                        |
-| etherType         | Body | Enum   | O        | Ether type<br/>- `IPV4`: IPv4<br/>- `IPV6`: IPv6                                                                                                                                                                                 |
-| port              | Body | Object | O        | Port object                                                                                                                                                                                                                      |
-| port.portType     | Body | Enum   | O        | Port type<br/>- `DB_PORT`: Sets to DB instance port value. Values for `minPort` and `maxPort` are not required.<br/>- `PORT`: Sets to specified port value. The `minPort` and `maxPort` values must be the same.<br/>- `PORT_RANGE`: Sets to specified port range. |
-| port.minPort      | Body | Number | X        | Minimum port range<br/>- Minimum value: 1                                                                                                                                                                                        |
-| port.maxPort      | Body | Number | X        | Maximum port range<br/>- Maximum value: 65535                                                                                                                                                                                    |
-| cidr              | Body | String | O        | Remote source for traffic to allow<br/>- Example: `1.1.1.1/32`                                                                                                                                                                   |
-
-> [Caution]
-> DB port cannot be set to transmit direction.
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| dbSecurityGroupId | URL | UUID | O |  |
+| ruleId | URL | UUID | O |  |
+| direction | Body | Enum | O | Communication direction<br/>- INGRESS: `Inbound`<br/>- EGRESS: `Outbound` |
+| etherType | Body | Enum | O | Ether type<br/>- IPV4: `IPv4 format`<br/>- IPV6: `IPv6 format` |
+| port | Body | Object | O | Port object |
+| port.portType | Body | Enum | O | Port type<br/>- ALL: `All port ranges (not used in user console)`<br/>- PORT: `Specific port`<br/>- DB_PORT: `DB inbound port`<br/>- PORT_RANGE: `Port range` |
+| port.minPort | Body | Number | X | Minimum port range<br/>- Minimum value: `3306` |
+| port.maxPort | Body | Number | X | Maximum port range<br/>- Maximum value: `65535` |
+| cidr | Body | String | O | CIDR |
+| description | Body | String | X | Additional information about DB security group rules<br/>- Maximum length: `200` |
 
 <details><summary>Example</summary>
 <p>
@@ -3760,9 +4527,12 @@ PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
     "direction": "INGRESS",
     "etherType": "IPV4",
     "port": {
-        "portType": "DB_PORT"
+        "portType": "ALL",
+        "minPort": 3306,
+        "maxPort": 1
     },
-    "cidr": "0.0.0.0/0"
+    "cidr": "192.168.0.0/24",
+    "description": "description-example"
 }
 ```
 
@@ -3771,75 +4541,9 @@ PUT /v4.0/db-security-groups/{dbSecurityGroupId}/rules/{ruleId}
 
 #### Response
 
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-### Delete DB Security Group Rule
-
-```http
-DELETE /v4.0/db-security-groups/{dbSecurityGroupId}/rules
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|--------------------------------------------------------|------------------|
-| RDSforMariaDB:DbSecurityGroupRule.Create | Delete DB security group rule |
-
-#### Request
-
-This API does not require a request body.
-
-| Name              | Type  | Format | Required | Description                        |
-|-------------------|-------|--------|----------|------------------------------------|
-| dbSecurityGroupId | URL   | UUID   | O        | DB security group identifier       |
-| ruleIds           | Query | Array  | O        | DB security group rule identifiers |
-
-#### Response
-
-| Name  | Type | Format | Description                  |
-|-------|------|--------|------------------------------|
-| jobId | Body | UUID   | Identifier of requested task |
-
----
-
-## Parameter group
-
-### List Parameter Groups
-
-```http
-GET /v4.0/parameter-groups
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-------------------------------------------------|---------------|
-| RDSforMariaDB:ParameterGroup.List | List parameter groups |
-
-#### Request
-
-This API does not require a request body.
-
-| Name      | Type  | Format | Required | Description    |
-|-----------|-------|--------|----------|----------------|
-| dbVersion | Query | Enum   | X        | DB engine type |
-
-#### Response
-
-| Name                                 | Type | Format   | Description                                                                                 |
-|--------------------------------------|------|----------|---------------------------------------------------------------------------------------------|
-| parameterGroups                      | Body | Array    | Parameter groups                                                                            |
-| parameterGroups.parameterGroupId     | Body | UUID     | Parameter group identifier                                                                  |
-| parameterGroups.parameterGroupName   | Body | String   | Name to identify parameter groups                                                           |
-| parameterGroups.description          | Body | String   | Additional information on parameter group                                                   |
-| parameterGroups.dbVersion            | Body | Enum     | DB engine type                                                                              |
-| parameterGroups.parameterGroupStatus | Body | Enum     | Parameter group current status<br/>- `STABLE`: Applied<br/>- `NEED_TO_APPLY`: Need to apply |
-| parameterGroups.createdYmdt          | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                          |
-| parameterGroups.updatedYmdt          | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                         |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| jobId | Body | UUID | Job identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -3851,15 +4555,69 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
+    "jobId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+## Parameter Groups
+
+### View Parameter Group List
+
+```http
+GET /v4.0/parameter-groups
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.List | View parameter group list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total number of parameter groups |
+| parameterGroups | Body | Array | Parameter group list |
+| parameterGroups.parameterGroupId | Body | UUID | Parameter group identifier |
+| parameterGroups.parameterGroupName | Body | String | Name that can identify the parameter group |
+| parameterGroups.description | Body | String | Additional information about the parameter group |
+| parameterGroups.dbVersion | Body | Enum | DB engine type |
+| parameterGroups.parameterGroupType | Body | Enum | Parameter group type<br/>- USER<br/>- ADMIN<br/>- DEFAULT<br/>- CLUSTER_USER |
+| parameterGroups.parameterGroupStatus | Body | Enum | Current status of the parameter group<br/>- STABLE: `Applied`<br/>- NEED_TO_APPLY: `Need to apply`<br/>- DELETED: `Deleted` |
+| parameterGroups.createdYmdt | Body | DateTime | Creation date and time |
+| parameterGroups.updatedYmdt | Body | DateTime | Modification date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "totalCounts": 1,
     "parameterGroups": [
         {
-            "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
-            "parameterGroupName": "parameter-group",
-            "description": null,
-            "dbVersion": "MARIADB_V10330",
+            "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "parameterGroupName": "parameterGroupName-example",
+            "description": "description-example",
+            "dbVersion": "MYSQL_V8036",
+            "parameterGroupType": "USER",
             "parameterGroupStatus": "STABLE",
-            "createdYmdt": "2023-02-31T15:28:17+09:00",
-            "updatedYmdt": "2023-02-31T15:28:17+09:00"
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -3867,88 +4625,6 @@ This API does not require a request body.
 
 </p>
 </details>
-
-
----
-
-### List Parameter Group Details
-
-```http
-GET /v4.0/parameter-groups/{parameterGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                | Description           |
-|------------------------------------------------|---------------|
-| RDSforMariaDB:ParameterGroup.Get | List parameter group details |
-
-#### Request
-
-This API does not require a request body.
-
-| Name             | Type | Format | Required | Description                |
-|------------------|------|--------|----------|----------------------------|
-| parameterGroupId | URL  | UUID   | O        | Parameter group identifier |
-
-#### Response
-
-| Name                          | Type | Format   | Description                                                                                                                                           |
-|-------------------------------|------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| parameterGroupId              | Body | UUID     | Parameter group identifier                                                                                                                            |
-| parameterGroupName            | Body | String   | Name to identify parameter groups                                                                                                                     |
-| description                   | Body | String   | Additional information on parameter group                                                                                                             |
-| dbVersion                     | Body | Enum     | DB engine type                                                                                                                                        |
-| parameterGroupStatus          | Body | Enum     | Parameter group current status<br/>- `STABLE`: Applied<br/>- `NEED_TO_APPLY`: Need to apply                                                           |
-| parameters                    | Body | Array    | Parameter list                                                                                                                                        |
-| parameters.parameterId        | Body | UUID     | Parameter identifier                                                                                                                                  |
-| parameters.parameterFileGroup | Body | Enum     | Parameter file group type<br/>- `CLIENT`: client<br/>- `MYSQL`: mysql<br/>- `MYSQLD`: mysqld                                                          |
-| parameters.parameterName      | Body | String   | Parameter name                                                                                                                                        |
-| parameters.fileParameterName  | Body | String   | Parameter file name                                                                                                                                   |
-| parameters.value              | Body | String   | Current value                                                                                                                                         |
-| parameters.defaultValue       | Body | String   | Default value                                                                                                                                         |
-| parameters.allowedValue       | Body | String   | Permitted values                                                                                                                                      |
-| parameters.updateType         | Body | Enum     | Modify type<br/>- `VARIABLE`: Modifiable any time<br/>- `CONSTANT`: Not modifiable<br/>- `INIT_VARIABLE`: Only modifiable when DB instance is created |
-| parameters.applyType          | Body | Enum     | Apply type<br/>- `SESSION`: Apply session<br/>- `FILE`: Apply setting file (restart required)<br/>- `BOTH`: All (restart required)                    |
-| createdYmdt                   | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                    |
-| updatedYmdt                   | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                   |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "parameterGroupId": "404e8a89-ca4d-4fca-96c2-1518754d50b7",
-    "parameterGroupName": "parameter-group",
-    "description": null,
-    "dbVersion": "MARIADB_V10330",
-    "parameterGroupStatus": "STABLE",
-    "parameters": [
-        {
-            "parameterId": "fa040b5e-f29f-46de-8f0d-bba4cb82887a",
-            "parameterFileGroup": "client",
-            "parameterName": "socket",
-            "fileParameterName": "socket",
-            "value": "/home/tcrds/db/mysql/tmp/mysql.sock",
-            "defaultValue": "/home/tcrds/db/mysql/tmp/mysql.sock",
-            "allowedValue": "",
-            "updateType": "CONSTANT",
-            "applyType": "BOTH"
-        }
-    ],
-    "createdYmdt": "2023-03-13T11:02:28+09:00",
-    "updatedYmdt": "2023-03-13T11:02:28+09:00"
-}
-```
-
-</p>
-</details>
-
 
 ---
 
@@ -3958,27 +4634,28 @@ This API does not require a request body.
 POST /v4.0/parameter-groups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:ParameterGroup.Create | Create parameter group |
 
 #### Request
 
-| Name               | Type | Format | Required | Description                               |
-|--------------------|------|--------|----------|-------------------------------------------|
-| parameterGroupName | Body | String | O        | Name to identify parameter groups         |
-| description        | Body | String | X        | Additional information on parameter group |
-| dbVersion          | Body | Enum   | O        | DB engine type                            |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupName | Body | String | O | Name that can identify the parameter group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the parameter group<br/>- Maximum length: `100` |
+| dbVersion | Body | Enum | O | DB engine type |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "parameterGroupName": "parameter-group",
-    "dbVersion": "MARIADB_V10330"
+    "parameterGroupName": "parameterGroupName",
+    "description": "description-example",
+    "dbVersion": "MYSQL_V8036"
 }
 ```
 
@@ -3987,88 +4664,9 @@ POST /v4.0/parameter-groups
 
 #### Response
 
-| Name             | Type | Format | Description                |
-|------------------|------|--------|----------------------------|
-| parameterGroupId | Body | UUID   | Parameter group identifier |
-
----
-
-### Copy Parameter Group
-
-```http
-POST /v4.0/parameter-groups/{parameterGroupId}/copy
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|-------------------------------------------------|--------------|
-| RDSforMariaDB:ParameterGroup.Copy | Copy parameter group |
-
-#### Request
-
-| Name               | Type | Format | Required | Description                               |
-|--------------------|------|--------|----------|-------------------------------------------|
-| parameterGroupId   | URL  | UUID   | O        | Parameter group identifier                |
-| parameterGroupName | Body | String | O        | Name to identify parameter groups         |
-| description        | Body | String | X        | Additional information on parameter group |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "parameterGroupName": "parameter-group-copy",
-    "description": "copy"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name             | Type | Format | Description                |
-|------------------|------|--------|----------------------------|
-| parameterGroupId | Body | UUID   | Parameter group identifier |
-
----
-
-### Modify Parameter Group
-
-```http
-PUT /v4.0/parameter-groups/{parameterGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------|
-| RDSforMariaDB:ParameterGroup.Modify | Modify parameter group |
-
-#### Request
-
-| Name               | Type | Format | Required | Description                               |
-|--------------------|------|--------|----------|-------------------------------------------|
-| parameterGroupId   | URL  | UUID   | O        | Parameter group identifier                |
-| parameterGroupName | Body | String | X        | Name to identify parameter groups         |
-| description        | Body | String | X        | Additional information on parameter group |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "parameterGroupName": "parameter-group"
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-This API does not return a response body.
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| parameterGroupId | Body | UUID | Parameter group identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -4079,107 +4677,8 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### Modify Parameter
-
-```http
-PUT /v4.0/parameter-groups/{parameterGroupId}/parameters
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------|
-| RDSforMariaDB:ParameterGroup.Modify | Modify parameter group |
-
-#### Request
-
-| Name                           | Type | Format | Required | Description                |
-|--------------------------------|------|--------|----------|----------------------------|
-| parameterGroupId               | URL  | UUID   | O        | Parameter group identifier |
-| modifiedParameters             | Body | Array  | O        | Parameters to change       |
-| modifiedParameters.parameterId | Body | UUID   | O        | Parameter identifier       |
-| modifiedParameters.value       | Body | String | O        | Parameter value to change  |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "modifiedParameters": [
-        {
-            "parameterId": "3abac558-7274-44e1-9f4a-f100f53f67ba",
-            "value": "0"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-This API does not return a response body.
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### Reset Parameter Group
-
-```http
-PUT /v4.0/parameter-groups/{parameterGroupId}/reset
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|--------------------------------------------------|---------------|
-| RDSforMariaDB:ParameterGroup.Reset | Reset parameter group |
-
-#### Request
-
-| Name             | Type | Format | Required | Description                |
-|------------------|------|--------|----------|----------------------------|
-| parameterGroupId | URL  | UUID   | O        | Parameter group identifier |
-
-#### Response
-
-This API does not return a response body.
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
+    },
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -4194,69 +4693,67 @@ This API does not return a response body.
 DELETE /v4.0/parameter-groups/{parameterGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|---------------------------------------------------|--------------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:ParameterGroup.Delete | Delete parameter group |
 
 #### Request
 
 This API does not require a request body.
 
-| Name             | Type | Format | Required | Description                |
-|------------------|------|--------|----------|----------------------------|
-| parameterGroupId | URL  | UUID   | O        | Parameter group identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
 
 #### Response
 
 This API does not return a response body.
 
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
 ---
 
-## User Group
-
-### List User Groups
+### View Parameter Group Details
 
 ```http
-GET /v4.0/user-groups
+GET /v4.0/parameter-groups/{parameterGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|--------------------------------------------|--------------|
-| RDSforMariaDB:UserGroup.List | List user groups |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.Get | View parameter group details |
 
 #### Request
 
 This API does not require a request body.
 
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
+
 #### Response
 
-| Name                     | Type | Format   | Description                                         |
-|--------------------------|------|----------|-----------------------------------------------------|
-| userGroups               | Body | Array    | User Groups                                         |
-| userGroups.userGroupId   | Body | UUID     | User group identifier                               |
-| userGroups.userGroupName | Body | String   | Name to identify user groups                        |
-| userGroups.createdYmdt   | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| userGroups.updatedYmdt   | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| parameterGroupId | Body | UUID | Parameter group identifier |
+| parameterGroupName | Body | String | Name that can identify the parameter group |
+| description | Body | String | Additional information about the parameter group |
+| dbVersion | Body | Enum | DB engine type |
+| parameterGroupStatus | Body | Enum | Current status of the parameter group<br/>- STABLE: `Applied`<br/>- NEED_TO_APPLY: `Need to apply`<br/>- DELETED: `Deleted` |
+| parameters | Body | Array | Parameter list |
+| parameters.parameterId | Body | UUID | Parameter identifier |
+| parameters.parameterFileGroup | Body | Enum | Parameter file group type<br/>- CLIENT<br/>- MYSQL<br/>- MYSQLD |
+| parameters.parameterName | Body | String | Parameter name |
+| parameters.fileParameterName | Body | String | Parameter file name |
+| parameters.value | Body | String | Currently configured value |
+| parameters.defaultValue | Body | String | Default value |
+| parameters.allowedValue | Body | String | Allowed values |
+| parameters.updateType | Body | Enum | Update type<br/>- VARIABLE<br/>- CONSTANT<br/>- INIT_VARIABLE |
+| parameters.applyType | Body | Enum | Application type<br/>- BOTH<br/>- SESSION<br/>- FILE |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -4268,12 +4765,161 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "userGroups": [
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "parameterGroupName": "parameterGroupName-example",
+    "description": "description-example",
+    "dbVersion": "MYSQL_V8036",
+    "parameterGroupStatus": "STABLE",
+    "parameters": [
         {
-            "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
-            "userGroupName": "dev-team",
-            "createdYmdt": "2023-02-23T10:07:54+09:00",
-            "updatedYmdt": "2023-02-26T01:15:50+09:00"
+            "parameterId": "550e8400-e29b-41d4-a716-446655440000",
+            "parameterFileGroup": "CLIENT",
+            "parameterName": "parameterName-example",
+            "fileParameterName": "fileParameterName-example",
+            "value": "value-example",
+            "defaultValue": "defaultValue-example",
+            "allowedValue": "allowedValue-example",
+            "updateType": "VARIABLE",
+            "applyType": "BOTH"
+        }
+    ],
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify Parameter Group
+
+```http
+PUT /v4.0/parameter-groups/{parameterGroupId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.Modify | Modify parameter group |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
+| parameterGroupName | Body | String | X | Name that can identify the parameter group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the parameter group<br/>- Maximum length: `100` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "parameterGroupName": "parameterGroupName",
+    "description": "description-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+### Copy Parameter Group
+
+```http
+POST /v4.0/parameter-groups/{parameterGroupId}/copy
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.Copy | Copy parameter group |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
+| parameterGroupName | Body | String | O | Name that can identify the parameter group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| description | Body | String | X | Additional information about the parameter group<br/>- Maximum length: `100` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "parameterGroupName": "parameterGroupName",
+    "description": "description-example"
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| parameterGroupId | Body | UUID | Parameter group identifier |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+</p>
+</details>
+
+---
+
+### Modify Parameters
+
+```http
+PUT /v4.0/parameter-groups/{parameterGroupId}/parameters
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.Modify | Modify parameters |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
+| modifiedParameters | Body | Array | O | List of parameters to change |
+| modifiedParameters.parameterId | Body | UUID | O | Parameter identifier |
+| modifiedParameters.value | Body | String | O | Parameter value to change |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "modifiedParameters": [
+        {
+            "parameterId": "550e8400-e29b-41d4-a716-446655440000",
+            "value": "value-example"
         }
     ]
 }
@@ -4282,39 +4928,66 @@ This API does not require a request body.
 </p>
 </details>
 
+#### Response
+
+This API does not return a response body.
+
 ---
 
-### List User Group Details
+### Reset Parameter Group
 
 ```http
-GET /v4.0/user-groups/{userGroupId}
+PUT /v4.0/parameter-groups/{parameterGroupId}/reset
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-------------------------------------------|--------------|
-| RDSforMariaDB:UserGroup.Get | List user group details |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:ParameterGroup.Reset | Reset parameter group |
 
 #### Request
 
 This API does not require a request body.
 
-| Name        | Type | Format | Required | Description           |
-|-------------|------|--------|----------|-----------------------|
-| userGroupId | URL  | UUID   | O        | User group identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| parameterGroupId | URL | UUID | O |  |
 
 #### Response
 
-| Name              | Type | Format   | Description                                                                                                                                            |
-|-------------------|------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| userGroupId       | Body | UUID     | User group identifier                                                                                                                                  |
-| userGroupName     | Body | String   | Name to identify user groups                                                                                                                           |
-| userGroupTypeCode | Body | Enum     | User group type    <br /> `ENTIRE`: User group including all project members <br /> `INDIVIDUAL_MEMBER`: User group including specific project members |
-| members           | Body | Array    | Project member list                                                                                                                                    |
-| members.memberId  | Body | UUID     | Project member identifier                                                                                                                              |
-| createdYmdt       | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                     |
-| updatedYmdt       | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                    |
+This API does not return a response body.
+
+---
+
+## User Groups
+
+### View User Group List
+
+```http
+GET /v4.0/user-groups
+```
+
+#### Required Permissions
+
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:UserGroup.List | View user group list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total number of user groups |
+| userGroups | Body | Array | User group list |
+| userGroups.userGroupId | Body | UUID | User group identifier |
+| userGroups.userGroupName | Body | String | Name that can identify the user group |
+| userGroups.createdYmdt | Body | DateTime | Creation date and time |
+| userGroups.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -4326,16 +4999,15 @@ This API does not require a request body.
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
-    "userGroupName": "dev-team",
-	"userGroupTypeCode": "INDIVIDUAL_MEMBER",
-    "members": [
+    "totalCounts": 1,
+    "userGroups": [
         {
-            "memberId": "1321e759-2ef3-4b85-9921-b13e918b24b5"
+            "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "userGroupName": "userGroupName-example",
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
-    ],
-    "createdYmdt": "2023-02-23T10:07:54+09:00",
-    "updatedYmdt": "2023-02-26T01:15:50+09:00"
+    ]
 }
 ```
 
@@ -4350,36 +5022,28 @@ This API does not require a request body.
 POST /v4.0/user-groups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------------|-------------|
+| Permission | Description |
+|-----|-----|
 | RDSforMariaDB:UserGroup.Create | Create user group |
 
 #### Request
 
-| Name          | Type | Format  | Required | Description                                                                 |
-|---------------|------|---------|----------|-----------------------------------------------------------------------------|
-| userGroupName | Body | String  | O        | Name to identify user groups                                                |
-| memberIds     | Body | Array   | O        | Project member identifiers <br /> Ignored when `selectAll` is true          |
-| selectAll     | Body | Boolean | X        | All project members or not <br /> If true, the group is set for all members |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| userGroupName | Body | String | Yes | Name that can identify the user group |
+| memberIds | Body | Array | Yes | List of project member identifiers |
+| selectAll | Body | Boolean | No | Whether to include all project members<br/>- Default: `false` |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "userGroupName": "dev-team",
-    "memberIds": [
-        "1321e759-2ef3-4b85-9921-b13e918b24b5"
-    ]
-}
-```
-
-```json
-{
-    "userGroupName": "dev-team",
-    "selectAll": true
+    "userGroupName": "userGroupName-example",
+    "memberIds": [],
+    "selectAll": false
 }
 ```
 
@@ -4388,52 +5052,9 @@ POST /v4.0/user-groups
 
 #### Response
 
-| Name        | Type | Format | Description           |
-|-------------|------|--------|-----------------------|
-| userGroupId | Body | UUID   | User group identifier |
-
----
-
-### Modify User Group
-
-```http
-PUT /v4.0/user-groups/{userGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|----------------------------------------------|-------------|
-| RDSforMariaDB:UserGroup.Modify | Modify user group|
-
-#### Request
-
-| Name          | Type | Format  | Required | Description                                                                 |
-|---------------|------|---------|----------|-----------------------------------------------------------------------------|
-| userGroupId   | URL  | UUID    | O        | User group identifier                                                       |
-| userGroupName | Body | String  | X        | Name to identify user groups                                                |
-| memberIds     | Body | Array   | X        | Project member identifiers                                                  |
-| selectAll     | Body | Boolean | X        | All project members or not <br /> If true, the group is set for all members |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "userGroupName": "dev-team",
-    "memberIds": [
-        "1321e759-2ef3-4b85-9921-b13e918b24b5",
-        "f9064b09-2b15-442e-a4b0-3a5a2754555e"
-    ]
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-This API does not return a response body.
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| userGroupId | Body | UUID | User group identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -4444,7 +5065,8 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "userGroupId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -4459,21 +5081,57 @@ This API does not return a response body.
 DELETE /v4.0/user-groups/{userGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------------|-------------|
+| Permission | Description |
+|-----|-----|
 | RDSforMariaDB:UserGroup.Delete | Delete user group |
 
 #### Request
 
-| Name        | Type | Format | Required | Description           |
-|-------------|------|--------|----------|-----------------------|
-| userGroupId | URL  | UUID   | O        | User group identifier |
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| userGroupId | URL | UUID | Yes |  |
 
 #### Response
 
 This API does not return a response body.
+
+---
+
+### View User Group Details
+
+```http
+GET /v4.0/user-groups/{userGroupId}
+```
+
+#### Required Permissions
+
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:UserGroup.Get | View user group details |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| userGroupId | URL | UUID | Yes |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| userGroupId | Body | UUID | User group identifier |
+| userGroupName | Body | String | Name that can identify the user group |
+| userGroupTypeCode | Body | Enum | User group type<br/>- ENTIRE<br/>- INDIVIDUAL_MEMBER |
+| members | Body | Array | Project member list |
+| members.memberId | Body | UUID | Project member identifier |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -4484,7 +5142,17 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "userGroupName": "userGroupName-example",
+    "userGroupTypeCode": "ENTIRE",
+    "members": [
+        {
+            "memberId": "550e8400-e29b-41d4-a716-446655440000"
+        }
+    ],
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -4493,19 +5161,60 @@ This API does not return a response body.
 
 ---
 
-## Notification Group
+### Modify User Group
 
-### List Notification Groups
+```http
+PUT /v4.0/user-groups/{userGroupId}
+```
+
+#### Required Permissions
+
+| Permission | Description |
+|-----|-----|
+| RDSforMariaDB:UserGroup.Modify | Modify user group |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| userGroupId | URL | UUID | Yes |  |
+| userGroupName | Body | String | Yes | Name that can identify the user group |
+| memberIds | Body | Array | No | List of project member identifiers |
+| selectAll | Body | Boolean | No | Whether to include all project members<br/>- Default: `false` |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "userGroupName": "userGroupName-example",
+    "memberIds": [],
+    "selectAll": false
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+## Notification Groups
+
+### View Notification Group List
 
 ```http
 GET /v4.0/notification-groups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------------------|-------------|
-| RDSforMariaDB:NotificationGroup.List | List notification groups |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:NotificationGroup.List | View notification group list |
 
 #### Request
 
@@ -4513,16 +5222,16 @@ This API does not require a request body.
 
 #### Response
 
-| Name                                     | Type | Format   | Description                                         |
-|------------------------------------------|------|----------|-----------------------------------------------------|
-| notificationGroups                       | Body | Array    | Notification Groups                                 |
-| notificationGroups.notificationGroupId   | Body | UUID     | Notification group identifier                       |
-| notificationGroups.notificationGroupName | Body | String   | Name to identify notification groups                |
-| notificationGroups.notifyEmail           | Body | Boolean  | Whether to be notified by email                     |
-| notificationGroups.notifySms             | Body | Boolean  | Whether to be notified by SMS                       |
-| notificationGroups.isEnabled             | Body | Boolean  | Indicates whether the flavor is enabled             |
-| notificationGroups.createdYmdt           | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| notificationGroups.updatedYmdt           | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| notificationGroups | Body | Array | Notification group list |
+| notificationGroups.notificationGroupId | Body | UUID | Notification group identifier |
+| notificationGroups.notificationGroupName | Body | String | Name that can identify the notification group |
+| notificationGroups.notifyEmail | Body | Boolean | Whether to send email notifications |
+| notificationGroups.notifySms | Body | Boolean | Whether to send SMS notifications |
+| notificationGroups.isEnabled | Body | Boolean | Whether enabled |
+| notificationGroups.createdYmdt | Body | DateTime | Creation date and time |
+| notificationGroups.updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -4536,90 +5245,15 @@ This API does not require a request body.
     },
     "notificationGroups": [
         {
-            "notificationGroupId": "b3901f17-9971-4d1e-8a81-8448cf533dc7",
-            "notificationGroupName": "dev-team-noti",
-            "notifyEmail": true,
+            "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "notificationGroupName": "notificationGroupName-example",
+            "notifyEmail": false,
             "notifySms": false,
-            "isEnabled": true,
-            "createdYmdt": "2023-02-20T13:34:13+09:00",
-            "updatedYmdt": "2023-02-20T13:34:13+09:00"
+            "isEnabled": false,
+            "createdYmdt": "2023-12-31T15:00:00+09:00",
+            "updatedYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
-}
-```
-
-</p>
-</details>
-
----
-
-### View Notification Group Details
-
-```http
-GET /v4.0/notification-groups/{notificationGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|---------------------------------------------------|-------------|
-| RDSforMariaDB:NotificationGroup.Get | List notification groups |
-
-#### Request
-
-This API does not require a request body.
-
-| Name                | Type | Format | Required | Description                   |
-|---------------------|------|--------|----------|-------------------------------|
-| notificationGroupId | URL  | UUID   | O        | Notification group identifier |
-
-#### Response
-
-| Name                       | Type | Format   | Description                                         |
-|----------------------------|------|----------|-----------------------------------------------------|
-| notificationGroupId        | Body | UUID     | Notification group identifier                       |
-| notificationGroupName      | Body | String   | Name to identify notification groups                |
-| notifyEmail                | Body | Boolean  | Whether to be notified by email                     |
-| notifySms                  | Body | Boolean  | Whether to be notified by SMS                       |
-| isEnabled                  | Body | Boolean  | Indicates whether the flavor is enabled             |
-| dbInstances                | Body | Array    | DB Instances to monitor                             |
-| dbInstances.dbInstanceId   | Body | UUID     | DB instance identifier                              |
-| dbInstances.dbInstanceName | Body | String   | Name to identify DB instances                       |
-| userGroups                 | Body | Array    | User Groups                                         |
-| userGroups.userGroupId     | Body | UUID     | User group identifier                               |
-| userGroups.userGroupName   | Body | String   | Name to identify user groups                        |
-| createdYmdt                | Body | DateTime | Created date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)  |
-| updatedYmdt                | Body | DateTime | Modified date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "notificationGroupId": "b3901f17-9971-4d1e-8a81-8448cf533dc7",
-    "notificationGroupName": "dev-team-noti",
-    "notifyEmail": true,
-    "notifySms": false,
-    "isEnabled": true,
-    "dbInstances": [
-        {
-            "dbInstanceId": "ed5cb985-526f-4c54-9ae0-40288593de65",
-            "dbInstanceName": "database"
-        }
-    ],
-    "userGroups": [
-        {
-            "userGroupId": "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0",
-            "userGroupName": "dev-team"
-        }
-    ],
-    "createdYmdt": "2023-02-20T13:34:13+09:00",
-    "updatedYmdt": "2023-02-20T13:34:13+09:00"
 }
 ```
 
@@ -4634,85 +5268,34 @@ This API does not require a request body.
 POST /v4.0/notification-groups
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                      | Description           |
-|------------------------------------------------------|------------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:NotificationGroup.Create | Create notification group |
 
 #### Request
 
-| Name                  | Type | Format  | Required | Description                                                 |
-|-----------------------|------|---------|----------|-------------------------------------------------------------|
-| notificationGroupName | Body | String  | O        | Name to identify notification groups                        |
-| notifyEmail           | Body | Boolean | X        | Whether to be notified by email<br/>- Default: `true`         |
-| notifySms             | Body | Boolean | X        | Whether to be notified by SMS<br/>- Default: `true`           |
-| isEnabled             | Body | Boolean | X        | Indicates whether the flavor is enabled<br/>- Default: `true` |
-| dbInstanceIds         | Body | Array   | O        | DB instance identifiers to monitor                          |
-| userGroupIds          | Body | Array   | O        | User group identifiers                                      |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| notificationGroupName | Body | String | O | Name that can identify the notification group<br/>- Minimum length: `1`<br/>- Maximum length: `100` |
+| notifyEmail | Body | Boolean | X | Whether to send email notifications<br/>- Default: `true` |
+| notifySms | Body | Boolean | X | Whether to send SMS notifications<br/>- Default: `true` |
+| isEnabled | Body | Boolean | X | Whether enabled<br/>- Default: `true` |
+| dbInstanceIds | Body | Array | O | List of identifiers for DB instances to monitor |
+| userGroupIds | Body | Array | O | List of user group identifiers |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "notificationGroupName": "dev-team-noti",
-    "notifyEmail": false,
-    "isEnable": true,
-    "dbInstanceIds": [
-        "ed5cb985-526f-4c54-9ae0-40288593de65"
-    ],
-    "userGroupIds": [
-        "1aac0437-f32d-4923-ad3c-ac61c1cfdfe0"
-    ]
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-| Name                | Type | Format | Description                   |
-|---------------------|------|--------|-------------------------------|
-| notificationGroupId | Body | UUID   | Notification group identifier |
-
----
-
-### Modify Notification Group
-
-```http
-PUT /v4.0/notification-groups/{notificationGroupId}
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|------------------------------------------------------|------------|
-| RDSforMariaDB:NotificationGroup.Modify | Modify notification group |
-
-#### Request
-
-| Name                  | Type | Format  | Required | Description                             |
-|-----------------------|------|---------|----------|-----------------------------------------|
-| notificationGroupId   | URL  | UUID    | O        | Notification group identifier           |
-| notificationGroupName | Body | String  | X        | Name to identify notification groups    |
-| notifyEmail           | Body | Boolean | X        | Whether to be notified by email         |
-| notifySms             | Body | Boolean | X        | Whether to be notified by SMS           |
-| isEnabled             | Body | Boolean | X        | Indicates whether the flavor is enabled |
-| dbInstanceIds         | Body | Array   | X        | DB instance identifiers to monitor      |
-| userGroupIds          | Body | Array   | X        | User group identifiers                  |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
+    "notificationGroupName": "notificationGroupName",
     "notifyEmail": true,
-    "dbInstanceIds": [
-        "ed5cb985-526f-4c54-9ae0-40288593de65",
-        "d51b7da0-682f-47ff-b588-b739f6adc740"
-    ]
+    "notifySms": true,
+    "isEnabled": true,
+    "dbInstanceIds": [],
+    "userGroupIds": []
 }
 ```
 
@@ -4721,7 +5304,9 @@ PUT /v4.0/notification-groups/{notificationGroupId}
 
 #### Response
 
-This API does not return a response body.
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| notificationGroupId | Body | UUID | Notification group identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -4732,7 +5317,8 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -4747,23 +5333,63 @@ This API does not return a response body.
 DELETE /v4.0/notification-groups/{notificationGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                      | Description           |
-|------------------------------------------------------|------------|
+| Permission Name | Description |
+|-----|-----|
 | RDSforMariaDB:NotificationGroup.Delete | Delete notification group |
 
 #### Request
 
 This API does not require a request body.
 
-| Name                | Type | Format | Required | Description                   |
-|---------------------|------|--------|----------|-------------------------------|
-| notificationGroupId | URL  | UUID   | O        | Notification group identifier |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| notificationGroupId | URL | UUID | O |  |
 
 #### Response
 
 This API does not return a response body.
+
+---
+
+### View Notification Group Details
+
+```http
+GET /v4.0/notification-groups/{notificationGroupId}
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:NotificationGroup.Get | View notification group details |
+
+#### Request
+
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| notificationGroupId | URL | UUID | O |  |
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| notificationGroupId | Body | UUID | Notification group identifier |
+| notificationGroupName | Body | String | Name that can identify the notification group |
+| notifyEmail | Body | Boolean | Whether to send email notifications |
+| notifySms | Body | Boolean | Whether to send SMS notifications |
+| isEnabled | Body | Boolean | Whether enabled |
+| dbInstances | Body | Array | List of DB instances to monitor |
+| dbInstances.dbInstanceId | Body | UUID | DB instance identifier |
+| dbInstances.dbInstanceName | Body | String | Name that can identify the DB instance |
+| userGroups | Body | Array | User group list |
+| userGroups.userGroupId | Body | UUID | User group identifier |
+| userGroups.userGroupName | Body | String | Name that can identify the user group |
+| createdYmdt | Body | DateTime | Creation date and time |
+| updatedYmdt | Body | DateTime | Modification date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -4774,7 +5400,26 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "notificationGroupId": "550e8400-e29b-41d4-a716-446655440000",
+    "notificationGroupName": "notificationGroupName-example",
+    "notifyEmail": false,
+    "notifySms": false,
+    "isEnabled": false,
+    "dbInstances": [
+        {
+            "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
+            "dbInstanceName": "dbInstanceName-example"
+        }
+    ],
+    "userGroups": [
+        {
+            "userGroupId": "550e8400-e29b-41d4-a716-446655440000",
+            "userGroupName": "userGroupName-example"
+        }
+    ],
+    "createdYmdt": "2023-12-31T15:00:00+09:00",
+    "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
 ```
 
@@ -4783,19 +5428,66 @@ This API does not return a response body.
 
 ---
 
-## Monitoring
-
-### List Metric List
+### Modify Notification Group
 
 ```http
-GET /v4.0/metrics
+PUT /v4.0/notification-groups/{notificationGroupId}
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|-----------------------------------------|----------|
-| RDSforMariaDB:Metric.List | List metric information |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:NotificationGroup.Modify | Modify notification group |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| notificationGroupId | URL | UUID | O |  |
+| notificationGroupName | Body | String | X | Name that can identify the notification group |
+| notifyEmail | Body | Boolean | X | Whether to send email notifications<br/>- Default: `false` |
+| notifySms | Body | Boolean | X | Whether to send SMS notifications<br/>- Default: `false` |
+| isEnabled | Body | Boolean | X | Whether enabled<br/>- Default: `false` |
+| dbInstanceIds | Body | Array | X | List of identifiers for DB instances to monitor |
+| userGroupIds | Body | Array | X | List of user group identifiers |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "notificationGroupName": "notificationGroupName-example",
+    "notifyEmail": false,
+    "notifySms": false,
+    "isEnabled": false,
+    "dbInstanceIds": [],
+    "userGroupIds": []
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+## Monitoring
+
+### View Statistical Information
+
+```http
+GET /v4.0/metric-statistics
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Metric.List | View statistical information |
 
 #### Request
 
@@ -4803,11 +5495,33 @@ This API does not require a request body.
 
 #### Response
 
-| Name                | Type | Format | Description          |
-|---------------------|------|--------|----------------------|
-| metrics             | Body | Array  | Metric List          |
-| metrics.measureName | Body | Enum   | Metric type to query |
-| metrics.unit        | Body | String | Measure unit         |
+This API does not return a response body.
+
+---
+
+### View Metric List
+
+```http
+GET /v4.0/metrics
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Metric.List | View metric list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| metrics | Body | Array | Metric list |
+| metrics.measureName | Body | String | Query metric type |
+| metrics.unit | Body | String | Measurement unit |
 
 <details><summary>Example</summary>
 <p>
@@ -4821,8 +5535,8 @@ This API does not require a request body.
     },
     "metrics": [
         {
-            "measureName": "CPU_USAGE",
-            "unit": "%"
+            "measureName": "measureName-example",
+            "unit": "unit-example"
         }
     ]
 }
@@ -4833,186 +5547,32 @@ This API does not require a request body.
 
 ---
 
-### View stats
+## Events
 
-```http
-GET /v4.0/metric-statistics
-```
+### Event Categories
 
-#### Required permissions
+Events can be categorized as follows:
 
-| Permission Name                                           | Description           |
-|-----------------------------------------|----------|
-| RDSforMariaDB:Metric.List | List metric information |
+| Event Category | Description |
+|-------------|---------|
+| ALL         | All      |
+| BACKUP      | Backup      |
+| DB_INSTANCE | DB Instance |
+| JOB         | Job      |
+| TENANT      | Tenant     |
+| MONITORING  | Monitoring    |
 
-#### Request
-
-| Name         | Type  | Format   | Required | Description                                      |
-|--------------|-------|----------|----------|--------------------------------------------------|
-| dbInstanceId | Query | UUID     | O        | DB instance identifier                           |
-| measureNames | Query | Array    | O        | Metric list to query<br/>- Minimum length: `1`   |
-| from         | Query | Datetime | O        | Start date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-| to           | Query | Datetime | O        | End date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)   |
-| interval     | Query | Number   | X        | View interval                                    |
-
-#### Response
-
-| Name                              | Type | Format    | Description                 |
-|-----------------------------------|------|-----------|-----------------------------|
-| metricStatistics                  | Body | Array     | Statistics information list |
-| metricStatistics.measureName      | Body | Enum      | Measure type                |
-| metricStatistics.unit             | Body | String    | Measure unit                |
-| metricStatistics.values           | Body | Array     | Measure values              |
-| metricStatistics.values.timestamp | Body | Timestamp | Measure time                |
-| metricStatistics.values.value     | Body | Object    | Measure value               |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "metricStatistics": [
-        {
-            "measureName": "MYSQL_STATUS",
-            "unit": "",
-            "values": [
-                [
-                    1679298540,
-                    "1"
-                ],
-                [
-                    1679298600,
-                    "1"
-                ],
-                [
-                    1679298660,
-                    "1"
-                ]
-            ]
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-## Event
-
-### Event category
-
-Events can be categorized into categories, which are shown below.
-
-| Event category | Description |
-|----------------|-------------|
-| ALL            | All         |
-| BACKUP         | Backups     |
-| DB_INSTANCE    | DB Instance |
-| JOB            | Jobs        |
-| TENANT         | Tenant      |
-| MONITORING     | Monitoring  |
-
-### List Events
-
-```http
-GET /v4.0/events
-```
-
-#### Required permissions
-
-| Permission Name                                           | Description           |
-|----------------------------------------|-----------|
-| RDSforMariaDB:Event.List | List Events |
-
-#### Request
-
-This API does not require a request body.
-
-| Name              | Type  | Format   | Required | Description                                                                                                                                                         |
-|-------------------|-------|----------|----|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| page              | Query | Number   | X  | Page to retrieve<br/>- Default: 1 <br/>- Minimum value: `1`                                                                                                         |
-| size              | Query | Number   | X  | Page size to retrieve<br/>- Default: 20                                                                                                                             |
-| from              | Query | Datetime | O        | Start date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                    |
-| to                | Query | Datetime | O        | End date and time (YYYY-MM-DDThh:mm:ss.SSSTZD)                                                                                                                      |
-| eventCategoryType | Query | Enum     | O        | Event category types to query<br/>- `ALL`: All<br/>- `INSTANCE`: DB instance<br/>- `BACKUP`: Backup<br/>- `DB_SECURITY_GROUP`: DB security group<br/>- `TENANT`: Tenant |
-| sourceId          | Query | String   | X        | Event target resource identifier                                                                                                                                    |
-| keyword           | Query | String   | X        | String keyword in event message                                                                                                                                     |
-| ascendingOrder    | Query | Enum     | X        | Event message sorting order<br/>- `ASC`: Ascending order<br/>- `DESC`: Descending order<br/>- Default: `DESC`                                                       |
-
-#### Response
-
-| Name                     | Type | Format   | Description                                               |
-|--------------------------|------|----------|-----------------------------------------------------------|
-| totalCounts              | Body | Number   | Total number of events                                    |
-| events                   | Body | Array    | Events                                                    |
-| events.eventCategoryType | Body | Enum     | Event category type                                       |
-| events.eventCode         | Body | Enum     | Occurred event type                                       |
-| events.sourceId          | Body | String   | Event source identifier                                   |
-| events.sourceName        | Body | String   | Name to identify event sources                            |
-| events.messages          | Body | Array    | Event messages                                            |
-| events.messages.langCode | Body | String   | Language code                                             |
-| events.messages.message  | Body | String   | Event Message                                             |
-| events.eventYmdt         | Body | DateTime | Event occurred date and time (YYYY-MM-DDThh:mm:ss.SSSTZD) |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    },
-    "totalCounts": 28,
-    "events": [
-        {
-            "eventCategoryType": "INSTANCE",
-            "eventCode": "INSTC_02_01",
-            "sourceId": "76f00947-356e-4a20-8922-428368cc45ed",
-            "sourceName": "db-instance",
-            "messages": [
-                {
-                    "langCode": "EN",
-                    "message": "DB instance started"
-                },
-                {
-                    "langCode": "JA",
-                    "message": "DBインスタンスの起動"
-                },
-                {
-                    "langCode": "KO",
-                    "message": "DB 인스턴스 시작"
-                },
-                {
-                    "langCode": "ZH",
-                    "message": "DB instance started"
-                }
-            ],
-            "eventYmdt": "2023-03-20T16:31:59+09:00"
-        }
-    ]
-}
-```
-
-</p>
-</details>
-
----
-
-### List Subscribable Event Codes
+### View Subscribable Event Codes List
 
 ```http
 GET /v4.0/event-codes
 ```
 
-#### Required permissions
+#### Required Permissions
 
-| Permission Name                                           | Description           |
-|----------------------------------------|-----------|
-| RDSforMariaDB:Event.List | List Events |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Event.List | View subscribable event codes list |
 
 #### Request
 
@@ -5020,11 +5580,11 @@ This API does not require a request body.
 
 #### Response
 
-| Name                         | Type | Format | Description         |
-|------------------------------|------|--------|---------------------|
-| eventCodes                   | Body | Array  | Event Codes         |
-| eventCodes.eventCode         | Body | Enum   | Event Code          |
-| eventCodes.eventCategoryType | Body | Enum   | Event category type |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| eventCodes | Body | Array | Event codes list |
+| eventCodes.eventCode | Body | Enum | Event code |
+| eventCodes.eventCategoryType | Body | Enum | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
 
 <details><summary>Example</summary>
 <p>
@@ -5038,8 +5598,8 @@ This API does not require a request body.
     },
     "eventCodes": [
         {
-            "eventCode": "INSTC_05_01",
-            "eventCategoryType": "INSTANCE"
+            "eventCode": "ENUM_VALUE",
+            "eventCategoryType": "ALL"
         }
     ]
 }
@@ -5049,9 +5609,75 @@ This API does not require a request body.
 </details>
 
 ---
+
+### View Event List
+
+```http
+GET /v4.0/events
+```
+
+#### Required Permissions
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:Event.List | View event list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total number of event list |
+| events | Body | Array | Event list |
+| events.eventCategoryType | Body | Enum | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| events.eventCode | Body | Enum | Type of event that occurred |
+| events.sourceId | Body | UUID | Event source identifier |
+| events.sourceName | Body | String | Name that can identify the event source |
+| events.messages | Body | Array | Event message list |
+| events.messages.langCode | Body | Enum | Language code<br/>- KO<br/>- EN<br/>- JA<br/>- ZH |
+| events.messages.message | Body | String | Event message |
+| events.eventYmdt | Body | DateTime | Event occurrence date and time |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "header": {
+        "resultCode": 0,
+        "resultMessage": "SUCCESS",
+        "isSuccessful": true
+    },
+    "totalCounts": 1,
+    "events": [
+        {
+            "eventCategoryType": "ALL",
+            "eventCode": "ENUM_VALUE",
+            "sourceId": "550e8400-e29b-41d4-a716-446655440000",
+            "sourceName": "sourceName-example",
+            "messages": [
+                {
+                    "langCode": "KO",
+                    "message": "message-example"
+                }
+            ],
+            "eventYmdt": "2023-12-31T15:00:00+09:00"
+        }
+    ]
+}
+```
+
+</p>
+</details>
+
+---
+
 ## Event Subscription
 
-### List Event Subscriptions
+### Get Event Subscription List
 
 ```http
 GET /v4.0/event-subscriptions
@@ -5059,38 +5685,32 @@ GET /v4.0/event-subscriptions
 
 #### Required Permission
 
-| Permission                                                    | Description            |
-|---------------------------------------------------------|---------------|
-| RDSforMariaDB:EventSubscription.List | List event subscriptions |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:EventSubscription.List | Get event subscription list |
 
 #### Request
 
-| Name                | Type    | Format       | Required | Description                                       |
-|-------------------|-------|----------|----|------------------------------------------|
-| page              | Query | Number   | X  | Page to retrieve<br/>- Default: 1 <br/>- Minimum value: `1` |
-| size              | Query | Number   | X  | Page size to retrieve<br/>- Default: 20             |
-| eventSubscriptionId    | Query | UUID   | X  | Event subscription identifier                              |
-| eventSubscriptionName  | Query | String | X  | Name to identify event subscription                      |
-| userGroupId            | Query | UUID   | X  | User group identifier                              |
+This API does not require a request body.
 
 #### Response
 
-| Name                                            | Type   | Format       | Description                       |
-|-----------------------------------------------|------|----------|--------------------------|
-| totalCounts                                   | Body | Number   | Total number of event subscriptions           |
-| eventSubscriptions | Body | Array | List of event subscriptions |
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| totalCounts | Body | Number | Total number of event subscription lists |
+| eventSubscriptions | Body | Array | Event subscription list |
 | eventSubscriptions.eventSubscriptionId | Body | UUID | Event subscription identifier |
-| eventSubscriptions.eventCategoryType | Body | Enum | Event category type |
-| eventSubscriptions.eventSubscriptionName | Body | String | A name that identifies the event subscription |
-| eventSubscriptions.enabled | Body | Boolean | Whether to activate |
-| eventSubscriptions.notifyEmail | Body | Boolean | Whether to send emails |
-| eventSubscriptions.notifySms | Body | Boolean | Whether to send SMS messages |
-| eventSubscriptions.eventCodes | Body | Array | List of event codes to subscribe to |
-| eventSubscriptions.sources | Body | Array | List of event sources to subscribe to |
-| eventSubscriptions.sources.sourceId | Body | UUID | Identifier of the event source |
-| eventSubscriptions.sources.eventCategoryType | Body | Enum | Event category type |
-| eventSubscriptions.userGroupIds | Body | Array | List of identifiers of user groups subscribing to the event |
-| eventSubscriptions.createdYmdt                | Body | DateTime | Created at                    |
+| eventSubscriptions.eventCategoryType | Body | Enum | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| eventSubscriptions.eventSubscriptionName | Body | String | Identifiable name of event subscription |
+| eventSubscriptions.enabled | Body | Boolean | Whether enabled |
+| eventSubscriptions.notifyEmail | Body | Boolean | Whether to send email |
+| eventSubscriptions.notifySms | Body | Boolean | Whether to send SMS |
+| eventSubscriptions.eventCodes | Body | Array | List of event codes to subscribe |
+| eventSubscriptions.sources | Body | Array | List of event sources to subscribe |
+| eventSubscriptions.sources.sourceId | Body | UUID | Event source identifier |
+| eventSubscriptions.sources.eventCategoryType | Body | Enum | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| eventSubscriptions.userGroupIds | Body | Array | List of user group identifiers subscribed to events |
+| eventSubscriptions.createdYmdt | Body | DateTime | Creation date and time |
 
 <details><summary>Example</summary>
 <p>
@@ -5105,25 +5725,23 @@ GET /v4.0/event-subscriptions
     "totalCounts": 1,
     "eventSubscriptions": [
         {
-            "eventSubscriptionId": "12345678-1234-1234-1234-123456789012",
-            "eventCategoryType": "INSTANCE",
-            "eventSubscriptionName": "example-event-subscription",
-            "enabled": true,
-            "notifyEmail": true,
+            "eventSubscriptionId": "550e8400-e29b-41d4-a716-446655440000",
+            "eventCategoryType": "ALL",
+            "eventSubscriptionName": "eventSubscriptionName-example",
+            "enabled": false,
+            "notifyEmail": false,
             "notifySms": false,
-            "eventCodes": [
-                "INSTC_05_01"
-            ],
+            "eventCodes": [],
             "sources": [
                 {
-                    "sourceId": "87654321-4321-4321-4321-210987654321",
-                    "eventCategoryType": "INSTANCE"
+                    "sourceId": "550e8400-e29b-41d4-a716-446655440000",
+                    "eventCategoryType": "ALL"
                 }
             ],
             "userGroupIds": [
-                "11111111-2222-3333-4444-555555555555"
+                "550e8400-e29b-41d4-a716-446655440000"
             ],
-            "createdYmdt": "2024-01-01T12:00:00+09:00"
+            "createdYmdt": "2023-12-31T15:00:00+09:00"
         }
     ]
 }
@@ -5134,7 +5752,7 @@ GET /v4.0/event-subscriptions
 
 ---
 
-### Create an Event Subscription
+### Create Event Subscription
 
 ```http
 POST /v4.0/event-subscriptions
@@ -5142,47 +5760,43 @@ POST /v4.0/event-subscriptions
 
 #### Required Permission
 
-| Permission                                                      | Description           |
-|----------------------------------------------------------|--------------|
-| RDSforMariaDB:EventSubscription.Create | Create an event subscription |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:EventSubscription.Create | Create event subscription |
 
 #### Request
 
-| Name                      | Type | Format  | Required | Description                                                           |
-|---------------------------|------|---------|----------|-----------------------------------------------------------------------|
-| eventCategoryType         | Body | Enum    | O        | Event category type                                                   |
-| eventSubscriptionName     | Body | String  | O        | A name that identifies the event subscription - maximum length: `100` |
-| enabled                   | Body | Boolean | O        | Whether to enable                                                     |
-| notifyEmail               | Body | Boolean | O        | Whether to send emails                                                |
-| notifySms                 | Body | Boolean | O        | Whether to send SMS messages                                          |
-| eventCodes                | Body | Array   | O        | List of event codes to subscribe to                                   |
-| sources                   | Body | Array   | O        | List of event sources to subscribe to                                 |
-| sources.sourceId          | Body | UUID    | O        | Identifier of the event source                                        |
-| sources.eventCategoryType | Body | Enum    | O        | Event category type                                                   |
-| userGroupIds              | Body | Array   | O        | List of identifiers of user groups to subscribe to                    |
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| eventCategoryType | Body | Enum | O | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| eventSubscriptionName | Body | String | O | Identifiable name for event subscription |
+| enabled | Body | Boolean | O | Whether enabled |
+| notifyEmail | Body | Boolean | O | Whether to send email |
+| notifySms | Body | Boolean | O | Whether to send SMS |
+| eventCodes | Body | Array | O | List of event codes to subscribe |
+| sources | Body | Array | O | List of event sources to subscribe |
+| sources.sourceId | Body | UUID | O | Event source identifier |
+| sources.eventCategoryType | Body | Enum | O | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| userGroupIds | Body | Array | O | List of user group identifiers to subscribe to events |
 
 <details><summary>Example</summary>
 <p>
 
 ```json
 {
-    "eventCategoryType": "INSTANCE",
-    "eventSubscriptionName": "example-event-subscription",
-    "enabled": true,
-    "notifyEmail": true,
+    "eventCategoryType": "ALL",
+    "eventSubscriptionName": "eventSubscriptionName-example",
+    "enabled": false,
+    "notifyEmail": false,
     "notifySms": false,
-    "eventCodes": [
-        "INSTC_05_01"
-    ],
+    "eventCodes": [],
     "sources": [
         {
-            "sourceId": "87654321-4321-4321-4321-210987654321",
-            "eventCategoryType": "INSTANCE"
+            "sourceId": "550e8400-e29b-41d4-a716-446655440000",
+            "eventCategoryType": "ALL"
         }
     ],
-    "userGroupIds": [
-        "11111111-2222-3333-4444-555555555555"
-    ]
+    "userGroupIds": []
 }
 ```
 
@@ -5191,9 +5805,9 @@ POST /v4.0/event-subscriptions
 
 #### Response
 
-| Name                    | Type   | Format   | Description          |
-|-----------------------|------|------|-------------|
-| eventSubscriptionId   | Body | UUID | Event subscription identifier | 
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| eventSubscriptionId | Body | UUID | Event subscription identifier |
 
 <details><summary>Example</summary>
 <p>
@@ -5205,7 +5819,7 @@ POST /v4.0/event-subscriptions
         "resultMessage": "SUCCESS",
         "isSuccessful": true
     },
-    "eventSubscriptionId": "12345678-1234-1234-1234-123456789012"
+    "eventSubscriptionId": "550e8400-e29b-41d4-a716-446655440000"
 }
 ```
 
@@ -5214,86 +5828,7 @@ POST /v4.0/event-subscriptions
 
 ---
 
-### Modify an Event Subscription
-
-```http
-PUT /v4.0/event-subscriptions/{eventSubscriptionId}
-```
-
-#### Required Permission
-
-| Permission                                                      | Description           |
-|----------------------------------------------------------|--------------|
-| RDSforMariaDB:EventSubscription.Modify | Modify an event subscription |
-
-#### Request
-
-| Name                      | Type | Format  | Required | Description                                           |
-|---------------------------|------|---------|----------|-------------------------------------------------------|
-| eventSubscriptionId       | URL  | UUID    | O        | Event subscription identifier                         |
-| eventCategoryType         | Body | Enum    | X        | Event category type                                   |
-| eventSubscriptionName     | Body | String  | X        | A name that identifies the event subscription         |
-| enabled                   | Body | Boolean | X        | Whether to enable                                     |
-| notifyEmail               | Body | Boolean | X        | Whether to send an email                              |
-| notifySms                 | Body | Boolean | X        | Whether to send an SMS                                |
-| eventCodes                | Body | Array   | X        | A list of event codes to subscribe to                 |
-| sources                   | Body | Array   | X        | A list of event sources to subscribe to               |
-| sources.sourceId          | Body | UUID    | X        | Event source identifier                               |
-| sources.eventCategoryType | Body | Enum    | X        | Event category type                                   |
-| userGroupIds              | Body | Array   | X        | A list of identifiers for user groups to subscribe to |
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "eventSubscriptionName": "updated-event-subscription",
-    "enabled": false,
-    "notifyEmail": false,
-    "notifySms": true,
-    "eventCodes": [
-        "INSTC_05_01",
-        "INSTC_06_01"
-    ],
-    "sources": [
-        {
-            "sourceId": "87654321-4321-4321-4321-210987654321",
-            "eventCategoryType": "INSTANCE"
-        }
-    ],
-    "userGroupIds": [
-        "11111111-2222-3333-4444-555555555555",
-        "22222222-3333-4444-5555-666666666666"
-    ]
-}
-```
-
-</p>
-</details>
-
-#### Response
-
-This API does not return a response body.
-
-<details><summary>Example</summary>
-<p>
-
-```json
-{
-    "header": {
-        "resultCode": 0,
-        "resultMessage": "SUCCESS",
-        "isSuccessful": true
-    }
-}
-```
-
-</p>
-</details>
-
----
-
-### Delete an Event Subscription
+### Delete Event Subscription
 
 ```http
 DELETE /v4.0/event-subscriptions/{eventSubscriptionId}
@@ -5301,19 +5836,108 @@ DELETE /v4.0/event-subscriptions/{eventSubscriptionId}
 
 #### Required Permission
 
-| Permission                                                      | Description           |
-|----------------------------------------------------------|--------------|
-| RDSforMariaDB:EventSubscription.Delete | Delete an event subscription |
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:EventSubscription.Delete | Delete event subscription |
 
 #### Request
 
-| Name                    | Type  | Format   | Required | Description          |
-|-----------------------|-----|------|----|-------------|
-| eventSubscriptionId   | URL | UUID | O  | Event subscription identifier |
+This API does not require a request body.
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| eventSubscriptionId | URL | UUID | O |  |
 
 #### Response
 
 This API does not return a response body.
+
+---
+
+### Modify Event Subscription
+
+```http
+PUT /v4.0/event-subscriptions/{eventSubscriptionId}
+```
+
+#### Required Permission
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:EventSubscription.Modify | Modify event subscription |
+
+#### Request
+
+| Name | Type | Format | Required | Description |
+|-----|-----|-----|-----|-----|
+| eventSubscriptionId | URL | UUID | O |  |
+| eventCategoryType | Body | Enum | X | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| eventSubscriptionName | Body | String | X | Identifiable name for event subscription |
+| enabled | Body | Boolean | X | Whether enabled |
+| notifyEmail | Body | Boolean | X | Whether to send email |
+| notifySms | Body | Boolean | X | Whether to send SMS |
+| eventCodes | Body | Array | X | List of event codes to subscribe |
+| sources | Body | Array | X | List of event sources to subscribe |
+| sources.sourceId | Body | UUID | O | Event source identifier |
+| sources.eventCategoryType | Body | Enum | O | Event category type<br/>- ALL<br/>- INSTANCE<br/>- DB_SECURITY_GROUP<br/>- MONITORING<br/>- JOB<br/>- BACKUP<br/>- TENANT |
+| userGroupIds | Body | Array | X | List of user group identifiers to subscribe to events |
+
+<details><summary>Example</summary>
+<p>
+
+```json
+{
+    "eventCategoryType": "ALL",
+    "eventSubscriptionName": "eventSubscriptionName-example",
+    "enabled": false,
+    "notifyEmail": false,
+    "notifySms": false,
+    "eventCodes": [],
+    "sources": [
+        {
+            "sourceId": "550e8400-e29b-41d4-a716-446655440000",
+            "eventCategoryType": "ALL"
+        }
+    ],
+    "userGroupIds": []
+}
+```
+
+</p>
+</details>
+
+#### Response
+
+This API does not return a response body.
+
+---
+
+## Availability Zone
+
+### View Availability Zone List
+
+```http
+GET /v4.0/availability-zones
+```
+
+#### Required Permission
+
+| Permission Name | Description |
+|-----|-----|
+| RDSforMariaDB:AvailabilityZone.List | View availability zone list |
+
+#### Request
+
+This API does not require a request body.
+
+#### Response
+
+| Name | Type | Format | Description |
+|-----|-----|-----|-----|
+| availabilityZones | Body | Array | Availability zone list |
+| availabilityZones.availabilityZoneName | Body | String | Availability zone name |
+| availabilityZones.zoneState | Body | Object | Availability zone state |
+| availabilityZones.zoneState.available | Body | Boolean | Whether the availability zone is available |
 
 <details><summary>Example</summary>
 <p>
@@ -5324,7 +5948,15 @@ This API does not return a response body.
         "resultCode": 0,
         "resultMessage": "SUCCESS",
         "isSuccessful": true
-    }
+    },
+    "availabilityZones": [
+        {
+            "availabilityZoneName": "availabilityZoneName-example",
+            "zoneState": {
+                "available": false
+            }
+        }
+    ]
 }
 ```
 
