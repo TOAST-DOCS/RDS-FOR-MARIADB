@@ -81,22 +81,22 @@ APIリクエスト時、認証に失敗したり権限がない場合、次の�
 
 | DBエンジンタイプ | 作成可否 | OBSからの復元可否 | 認証プラグインサポート情報 |
 |------------|----------|------------------|------------|
-| MARIADB_V10330 | X | X | NATIVE, ED25519 |
-| MARIADB_V10611 | X | X | NATIVE, ED25519 |
-| MARIADB_V10612 | X | X | NATIVE, ED25519 |
-| MARIADB_V10616 | X | X | NATIVE, ED25519 |
-| MARIADB_V10622 | X | X | NATIVE, ED25519 |
-| MARIADB_V10625 | X | X | NATIVE, ED25519 |
-| MARIADB_V101107 | O | O | NATIVE, ED25519 |
-| MARIADB_V101108 | O | O | NATIVE, ED25519 |
-| MARIADB_V101113 | O | O | NATIVE, ED25519 |
-| MARIADB_V101116 | O | O | NATIVE, ED25519 |
-| MARIADB_V101118 | O | O | NATIVE, ED25519 |
-| MARIADB_V11407 | O | O | NATIVE, ED25519 |
-| MARIADB_V11410 | O | O | NATIVE, ED25519 |
-| MARIADB_V11412 | O | O | NATIVE, ED25519 |
-| MARIADB_V11806 | O | O | NATIVE, ED25519 |
-| MARIADB_V11808 | O | O | NATIVE, ED25519 |
+| MARIADB_V10330 | X | X | ED25519, NATIVE |
+| MARIADB_V10611 | X | X | ED25519, NATIVE |
+| MARIADB_V10612 | X | X | ED25519, NATIVE |
+| MARIADB_V10616 | X | X | ED25519, NATIVE |
+| MARIADB_V10622 | X | X | ED25519, NATIVE |
+| MARIADB_V10625 | X | X | ED25519, NATIVE |
+| MARIADB_V101107 | O | O | ED25519, NATIVE |
+| MARIADB_V101108 | O | O | ED25519, NATIVE |
+| MARIADB_V101113 | O | O | ED25519, NATIVE |
+| MARIADB_V101116 | O | O | ED25519, NATIVE |
+| MARIADB_V101118 | O | O | ED25519, NATIVE |
+| MARIADB_V11407 | O | O | ED25519, NATIVE |
+| MARIADB_V11410 | O | O | ED25519, NATIVE |
+| MARIADB_V11412 | O | O | ED25519, NATIVE |
+| MARIADB_V11806 | O | O | ED25519, NATIVE |
+| MARIADB_V11808 | O | O | ED25519, NATIVE |
 
 * ENUMタイプのdbVersionフィールドに対して該当値を使用できます。
 * バージョンによって作成または復元が不可能な場合があります。
@@ -321,7 +321,7 @@ GET /v3.0/db-versions
 },
 "dbVersions": [
 {
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "dbVersionName": "dbVersionName-example",
 "restorableFromObs": false
 }
@@ -681,7 +681,7 @@ GET /v3.0/db-instances
 "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "dbInstanceName": "dbInstanceName-example",
 "description": "description-example",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "dbPort": 1,
 "dbInstanceType": "MASTER",
 "dbInstanceStatus": "BEFORE_CREATE",
@@ -731,7 +731,7 @@ POST /v3.0/db-instances
 "dbInstanceCandidateName": "dbInstanceCandidateName",
 "description": "description-example",
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "dbPort": 1,
 "dbUserName": "dbUserName",
 "dbPassword": "dbPassword",
@@ -851,7 +851,7 @@ POST /v3.0/db-instances/restore-from-obs
 "description": "description-example",
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
 "dbPort": 1,
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "useHighAvailability": false,
 "imageId": "550e8400-e29b-41d4-a716-446655440000",
 "pingInterval": 3,
@@ -1015,7 +1015,7 @@ GET /v3.0/db-instances/{dbInstanceId}
 "dbInstanceGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "dbInstanceName": "dbInstanceName-example",
 "description": "description-example",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "dbPort": 1,
 "dbInstanceType": "MASTER",
 "dbInstanceStatus": "BEFORE_CREATE",
@@ -1092,7 +1092,7 @@ PUT /v3.0/db-instances/{dbInstanceId}
 "dbPort": 1,
 "dbFlavorId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
 "useDummy": false,
 "dbSecurityGroupIds": [],
 "executeBackup": false,
@@ -2980,8 +2980,8 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 "backupId": "550e8400-e29b-41d4-a716-446655440000",
 "backupName": "backupName-example",
 "dbInstanceId": "550e8400-e29b-41d4-a716-446655440000",
-"dbVersion": "MYSQL_V8036",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
+"dbVersion": "MARIADB_V101107",
 "utilVersion": "utilVersion-example",
 "backupType": "AUTO",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
@@ -3724,8 +3724,8 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "description": "description-example",
-"dbVersion": "MYSQL_V8036",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
+"dbVersion": "MARIADB_V101107",
 "createdYmdt": "2023-12-31T15:00:00+09:00",
 "updatedYmdt": "2023-12-31T15:00:00+09:00"
 }
@@ -3858,8 +3858,8 @@ POST /v3.0/db-instances/{dbInstanceId}/restore
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "parameterGroupId": "550e8400-e29b-41d4-a716-446655440000",
 "description": "description-example",
-"dbVersion": "MYSQL_V8036",
-"dbVersion": "MYSQL_V8036",
+"dbVersion": "MARIADB_V101107",
+"dbVersion": "MARIADB_V101107",
 "parameterGroupStatus": "STABLE",
 {
 {
