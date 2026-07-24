@@ -923,7 +923,7 @@ POST /v3.0/db-instances/restore-from-obs
 | backup.backupSchedules.backupWndDuration | Enum | Y | Backup duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1.5 hour`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2.5 hours`<br/>- THREE_HOURS: `3 hours` |
 | restore | Object | Y | Restoration information object |
 | restore.tenantId | String | Y | Tenant ID of object storage where backups are stored |
-| restore.username | String | Y | NHN Cloud account or IAM member ID |
+| restore.username | String | Y | NHN Cloud account or IAM account ID |
 | restore.password | String | Y | API password for object storage where backups are stored |
 | restore.targetContainer | String | Y | Container of object storage where backups are stored |
 | restore.objectPath | String | Y | Path of backup stored in container |
@@ -1364,7 +1364,7 @@ POST /v3.0/db-instances/{dbInstanceId}/backup-to-object-storage
 | Name | Type | Required | Description |
 |-----|-----|-----|-----|
 | tenantId | String | Y | Tenant ID of object storage to store backup<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password for object storage where backup is stored |
 | targetContainer | String | Y | Object storage container where backup is stored |
 | objectPath | String | Y | Backup path to be stored in container |
@@ -2176,7 +2176,7 @@ This API does not require a request body.
 |-----|-----|-----|-----|
 | logFileNames | Array | Y | Log File name list |
 | tenantId | String | Y | Tenant ID of object storage to store log file<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password for object storage where log file is stored |
 | targetContainer | String | Y | Object storage container where log file is stored |
 | objectPath | String | Y | Log file path to be stored in container |
@@ -3086,7 +3086,7 @@ This API does not require a request body.
 | Name | Type | Required | Description |
 |-----|-----|-----|-----|
 | tenantId | String | Y | Tenant ID of object storage to store backup<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password for object storage where backup is stored |
 | targetContainer | String | Y | Object storage container where backup is stored |
 | objectPath | String | Y | Backup path to be stored in container |
