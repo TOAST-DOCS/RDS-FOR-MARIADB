@@ -974,7 +974,7 @@ POST /v4.0/db-instances/restore-from-obs
 | backup.backupSchedules.backupWndDuration | Enum | Y | Backup duration<br/>- HALF_AN_HOUR: `30 minutes`<br/>- ONE_HOUR: `1 hour`<br/>- ONE_HOUR_AND_HALF: `1 hour 30 minutes`<br/>- TWO_HOURS: `2 hours`<br/>- TWO_HOURS_AND_HALF: `2 hours 30 minutes`<br/>- THREE_HOURS: `3 hours` |
 | restore | Object | Y | Restoration information object |
 | restore.tenantId | String | Y | Tenant ID of object storage where backups are stored |
-| restore.username | String | Y | NHN Cloud account or IAM member ID |
+| restore.username | String | Y | NHN Cloud account or IAM account ID |
 | restore.password | String | Y | API password for object storage where backups are stored |
 | restore.targetContainer | String | Y | Container for object storage where backups are stored |
 | restore.objectPath | String | Y | Backup path stored in container |
@@ -1607,7 +1607,7 @@ POST /v4.0/db-instances/{dbInstanceId}/certificates/upload
 |-----|-----|-----|-----|
 | certificateTypes | Array | Y | Certificate type list to upload |
 | tenantId | String | Y | Tenant ID of object storage where certificate file is stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password for object storage where certificate file is stored |
 | targetContainer | String | Y | Object storage container where certificate file is stored |
 | objectPath | String | Y | Path of the certificate file to be stored in the container |
@@ -2551,7 +2551,7 @@ POST /v4.0/db-instances/{dbInstanceId}/log-files/export
 |-----|-----|-----|-----|
 | logFileNames | Array | Y | Log file name list |
 | tenantId | String | Y | Tenant ID of the object storage where log files are stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password for the object storage where log files are stored |
 | targetContainer | String | Y | Object storage container where log files are stored |
 | objectPath | String | Y | Path of the log file to be stored in the container |
@@ -4144,7 +4144,7 @@ POST /v4.0/backups/{backupId}/export
 | Name | Type | Required | Description |
 |-----|-----|-----|-----|
 | tenantId | String | Y | Tenant ID of the object storage where the backup will be stored<br/>- Minimum length: `32`<br/>- Maximum length: `32` |
-| username | String | Y | NHN Cloud account or IAM member ID |
+| username | String | Y | NHN Cloud account or IAM account ID |
 | password | String | Y | API password of the object storage where the backup will be stored |
 | targetContainer | String | Y | Object storage container where the backup will be stored |
 | objectPath | String | Y | Path of the backup to be stored in the container |
